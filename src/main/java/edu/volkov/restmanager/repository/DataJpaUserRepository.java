@@ -4,8 +4,7 @@ import edu.volkov.restmanager.model.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public class DataJpaUserRepository implements UserRepository {
@@ -39,7 +38,7 @@ public class DataJpaUserRepository implements UserRepository {
     }
 
     @Override
-    public Set<User> getAll() {
-        return new HashSet<>(crudRepository.findAll(SORT_NAME_EMAIL));
+    public List<User> getAll() {
+        return crudRepository.findAll(SORT_NAME_EMAIL);
     }
 }

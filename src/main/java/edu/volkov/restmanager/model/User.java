@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "users_unique_email_idx", columnNames = "email")})
 public class User extends AbstractNamedEntity {
 
+    @Email
     @Size(max = 100)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -50,16 +52,17 @@ public class User extends AbstractNamedEntity {
     @Column(name = "role")
     private Set<Role> roles;
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, LocalDate registered) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.roles = roles;
+        this.registered = registered;
     }
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled(), user.getRoles());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled(), user.getRoles(), user.getRegistered());
     }
 
     public void setRoles(Collection<Role> roles) {

@@ -13,20 +13,21 @@ FROM users;
 -- DELETE
 -- FROM likes;
 
-ALTER SEQUENCE global_seq1 RESTART WITH 0;
+-- ALTER SEQUENCE global_seq1 RESTART WITH 0;
 -- ALTER SEQUENCE global_seq2 RESTART WITH 0;
 -- ALTER SEQUENCE global_seq3 RESTART WITH 0;
 -- ALTER SEQUENCE global_seq4 RESTART WITH 0;
 -- ALTER SEQUENCE global_seq5 RESTART WITH 0;
 -- ALTER SEQUENCE global_seq6 RESTART WITH 0;
 
-INSERT INTO users (name, email, password)
-VALUES ('User1', 'user1@gmail.com', '54321'),
-       ('Admin1', 'admin1@gmail.com', '12345');
+INSERT INTO users (id, name, email, password)
+VALUES (0, 'User', 'user@yandex.ru', 'password'),
+       (1, 'Admin', 'admin@gmail.com', 'admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('USER', 0),
-       ('ADMIN', 1);
+       ('ADMIN', 1),
+       ('USER', 1);
 
 -- INSERT INTO restaurant (name, address, phone)
 -- VALUES ('rest1', 'address1', '+7 (911) 111-11-11'),

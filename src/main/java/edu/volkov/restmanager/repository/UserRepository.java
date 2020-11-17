@@ -2,7 +2,7 @@ package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.User;
 
-import java.util.Set;
+import java.util.List;
 
 public interface UserRepository {
     User save(User user);
@@ -17,5 +17,5 @@ public interface UserRepository {
 
     User getByEmail(String email);
 
-    Set<User> getAll();
+    List<User> getAll();
 }
