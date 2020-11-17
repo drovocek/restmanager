@@ -2,8 +2,8 @@ DELETE
 FROM user_roles;
 DELETE
 FROM users;
--- DELETE
--- FROM restaurant;
+DELETE
+FROM restaurant;
 -- DELETE
 -- FROM menu;
 -- DELETE
@@ -29,12 +29,12 @@ VALUES ('USER', 0),
        ('ADMIN', 1),
        ('USER', 1);
 
--- INSERT INTO restaurant (name, address, phone)
--- VALUES ('rest1', 'address1', '+7 (911) 111-11-11'),
---        ('rest2', 'address2', '+7 (922) 222-22-22'),
---        ('rest3', 'address3', '+7 (933) 333-33-33'),
---        ('rest4', 'address4', '+7 (944) 444-44-44'),
---        ('rest5', 'address5', '+7 (955) 555-55-55');
+INSERT INTO restaurant (id,name, address, phone)
+VALUES (0,'rest1', 'address1', '+7 (911) 111-1111'),
+       (1,'rest2', 'address2', '+7 (922) 222-2222'),
+       (2,'rest3', 'address3', '+7 (933) 333-3333'),
+       (3,'rest4', 'address4', '+7 (944) 444-4444'),
+       (4,'rest5', 'address5', '+7 (955) 555-5555');
 --
 -- INSERT INTO likes (user_id, restaurant_id, like_date)
 -- VALUES (0, 0, '2020-01-27'),

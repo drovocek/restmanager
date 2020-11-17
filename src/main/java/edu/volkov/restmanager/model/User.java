@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -31,6 +32,7 @@ public class User extends AbstractNamedEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotNull
     @Column(name = "registered", nullable = false, columnDefinition = "date default now()")
     private LocalDate registered = LocalDate.now();
 
