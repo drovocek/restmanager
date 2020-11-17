@@ -8,7 +8,13 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <br>
 <section>
-    <h1>Welcome! This is my graduation project "Restaurant Manager".</h1>
+    <form method="post" action="${pageContext.request.contextPath}">
+        <spring:message code="app.login"/>: <select name="userId">
+        <option value="0" selected>User</option>
+        <option value="1">Admin</option>
+    </select>
+        <button type="submit"><spring:message code="common.select"/></button>
+    </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

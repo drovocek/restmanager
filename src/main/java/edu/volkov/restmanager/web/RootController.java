@@ -19,6 +19,11 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("users", service.getAll());
