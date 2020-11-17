@@ -27,6 +27,7 @@ public class Restaurant extends AbstractNamedEntity {
     private String address;
 
     @NotBlank
+//    https://www.baeldung.com/java-regex-validate-phone-numbers
     @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
     @Size(max = 20)
     @Column(name = "phone", nullable = false)
