@@ -1,7 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.RestaurantRepository;
+import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 

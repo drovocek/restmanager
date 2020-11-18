@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +14,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @ToString
 @Entity
@@ -33,13 +34,29 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Formula("(SELECT COUNT(*) FROM Likes l WHERE l.restaurant_id = id)")
+    private Integer likeAmount;
+
+    public Restaurant(String name, String address, String phone) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public Restaurant(Integer id, String name, String address, String phone) {
         super(id, name);
         this.address = address;
         this.phone = phone;
     }
 
+    public Restaurant(Integer id, String name, String address, String phone, Integer likeAmount) {
+        super(id, name);
+        this.address = address;
+        this.phone = phone;
+        this.likeAmount = likeAmount;
+    }
+
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone());
+        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.getLikeAmount());
     }
 }

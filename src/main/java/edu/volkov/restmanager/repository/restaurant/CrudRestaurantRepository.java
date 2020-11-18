@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository;
+package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +14,6 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query("DELETE FROM Restaurant r WHERE r.id=:id")
     int delete(@Param("id") Integer id);
 
-    Restaurant getByName(String name);
+    @Query("SELECT r FROM Restaurant r WHERE r.name=?1")
+    Restaurant getByName(@Param("name") String name);
 }

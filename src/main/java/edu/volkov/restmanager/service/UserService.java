@@ -1,7 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.User;
-import edu.volkov.restmanager.repository.UserRepository;
+import edu.volkov.restmanager.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 

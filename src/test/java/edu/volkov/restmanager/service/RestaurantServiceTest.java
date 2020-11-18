@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static edu.volkov.restmanager.RestaurantTestData.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.*;
 
 public class RestaurantServiceTest extends AbstractServiceTest {
 
@@ -81,19 +81,28 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     public void goodPhoneNumberTest() {
-        createWithPhone("+7 (777) 777-7777","testRest1");
-        createWithPhone("+7(777)777-7777","testRest2");
-        createWithPhone("+7(777)7777777","testRest3");
-        createWithPhone("+77777777777","testRest4");
-        createWithPhone("+77777777777","testRest5");
+        createWithPhone("+7 (777) 777-7777", "testRest1");
+        createWithPhone("+7(777)777-7777", "testRest2");
+        createWithPhone("+7(777)7777777", "testRest3");
+        createWithPhone("+77777777777", "testRest4");
+        createWithPhone("+77777777777", "testRest5");
     }
 
     @Test
     public void badPhoneNumberTest() {
-        validateRootCause(() -> createWithPhone("7 (777) 777-7777","testRest1"), ConstraintViolationException.class);
-        validateRootCause(() -> createWithPhone("+N (777) 777-7777","testRest1"), ConstraintViolationException.class);
-        validateRootCause(() -> createWithPhone("+7 (777) 777-77770","testRest1"), ConstraintViolationException.class);
-        validateRootCause(() -> createWithPhone("+7 (777) 777-777","testRest1"), ConstraintViolationException.class);
+        validateRootCause(() -> createWithPhone("7 (777) 777-7777", "testRest1"), ConstraintViolationException.class);
+        validateRootCause(() -> createWithPhone("+N (777) 777-7777", "testRest1"), ConstraintViolationException.class);
+        validateRootCause(() -> createWithPhone("+7 (777) 777-77770", "testRest1"), ConstraintViolationException.class);
+        validateRootCause(() -> createWithPhone("+7 (777) 777-777", "testRest1"), ConstraintViolationException.class);
+    }
+
+    @Test
+    public void likesAmountTest(){
+        assertEquals(service.get(rest1.getId()).getLikeAmount(),rest1.getLikeAmount());
+        assertEquals(service.get(rest2.getId()).getLikeAmount(),rest2.getLikeAmount());
+        assertEquals(service.get(rest3.getId()).getLikeAmount(),rest3.getLikeAmount());
+        assertEquals(service.get(rest4.getId()).getLikeAmount(),rest4.getLikeAmount());
+        assertEquals(service.get(rest5.getId()).getLikeAmount(),rest5.getLikeAmount());
     }
 
     public void createWithPhone(String phone, String name) {
