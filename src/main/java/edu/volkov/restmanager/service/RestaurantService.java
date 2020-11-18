@@ -1,7 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
+import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -13,9 +13,9 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class RestaurantService {
 
-    private final CrudRestaurantRepository repository;
+    private final RestaurantRepository repository;
 
-    public RestaurantService(CrudRestaurantRepository repository) {
+    public RestaurantService(RestaurantRepository repository) {
         this.repository = repository;
     }
 

@@ -2,7 +2,6 @@ package edu.volkov.restmanager.web.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static edu.volkov.restmanager.util.RestaurantUtil.getToList;
+
 @RequestMapping("/restaurants")
 @Controller
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    @Autowired
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
