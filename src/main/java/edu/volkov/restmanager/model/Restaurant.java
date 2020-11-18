@@ -33,6 +33,12 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    public Restaurant(String name, String address, String phone) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public Restaurant(Integer id, String name, String address, String phone) {
         super(id, name);
         this.address = address;

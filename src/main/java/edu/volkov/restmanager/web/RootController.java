@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.web;
 
+import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RootController {
 
+    private final UserService userService;
+    private final RestaurantService restaurantService;
+
     @Autowired
-    private UserService service;
+    public RootController(UserService userService, RestaurantService restaurantService) {
+        this.userService = userService;
+        this.restaurantService = restaurantService;
+    }
 
     @GetMapping("/")
     public String root() {
@@ -26,7 +33,7 @@ public class RootController {
 
     @GetMapping("/users")
     public String getUsers(Model model) {
-        model.addAttribute("users", service.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users";
     }
 

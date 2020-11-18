@@ -28,7 +28,6 @@
                 <td>${user.roles}</td>
                 <td><%=user.isEnabled()%>
                 </td>
-<%--                <td><fmt:formatDate value="${user.registered}" pattern="dd-MM-yyyy"/></td>--%>
                 <td>${user.registered}</td>
             </tr>
         </c:forEach>
