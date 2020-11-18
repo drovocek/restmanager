@@ -16,16 +16,18 @@
             <th><spring:message code="restaurant.name"/></th>
             <th><spring:message code="restaurant.address"/></th>
             <th><spring:message code="restaurant.phone"/></th>
+            <th><spring:message code="restaurant.likesAmount"/></th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.model.Restaurant"/>
+            <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
                 <td><c:out value="${restaurant.name}"/></td>
                 <td>${restaurant.address}</td>
                 <td>${restaurant.phone}</td>
+                <td>${restaurant.likesAmount}</td>
                 <td><a href="restaurants/restaurantForm?id=${restaurant.id}"><spring:message code="common.update"/></a></td>
                 <td><a href="restaurants/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
             </tr>

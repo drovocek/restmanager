@@ -1,7 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.User;
-import edu.volkov.restmanager.repository.UserRepository;
+import edu.volkov.restmanager.repository.user.CrudUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -13,9 +13,9 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class UserService {
 
-    private final UserRepository repository;
+    private final CrudUserRepository repository;
 
-    public UserService(UserRepository repository) {
+    public UserService(CrudUserRepository repository) {
         this.repository = repository;
     }
 

@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository;
+package edu.volkov.restmanager.repository.user;
 
 import edu.volkov.restmanager.model.User;
 import org.springframework.data.domain.Sort;

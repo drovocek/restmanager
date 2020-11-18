@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web;
+package edu.volkov.restmanager.web.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static edu.volkov.restmanager.util.RestaurantUtil.getToList;
 @RequestMapping("/restaurants")
 @Controller
 public class RestaurantController {
@@ -59,7 +60,7 @@ public class RestaurantController {
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("restaurants", restaurantService.getAll());
+        model.addAttribute("restaurants", getToList(restaurantService.getAll()));
         return "restaurants";
     }
 }

@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository;
+package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import org.springframework.data.domain.Sort;
