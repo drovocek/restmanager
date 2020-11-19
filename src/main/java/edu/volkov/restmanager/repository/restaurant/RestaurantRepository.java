@@ -1,38 +1,25 @@
 package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public class RestaurantRepository {
-    private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
+public interface RestaurantRepository {
 
-    private final CrudRestaurantRepository crudRepository;
+    Restaurant save(Restaurant restaurant);
 
-    public RestaurantRepository(CrudRestaurantRepository crudRepository) {
-        this.crudRepository = crudRepository;
-    }
+    boolean delete(Integer id);
 
-    public Restaurant save(Restaurant restaurant) {
-        return crudRepository.save(restaurant);
-    }
+    Restaurant get(Integer id);
 
-    public boolean delete(Integer id) {
-        return crudRepository.delete(id) != 0;
-    }
+    Restaurant getByName(String name);
 
-    public Restaurant get(Integer id) {
-        return crudRepository.findById(id).orElse(null);
-    }
+    List<Restaurant> getAll();
 
-    public Restaurant getByName(String name) {
-        return crudRepository.getByName(name);
-    }
+    boolean deleteVote(Integer userId, Integer restaurantId, LocalDate voteDate);
 
-    public List<Restaurant> getAll() {
-        return crudRepository.findAll(SORT_NAME);
-    }
+    void createLike(Integer userId, Integer restaurantId, LocalDate voteDate);
+
+    boolean hasUserVoteToDate(Integer userId, LocalDate voteDate);
 }

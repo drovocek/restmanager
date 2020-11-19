@@ -36,7 +36,7 @@ VALUES (0,'rest1', 'address1', '+7 (911) 111-1111'),
        (3,'rest4', 'address4', '+7 (944) 444-4444'),
        (4,'rest5', 'address5', '+7 (955) 555-5555');
 
-INSERT INTO likes (user_id, restaurant_id, like_date)
+INSERT INTO vote (user_id, restaurant_id, vote_date)
 VALUES (0, 0, '2020-01-27'),
        (0, 0, '2020-01-28'),
        (0, 1, '2020-01-29'),

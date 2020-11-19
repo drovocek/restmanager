@@ -34,7 +34,7 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Formula("(SELECT COUNT(*) FROM Likes l WHERE l.restaurant_id = id)")
+    @Formula("(SELECT COUNT(*) FROM Vote l WHERE l.restaurant_id = id)")
     private Integer likeAmount;
 
     public Restaurant(String name, String address, String phone) {

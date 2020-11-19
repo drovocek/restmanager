@@ -17,6 +17,7 @@
             <th><spring:message code="restaurant.address"/></th>
             <th><spring:message code="restaurant.phone"/></th>
             <th><spring:message code="restaurant.likesAmount"/></th>
+            <th>Voting</th>
             <th></th>
             <th></th>
         </tr>
@@ -28,6 +29,7 @@
                 <td>${restaurant.address}</td>
                 <td>${restaurant.phone}</td>
                 <td>${restaurant.likesAmount}</td>
+                <td><a href="restaurants/vote?id=${restaurant.id}">Vote</a></td>
                 <td><a href="restaurants/restaurantForm?id=${restaurant.id}"><spring:message code="common.update"/></a></td>
                 <td><a href="restaurants/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
             </tr>

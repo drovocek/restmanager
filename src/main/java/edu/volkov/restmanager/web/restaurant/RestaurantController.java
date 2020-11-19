@@ -2,12 +2,15 @@ package edu.volkov.restmanager.web.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
+import edu.volkov.restmanager.web.SecurityUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 import static edu.volkov.restmanager.util.RestaurantUtil.getToList;
 
@@ -61,5 +64,13 @@ public class RestaurantController {
     public String getAll(Model model) {
         model.addAttribute("restaurants", getToList(restaurantService.getAll()));
         return "restaurants";
+    }
+
+    @GetMapping("/vote")
+    public String vote(
+            @RequestParam(name = "id") Integer id
+    ) {
+        restaurantService.vote(SecurityUtil.authUserId(), id, LocalDate.now());
+        return "redirect:/restaurants";
     }
 }
