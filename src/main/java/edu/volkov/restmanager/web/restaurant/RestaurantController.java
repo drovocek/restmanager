@@ -66,7 +66,7 @@ public class RestaurantController {
         return "restaurants";
     }
 
-    @PostMapping
+    @GetMapping("/vote")
     public String vote(
             @RequestParam(name = "id") Integer id
     ) {
