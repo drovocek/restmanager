@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static edu.volkov.restmanager.RestaurantTestData.*;
-import static org.junit.Assert.*;
+import static java.time.temporal.ChronoUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class RestaurantServiceTest extends AbstractServiceTest {
 
@@ -97,12 +101,63 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void likesAmountTest(){
-        assertEquals(service.get(rest1.getId()).getLikeAmount(),rest1.getLikeAmount());
-        assertEquals(service.get(rest2.getId()).getLikeAmount(),rest2.getLikeAmount());
-        assertEquals(service.get(rest3.getId()).getLikeAmount(),rest3.getLikeAmount());
-        assertEquals(service.get(rest4.getId()).getLikeAmount(),rest4.getLikeAmount());
-        assertEquals(service.get(rest5.getId()).getLikeAmount(),rest5.getLikeAmount());
+    public void likesAmountTest() {
+        assertEquals(service.get(rest1.getId()).getLikeAmount(), rest1.getLikeAmount());
+        assertEquals(service.get(rest2.getId()).getLikeAmount(), rest2.getLikeAmount());
+        assertEquals(service.get(rest3.getId()).getLikeAmount(), rest3.getLikeAmount());
+        assertEquals(service.get(rest4.getId()).getLikeAmount(), rest4.getLikeAmount());
+        assertEquals(service.get(rest5.getId()).getLikeAmount(), rest5.getLikeAmount());
+    }
+
+    @Test
+    public void voteBeforeTimeLimit() {
+        RestaurantService.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+
+        service.vote(0, rest1.getId(), LocalDate.now());
+        long actualLikeAmount = rest1.getLikeAmount() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
+    }
+
+    @Test
+    public void voteDoubleBeforeTimeLimit() {
+        RestaurantService.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+        LocalDate voteDate = LocalDate.now();
+
+        service.vote(0, rest1.getId(), voteDate);
+        long actualLikeAmount = rest1.getLikeAmount() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
+
+        service.vote(0, rest1.getId(), voteDate);
+        actualLikeAmount = rest1.getLikeAmount();
+        expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
+    }
+
+    @Test
+    public void voteAfterTimeLimit() {
+        RestaurantService.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
+
+        service.vote(0, rest1.getId(), LocalDate.now());
+        long actualLikeAmount = rest1.getLikeAmount() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
+    }
+
+    @Test
+    public void voteDoubleAfterTimeLimit() {
+        RestaurantService.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
+
+        service.vote(0, rest1.getId(), LocalDate.now());
+        long actualLikeAmount = rest1.getLikeAmount() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
+
+        service.vote(0, rest1.getId(), LocalDate.now());
+        actualLikeAmount = rest1.getLikeAmount() + 1;
+        expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        assertEquals(expectedLikeAmount, actualLikeAmount);
     }
 
     public void createWithPhone(String phone, String name) {

@@ -1,5 +1,7 @@
+DROP TABLE vote IF EXISTS;
 DROP TABLE user_roles IF EXISTS;
 DROP TABLE users IF EXISTS;
+DROP TABLE restaurant IF EXISTS;
 
 -- DROP TABLE dish IF EXISTS;
 -- DROP TABLE menu_item IF EXISTS;
@@ -51,16 +53,16 @@ CREATE TABLE restaurant
 );
 CREATE UNIQUE INDEX restaurant_unique_name_idx ON restaurant (name);
 
-CREATE TABLE likes
+CREATE TABLE vote
 (
     id            INT IDENTITY       NOT NULL,
     user_id       INTEGER            NOT NULL,
     restaurant_id INTEGER            NOT NULL,
-    like_date     DATE DEFAULT now() NOT NULL,
+    vote_date     DATE DEFAULT now() NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX likes_unique_idx ON likes (user_id, like_date);
+CREATE UNIQUE INDEX votes_unique_idx ON vote (user_id, vote_date);
 
 --
 -- CREATE TABLE dish

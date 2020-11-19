@@ -1,10 +1,14 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Restaurant;
+import edu.volkov.restmanager.repository.restaurant.DataJpaRestaurantRepository;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
@@ -15,7 +19,9 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
 
-    public RestaurantService(RestaurantRepository repository) {
+    public static LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
+
+    public RestaurantService(DataJpaRestaurantRepository repository) {
         this.repository = repository;
     }
 
@@ -44,5 +50,18 @@ public class RestaurantService {
 
     public List<Restaurant> getAll() {
         return repository.getAll();
+    }
+
+    public void vote(int userId, int restaurantId, LocalDate voteDate) {
+        boolean isVoteToDay = repository.hasUserVoteToDate(userId, voteDate);
+        if (isVoteToDay & LocalTime.now().isBefore(changeTimeLimit)) {
+            repository.deleteVote(userId, restaurantId, voteDate);
+        } else if (!isVoteToDay) {
+            repository.createLike(userId, restaurantId, voteDate);
+        }
+    }
+
+    public static void setChangeTimeLimit(LocalTime changeTimeLimit) {
+        RestaurantService.changeTimeLimit = changeTimeLimit;
     }
 }

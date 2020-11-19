@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "likes", uniqueConstraints = {@UniqueConstraint(name = "likes_unique_idx", columnNames = {"user_id", "like_date"})})
-public class Like extends AbstractBaseEntity {
+@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(name = "votes_unique_idx", columnNames = {"user_id", "vote_date"})})
+public class Vote extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -28,18 +28,18 @@ public class Like extends AbstractBaseEntity {
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name = "like_date", nullable = false, columnDefinition = "date")
+    @Column(name = "vote_date", nullable = false, columnDefinition = "date")
     @NotNull
-    private LocalDate likeDate = LocalDate.now();
+    private LocalDate voteDate = LocalDate.now();
 
-    public Like(Integer id, User user, Restaurant restaurant, LocalDate likeDate) {
+    public Vote(Integer id, User user, Restaurant restaurant, LocalDate voteDate) {
         super(id);
         this.user = user;
         this.restaurant = restaurant;
-        this.likeDate = likeDate;
+        this.voteDate = voteDate;
     }
 
-    public Like(Like like) {
-        this(like.getId(), like.getUser(), like.getRestaurant(), like.getLikeDate());
+    public Vote(Vote vote) {
+        this(vote.getId(), vote.getUser(), vote.getRestaurant(), vote.getVoteDate());
     }
 }

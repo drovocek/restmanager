@@ -1,6 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.User;
+import edu.volkov.restmanager.repository.user.DataJpaUserRepository;
 import edu.volkov.restmanager.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,7 +16,7 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public UserService(UserRepository repository) {
+    public UserService(DataJpaUserRepository repository) {
         this.repository = repository;
     }
 
