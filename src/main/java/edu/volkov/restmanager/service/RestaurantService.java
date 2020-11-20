@@ -19,7 +19,7 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
 
-    public static LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
+    public LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
     public RestaurantService(DataJpaRestaurantRepository repository) {
         this.repository = repository;
@@ -48,8 +48,12 @@ public class RestaurantService {
         return checkNotFound(repository.getByName(name), "name=" + name);
     }
 
-    public List<Restaurant> getAll() {
-        return repository.getAll();
+    public List<Restaurant> getAllWithoutMenu() {
+        return repository.getAllWithoutMenu();
+    }
+
+    public List<Restaurant> getAllWithDayMenu(LocalDate date) {
+        return repository.getAllWithDayMenu(date);
     }
 
     //TODO bad???
@@ -62,7 +66,7 @@ public class RestaurantService {
         }
     }
 
-    public static void setChangeTimeLimit(LocalTime changeTimeLimit) {
-        RestaurantService.changeTimeLimit = changeTimeLimit;
+    public void setChangeTimeLimit(LocalTime changeTimeLimit) {
+        this.changeTimeLimit = changeTimeLimit;
     }
 }

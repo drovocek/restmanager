@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "menu")
 public class Menu extends AbstractNamedEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     private Restaurant restaurant;

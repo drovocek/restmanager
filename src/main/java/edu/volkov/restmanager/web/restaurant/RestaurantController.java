@@ -3,6 +3,7 @@ package edu.volkov.restmanager.web.restaurant;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.web.SecurityUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +19,10 @@ import static edu.volkov.restmanager.util.RestaurantUtil.getToList;
 @Controller
 public class RestaurantController {
 
-    private final RestaurantService restaurantService;
+    private final RestaurantService service;
 
-    public RestaurantController(RestaurantService restaurantService) {
-        this.restaurantService = restaurantService;
+    public RestaurantController(RestaurantService service) {
+        this.service = service;
     }
 
     @PostMapping
@@ -34,9 +35,9 @@ public class RestaurantController {
         Restaurant restaurant = new Restaurant(id, name, address, phone);
 
         if (restaurant.isNew()) {
-            restaurantService.create(restaurant);
+            service.create(restaurant);
         } else {
-            restaurantService.update(restaurant);
+            service.update(restaurant);
         }
 
         return "redirect:/restaurants";
@@ -49,20 +50,28 @@ public class RestaurantController {
     ) {
         Restaurant restaurant = (id == null)
                 ? new Restaurant("", "", "+7(495) 000-0000")
-                : restaurantService.get(id);
+                : service.get(id);
         model.addAttribute("restaurant", restaurant);
         return "restaurantForm";
     }
 
     @GetMapping("/delete")
     public String erase(@RequestParam(name = "id") Integer id) {
-        restaurantService.delete(id);
+        service.delete(id);
         return "redirect:/restaurants";
     }
 
     @GetMapping
-    public String getAll(Model model) {
-        model.addAttribute("restaurants", getToList(restaurantService.getAll()));
+    public String getAllWithDayMenu(
+            @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            Model model) {
+        model.addAttribute("restaurants", getToList(service.getAllWithDayMenu(date)));
+        return "restaurants";
+    }
+
+    @GetMapping("/allmenus")
+    public String getAllWithoutMenu(Model model) {
+        model.addAttribute("restaurants", getToList(service.getAllWithoutMenu()));
         return "restaurants";
     }
 
@@ -70,7 +79,7 @@ public class RestaurantController {
     public String vote(
             @RequestParam(name = "id") Integer id
     ) {
-        restaurantService.vote(SecurityUtil.authUserId(), id, LocalDate.now());
+        service.vote(SecurityUtil.authUserId(), id, LocalDate.now());
         return "redirect:/restaurants";
     }
 }
