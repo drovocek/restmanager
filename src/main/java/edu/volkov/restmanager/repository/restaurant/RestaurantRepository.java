@@ -15,11 +15,13 @@ public interface RestaurantRepository {
 
     Restaurant getByName(String name);
 
-    List<Restaurant> getAll();
+    List<Restaurant> getAllWithoutMenu();
 
     boolean deleteVote(Integer userId, Integer restaurantId, LocalDate voteDate);
 
     void createLike(Integer userId, Integer restaurantId, LocalDate voteDate);
 
     boolean hasUserVoteToDate(Integer userId, LocalDate voteDate);
+
+    List<Restaurant> getAllWithDayMenu(LocalDate date);
 }

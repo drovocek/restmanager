@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.service;
 
+import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.util.exception.NotFoundException;
 import org.junit.Test;
@@ -10,11 +11,13 @@ import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static edu.volkov.restmanager.RestaurantTestData.*;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static edu.volkov.restmanager.MenuTestData.*;
 
 public class RestaurantServiceTest extends AbstractServiceTest {
 
@@ -71,9 +74,22 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getAll() {
-        List<Restaurant> all = service.getAll();
+    public void getAllWithoutMenu() {
+        List<Restaurant> all = service.getAllWithoutMenu();
+        all.forEach(System.out::println);
         REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
+    }
+
+    @Test
+    public void getAllWithDayMenu() {
+        List<Restaurant> all = service.getAllWithDayMenu(today);
+        all.forEach(x -> System.out.println(x.getName() + " " + x.getMenus()));
+        List<Menu> expectedDayMenus = all.stream()
+                .flatMap(restaurant -> restaurant.getMenus().stream())
+                .collect(Collectors.toList());
+
+        REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
+        MENU_MATCHER.assertMatch(expectedDayMenus, todayMenus);
     }
 
     @Test
@@ -111,7 +127,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     public void voteBeforeTimeLimit() {
-        RestaurantService.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
         long actualLikeAmount = rest1.getLikeAmount() + 1;
@@ -121,7 +137,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     public void voteDoubleBeforeTimeLimit() {
-        RestaurantService.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
         LocalDate voteDate = LocalDate.now();
 
         service.vote(0, rest1.getId(), voteDate);
@@ -137,7 +153,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     public void voteAfterTimeLimit() {
-        RestaurantService.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
+        service.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
         long actualLikeAmount = rest1.getLikeAmount() + 1;
@@ -147,7 +163,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     public void voteDoubleAfterTimeLimit() {
-        RestaurantService.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
+        service.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
         long actualLikeAmount = rest1.getLikeAmount() + 1;
