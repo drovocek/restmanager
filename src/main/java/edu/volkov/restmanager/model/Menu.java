@@ -34,6 +34,17 @@ public class Menu extends AbstractNamedEntity {
         this(menu.getId(), menu.getName(), menu.getRestaurant(), menu.getMenuDate(), menu.isEnabled());
     }
 
+    public Menu(Integer id, String name, LocalDate menuDate) {
+        super(id, name);
+        this.menuDate = menuDate;
+    }
+
+    public Menu(String name, LocalDate menuDate, boolean enabled) {
+        super(null, name);
+        this.menuDate = menuDate;
+        this.enabled = enabled;
+    }
+
     public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {
         super(id, name);
         this.restaurant = restaurant;
