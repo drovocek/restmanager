@@ -3,7 +3,7 @@ package edu.volkov.restmanager;
 import edu.volkov.restmanager.model.Restaurant;
 
 public class RestaurantTestData {
-    public static TestMatcher<Restaurant> REST_MATCHER = TestMatcher.usingIgnoringFieldsComparator();
+    public static TestMatcher<Restaurant> REST_MATCHER = TestMatcher.usingIgnoringFieldsComparator("allMenus");
 
     public final static int REST1_ID = 0;
     public final static int REST_NOT_FOUND_ID = 10;

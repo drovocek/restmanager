@@ -73,6 +73,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     public void getAll() {
         List<Restaurant> all = service.getAll();
+        all.forEach(System.out::println);
         REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
     }
 

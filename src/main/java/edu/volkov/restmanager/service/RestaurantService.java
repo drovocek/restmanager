@@ -52,6 +52,7 @@ public class RestaurantService {
         return repository.getAll();
     }
 
+    //TODO bad???
     public void vote(int userId, int restaurantId, LocalDate voteDate) {
         boolean isVoteToDay = repository.hasUserVoteToDate(userId, voteDate);
         if (isVoteToDay & LocalTime.now().isBefore(changeTimeLimit)) {
