@@ -25,12 +25,17 @@
         <c:forEach items="${restaurants}" var="restaurant">
             <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
-                <td><c:out value="${restaurant.name}"/></td>
+                <td>${restaurant.name}
+                    <c:forEach items="${restaurant.menus}" var="menus">
+                        <h4>${menus.name}:</h4>
+                    </c:forEach>
+                </td>
                 <td>${restaurant.address}</td>
                 <td>${restaurant.phone}</td>
                 <td>${restaurant.likesAmount}</td>
                 <td><a href="restaurants/vote?id=${restaurant.id}">Vote</a></td>
-                <td><a href="restaurants/restaurantForm?id=${restaurant.id}"><spring:message code="common.update"/></a></td>
+                <td><a href="restaurants/restaurantForm?id=${restaurant.id}"><spring:message code="common.update"/></a>
+                </td>
                 <td><a href="restaurants/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
             </tr>
         </c:forEach>

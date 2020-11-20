@@ -63,8 +63,12 @@ public class RestaurantController {
 
     @GetMapping
     public String getAllWithDayMenu(
-            @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
+        if (date == null) {
+            //TODO now()
+            date = LocalDate.of(2020, 1, 27);
+        }
         model.addAttribute("restaurants", getToList(service.getAllWithDayMenu(date)));
         return "restaurants";
     }
