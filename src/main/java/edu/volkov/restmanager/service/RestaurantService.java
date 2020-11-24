@@ -6,6 +6,7 @@ import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import edu.volkov.restmanager.repository.user.UserRepository;
 import edu.volkov.restmanager.repository.vote.VoteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -67,6 +68,7 @@ public class RestaurantService {
         return restaurantRepository.getAllWithDayMenu(date);
     }
 
+    @Transactional
     public void vote(int userId, int restaurantId, LocalDate voteDate) {
         boolean beforeTimeLimit = LocalTime.now().isBefore(changeTimeLimit);
         Vote lastUserVoteToDate = voteRepository.get(userId, voteDate);
@@ -74,8 +76,8 @@ public class RestaurantService {
         if (lastUserVoteToDate == null) {
             voteRepository.createAndSaveNewVote(userId, restaurantId, voteDate);
             restaurantRepository.incrementVoteQuantity(restaurantId);
-        } else if (beforeTimeLimit) {
-            voteRepository.delete(userId, voteDate);
+        } else if (beforeTimeLimit && lastUserVoteToDate.getRestaurant().getId() == restaurantId) {
+            voteRepository.delete(lastUserVoteToDate.getId());
             restaurantRepository.decrementVoteQuantity(restaurantId);
         }
     }

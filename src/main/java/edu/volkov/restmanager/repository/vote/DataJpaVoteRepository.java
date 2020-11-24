@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.repository.vote;
 
+import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
@@ -34,14 +35,26 @@ public class DataJpaVoteRepository implements VoteRepository {
         return save(vote);
     }
 
-    @Override
-    public boolean delete(Integer userId, LocalDate voteDate) {
-        User user = crudUserRepository.getOne(userId);
-        return crudVoteRepository.deleteByUserAndVoteDate(user, voteDate) != 0;
+    private Vote createNewVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
+        return new Vote(
+                null,
+                crudUserRepository.getOne(userId),
+                crudRestaurantRepository.getOne(restaurantId),
+                voteDate
+        );
+    }
+
+    private Vote save(Vote vote) {
+        return crudVoteRepository.save(vote);
     }
 
     @Override
-    public Vote get(Integer userId, LocalDate voteDate) {
+    public boolean delete(int id) {
+        return crudVoteRepository.delete(id) != 0;
+    }
+
+    @Override
+    public Vote get(int userId, LocalDate voteDate) {
         User user = crudUserRepository.getOne(userId);
         return crudVoteRepository.findAllByUserAndVoteDate(user, voteDate)
                 .filter(vote -> vote.getUser().getId() == userId)
@@ -51,18 +64,5 @@ public class DataJpaVoteRepository implements VoteRepository {
     @Override
     public List<Vote> getAll() {
         return crudVoteRepository.findAll(SORT_DATE);
-    }
-
-    private Vote save(Vote vote) {
-        return crudVoteRepository.save(vote);
-    }
-
-    private Vote createNewVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
-        return new Vote(
-                null,
-                crudUserRepository.getOne(userId),
-                crudRestaurantRepository.getOne(restaurantId),
-                voteDate
-        );
     }
 }
