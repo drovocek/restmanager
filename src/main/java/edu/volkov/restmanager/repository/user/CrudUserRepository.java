@@ -12,7 +12,11 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Modifying
     @Query("DELETE FROM User u WHERE u.id=:id")
-    int delete(@Param("id") Integer id);
+    int delete(
+            @Param("id") Integer id
+    );
 
-    User getByEmail(String email);
+    User getByEmail(
+            @Param("email") String email
+    );
 }
