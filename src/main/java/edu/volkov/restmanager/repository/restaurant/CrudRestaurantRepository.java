@@ -23,4 +23,14 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
 
     @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.menus m WHERE m.menuDate=:date")
     List<Restaurant> getAllWithDayMenu(@Param("date") LocalDate date, Sort sorter);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Restaurant r SET r.votes_quantity=r.votes_quantity-1 WHERE r.id=:restaurantId", nativeQuery = true)
+    boolean decrementVoteQuantity(Integer restaurantId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Restaurant r SET r.votes_quantity=r.votes_quantity+1 WHERE r.id=:restaurantId", nativeQuery = true)
+    void incrementVoteQuantity(Integer restaurantId);
 }

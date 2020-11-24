@@ -26,10 +26,11 @@ CREATE TABLE user_roles
 
 CREATE TABLE restaurant
 (
-    id      INT IDENTITY NOT NULL,
-    name    VARCHAR(255) NOT NULL,
-    phone   VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
+    id             INT IDENTITY NOT NULL,
+    name           VARCHAR(255) NOT NULL,
+    phone          VARCHAR(255) NOT NULL,
+    address        VARCHAR(255) NOT NULL,
+    votes_quantity INT          NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX restaurant_unique_name_idx ON restaurant (name);

@@ -117,12 +117,12 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void likesAmountTest() {
-        assertEquals(service.get(rest1.getId()).getLikeAmount(), rest1.getLikeAmount());
-        assertEquals(service.get(rest2.getId()).getLikeAmount(), rest2.getLikeAmount());
-        assertEquals(service.get(rest3.getId()).getLikeAmount(), rest3.getLikeAmount());
-        assertEquals(service.get(rest4.getId()).getLikeAmount(), rest4.getLikeAmount());
-        assertEquals(service.get(rest5.getId()).getLikeAmount(), rest5.getLikeAmount());
+    public void votesQuantityTest() {
+        assertEquals(service.get(rest1.getId()).getVotesQuantity(), rest1.getVotesQuantity());
+        assertEquals(service.get(rest2.getId()).getVotesQuantity(), rest2.getVotesQuantity());
+        assertEquals(service.get(rest3.getId()).getVotesQuantity(), rest3.getVotesQuantity());
+        assertEquals(service.get(rest4.getId()).getVotesQuantity(), rest4.getVotesQuantity());
+        assertEquals(service.get(rest5.getId()).getVotesQuantity(), rest5.getVotesQuantity());
     }
 
     @Test
@@ -130,8 +130,8 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getLikeAmount() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
     }
 
@@ -141,13 +141,13 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         LocalDate voteDate = LocalDate.now();
 
         service.vote(0, rest1.getId(), voteDate);
-        long actualLikeAmount = rest1.getLikeAmount() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
 
         service.vote(0, rest1.getId(), voteDate);
-        actualLikeAmount = rest1.getLikeAmount();
-        expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        actualLikeAmount = rest1.getVotesQuantity();
+        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
     }
 
@@ -156,8 +156,8 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         service.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getLikeAmount() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
     }
 
@@ -166,13 +166,13 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         service.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
 
         service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getLikeAmount() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
 
         service.vote(0, rest1.getId(), LocalDate.now());
-        actualLikeAmount = rest1.getLikeAmount() + 1;
-        expectedLikeAmount = service.get(rest1.getId()).getLikeAmount();
+        actualLikeAmount = rest1.getVotesQuantity() + 1;
+        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
         assertEquals(expectedLikeAmount, actualLikeAmount);
     }
 

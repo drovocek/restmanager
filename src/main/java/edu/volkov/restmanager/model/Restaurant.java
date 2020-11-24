@@ -4,11 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Formula;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -33,8 +32,9 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Formula("(SELECT COUNT(*) FROM Vote l WHERE l.restaurant_id = id)")
-    private Integer likeAmount;
+    @NotNull
+    @Column(name = "votes_quantity", nullable = false)
+    private Integer votesQuantity = new Integer(0);
 
     @OrderBy("menuDate DESC")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
@@ -52,14 +52,14 @@ public class Restaurant extends AbstractNamedEntity {
         this.phone = phone;
     }
 
-    public Restaurant(Integer id, String name, String address, String phone, Integer likeAmount) {
+    public Restaurant(Integer id, String name, String address, String phone, Integer votesQuantity) {
         super(id, name);
         this.address = address;
         this.phone = phone;
-        this.likeAmount = likeAmount;
+        this.votesQuantity = votesQuantity;
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.getLikeAmount());
+        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.getVotesQuantity());
     }
 }

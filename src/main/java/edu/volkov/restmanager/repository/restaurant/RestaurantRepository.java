@@ -19,7 +19,7 @@ public interface RestaurantRepository {
 
     boolean deleteVote(Integer userId, Integer restaurantId, LocalDate voteDate);
 
-    void createLike(Integer userId, Integer restaurantId, LocalDate voteDate);
+    void createVote(Integer userId, Integer restaurantId, LocalDate voteDate);
 
     boolean hasUserVoteToDate(Integer userId, LocalDate voteDate);
 
