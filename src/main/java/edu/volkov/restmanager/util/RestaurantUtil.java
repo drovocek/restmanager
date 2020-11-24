@@ -13,7 +13,7 @@ public class RestaurantUtil {
                 restaurant.getName(),
                 restaurant.getAddress(),
                 restaurant.getPhone(),
-                restaurant.getLikeAmount(),
+                restaurant.getVotesQuantity(),
                 restaurant.getMenus()
         );
     }

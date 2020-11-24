@@ -62,7 +62,7 @@ public class RestaurantService {
         if (isVoteToDay & LocalTime.now().isBefore(changeTimeLimit)) {
             repository.deleteVote(userId, restaurantId, voteDate);
         } else if (!isVoteToDay) {
-            repository.createLike(userId, restaurantId, voteDate);
+            repository.createVote(userId, restaurantId, voteDate);
         }
     }
 
