@@ -10,7 +10,7 @@
     <h3><spring:message code="restaurant.restaurantManaging"/></h3>
     <spring:message code="common.create" var="createRestaurant"/>
     <spring:message code="common.edit" var="editRestaurant"/>
-    <h2>${restaurant.id == null ? createMeal : editMeal}</h2>
+    <h2>${restaurant.id == null ? createRestaurant : editRestaurant}</h2>
     <jsp:useBean id="restaurant" type="edu.volkov.restmanager.model.Restaurant" scope="request"/>
 
     <form method="post" action="restaurants">

@@ -13,7 +13,7 @@
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th><spring:message code="restaurant.name"/></th>
+            <th><spring:message code="common.name"/></th>
             <th><spring:message code="restaurant.address"/></th>
             <th><spring:message code="restaurant.phone"/></th>
             <th><spring:message code="restaurant.likesAmount"/></th>
