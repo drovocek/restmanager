@@ -1,7 +1,8 @@
 package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.like.CrudVoteRepository;
+import edu.volkov.restmanager.model.Vote;
+import edu.volkov.restmanager.repository.user.CrudUserRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +14,14 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
 
     private final CrudRestaurantRepository crudRestaurantRepository;
-    private final CrudVoteRepository crudVoteRepository;
+    private final CrudUserRepository crudUserRepository;
 
-    public DataJpaRestaurantRepository(CrudRestaurantRepository crudRestaurantRepository, CrudVoteRepository crudVoteRepository) {
+    public DataJpaRestaurantRepository(
+            CrudRestaurantRepository crudRestaurantRepository,
+            CrudUserRepository crudUserRepository
+    ) {
         this.crudRestaurantRepository = crudRestaurantRepository;
-        this.crudVoteRepository = crudVoteRepository;
+        this.crudUserRepository = crudUserRepository;
     }
 
     @Override
@@ -50,20 +54,11 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
         return crudRestaurantRepository.getAllWithDayMenu(date, SORT_NAME);
     }
 
-    @Override
-    public boolean deleteVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
-        return (crudVoteRepository.delete(userId, restaurantId, voteDate) != 0) &
-                (crudRestaurantRepository.decrementVoteQuantity(restaurantId));
+    public boolean decrementVoteQuantity(Integer restaurantId) {
+        return crudRestaurantRepository.decrementVoteQuantity(restaurantId) != 0;
     }
 
-    @Override
-    public void createVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
-        crudVoteRepository.createLike(userId, restaurantId, voteDate);
-        crudRestaurantRepository.incrementVoteQuantity(restaurantId);
-    }
-
-    @Override
-    public boolean hasUserVoteToDate(Integer userId, LocalDate voteDate) {
-        return crudVoteRepository.hasUserVoteToDate(userId, voteDate) == 1;
+    public boolean incrementVoteQuantity(Integer restaurantId) {
+        return crudRestaurantRepository.incrementVoteQuantity(restaurantId) != 0;
     }
 }

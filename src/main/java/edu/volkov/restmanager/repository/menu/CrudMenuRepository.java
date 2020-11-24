@@ -13,8 +13,15 @@ import java.util.List;
 public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM  Menu m WHERE m.id=:userId")
-    int delete(@Param("userId") Integer userId);
+    @Query("DELETE FROM  Menu m WHERE m.id=:menuId")
+    int delete(
+            @Param("menuId") Integer menuId
+    );
 
-    List<Menu> findAllByName(@Param("name") String name);
+    List<Menu> findAllByName(
+            @Param("name") String name
+    );
+
+    @Query("SELECT m FROM Menu m JOIN FETCH m.restaurant WHERE m.id = ?1")
+    Menu getWithRestaurant(int menuId);
 }

@@ -34,7 +34,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     @NotNull
     @Column(name = "votes_quantity", nullable = false)
-    private Integer votesQuantity = new Integer(0);
+    private Integer votesQuantity = 0;
 
     @OrderBy("menuDate DESC")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

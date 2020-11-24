@@ -58,14 +58,14 @@ public class MenuController {
     }
 
     @GetMapping
-    public String getAll(@RequestParam(name = "id") Integer id) {
-        service.getAll();
-        return "redirect:/menus";
+    public String getAll(Model model) {
+        model.addAttribute("menus",service.getAll());
+        return "menus";
     }
 
     @GetMapping("/getallbyname")
-    public String getAllByName(@RequestParam(name = "name") String name) {
-        service.getAllByName(name);
-        return "redirect:/menus";
+    public String getAllByName(@RequestParam(name = "name") String name, Model model) {
+        model.addAttribute("menus",service.getAllByName(name));
+        return "menus";
     }
 }

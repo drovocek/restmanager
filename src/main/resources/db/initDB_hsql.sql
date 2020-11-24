@@ -6,12 +6,12 @@ DROP TABLE restaurant IF EXISTS;
 
 CREATE TABLE users
 (
-    id         INT IDENTITY          NOT NULL,
-    name       VARCHAR(255)          NOT NULL,
-    email      VARCHAR(255)          NOT NULL,
-    password   VARCHAR(255)          NOT NULL,
-    registered DATE    DEFAULT now() NOT NULL,
-    enabled    BOOLEAN DEFAULT TRUE  NOT NULL,
+    id                    INT IDENTITY            NOT NULL,
+    name                  VARCHAR(255)            NOT NULL,
+    email                 VARCHAR(255)            NOT NULL,
+    password              VARCHAR(255)            NOT NULL,
+    registered            DATE      DEFAULT now() NOT NULL,
+    enabled               BOOLEAN   DEFAULT TRUE  NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
