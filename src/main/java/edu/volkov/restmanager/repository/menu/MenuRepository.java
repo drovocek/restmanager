@@ -2,6 +2,7 @@ package edu.volkov.restmanager.repository.menu;
 
 import edu.volkov.restmanager.model.Menu;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MenuRepository {
@@ -13,6 +14,8 @@ public interface MenuRepository {
     Menu get(Integer id);
 
     List<Menu> getAll();
+
+    List<Menu> getFilteredByEnabledBetweenDates(boolean enabled, LocalDate startDate, LocalDate endDate);
 
     List<Menu> getAllByName(String name);
 }

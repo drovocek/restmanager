@@ -32,6 +32,9 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
+
     @NotNull
     @Column(name = "votes_quantity", nullable = false)
     private Integer votesQuantity = 0;
@@ -52,14 +55,15 @@ public class Restaurant extends AbstractNamedEntity {
         this.phone = phone;
     }
 
-    public Restaurant(Integer id, String name, String address, String phone, Integer votesQuantity) {
+    public Restaurant(Integer id, String name, String address, String phone, boolean enabled, Integer votesQuantity) {
         super(id, name);
         this.address = address;
         this.phone = phone;
+        this.enabled = enabled;
         this.votesQuantity = votesQuantity;
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.getVotesQuantity());
+        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.isEnabled(), restaurant.getVotesQuantity());
     }
 }

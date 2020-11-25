@@ -38,15 +38,15 @@ VALUES (0, 0, '2020-01-27'),
 INSERT INTO menu (id, name, restaurant_id, menu_date, enabled)
 VALUES (0, 'menu1', 0, '2020-01-27', false),
        (1, 'menu2', 1, '2020-01-27', true),
-       (2, 'menu3', 1, '2020-02-28', false),
+       (2, 'menu3', 1, '2020-01-28', false),
        (3, 'menu4', 2, '2020-01-27', false),
-       (4, 'menu5', 2, '2020-02-28', true),
-       (5, 'menu6', 2, '2020-02-28', false),
+       (4, 'menu5', 2, '2020-01-28', true),
+       (5, 'menu6', 2, '2020-01-28', false),
        (6, 'menu7', 3, '2020-01-27', true),
        (7, 'menu8', 3, '2020-01-27', false),
        (8, 'menu9', 4, '2020-01-27', false),
        (9, 'menu10', 4, '2020-01-28', true),
-       (10, 'menu11', 4, '2020-02-29', false);
+       (10, 'menu11', 4, '2020-01-28', false);
 
 -- INSERT INTO dish (name, price, enabled)
 -- VALUES ('gooDish1',111,'true'),

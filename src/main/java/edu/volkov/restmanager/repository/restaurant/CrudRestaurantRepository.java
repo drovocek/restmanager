@@ -2,12 +2,12 @@ package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -20,8 +20,13 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query("SELECT r FROM Restaurant r WHERE r.name=?1")
     Restaurant getByName(String name);
 
-    @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.menus m WHERE m.menuDate=:date")
-    List<Restaurant> getAllWithDayMenu(LocalDate date, Sort sorter);
+    //USER REPO
+    @Query("SELECT r FROM Restaurant r WHERE r.enabled=:enabled")
+    List<Restaurant> getFilteredByEnabledWithoutMenu(Boolean enabled, Sort sorter);
+
+    @Query("SELECT r FROM Restaurant r WHERE r.name=:name AND r.address=:address")
+    @EntityGraph(attributePaths = {"menus"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Restaurant> getAllByNameAndAddressPart(String name, String address, Sort sorter);
 
     @Transactional
     @Modifying

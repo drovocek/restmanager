@@ -1,9 +1,7 @@
 package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.model.Vote;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface RestaurantRepository {
@@ -18,7 +16,11 @@ public interface RestaurantRepository {
 
     List<Restaurant> getAllWithoutMenu();
 
-    List<Restaurant> getAllWithDayMenu(LocalDate date);
+    List<Restaurant> getFilteredByEnabledWithoutMenu(boolean enabled);
+
+    List<Restaurant> getAll();
+
+    List<Restaurant> getAllByNameAndAddressPart(String name, String address);
 
     boolean incrementVoteQuantity(Integer restaurantId);
 

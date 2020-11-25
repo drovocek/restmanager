@@ -5,6 +5,7 @@ import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -25,6 +26,7 @@ public class DataJpaMenuRepository implements MenuRepository {
         if (!menu.isNew() && get(menu.getId()) == null) {
             return null;
         }
+
         menu.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
         return crudMenuRepository.save(menu);
     }
@@ -42,6 +44,11 @@ public class DataJpaMenuRepository implements MenuRepository {
     @Override
     public List<Menu> getAll() {
         return crudMenuRepository.findAll(SORT_NAME);
+    }
+
+    @Override
+    public List<Menu> getFilteredByEnabledBetweenDates(boolean enabled, LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getFilteredByEnabledBetweenDates(enabled, startDate, endDate, SORT_NAME);
     }
 
     @Override
