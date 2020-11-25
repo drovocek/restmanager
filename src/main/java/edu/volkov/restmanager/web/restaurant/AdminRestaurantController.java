@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getToList;
 
-@RequestMapping("/restaurants")
+
+@RequestMapping("/restaurantsManaging")
 @Controller
-public class RestaurantController {
+public class AdminRestaurantController {
 
     private final RestaurantService service;
 
-    public RestaurantController(RestaurantService service) {
+    public AdminRestaurantController(RestaurantService service) {
         this.service = service;
     }
 
@@ -60,30 +60,10 @@ public class RestaurantController {
         service.delete(id);
         return "redirect:/restaurants";
     }
-
-    @GetMapping
-    public String getAllWithDayMenu(
-            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            Model model) {
-        if (date == null) {
-            //TODO now()
-            date = LocalDate.of(2020, 1, 27);
-        }
-        model.addAttribute("restaurants", getToList(service.getAllWithDayMenu(date)));
-        return "restaurants";
-    }
-
-    @GetMapping("/allmenus")
-    public String getAllWithoutMenu(Model model) {
-        model.addAttribute("restaurants", getToList(service.getAllWithoutMenu()));
-        return "restaurants";
-    }
-
-    @GetMapping("/vote")
-    public String vote(
-            @RequestParam(name = "id") Integer id
-    ) {
-        service.vote(SecurityUtil.authUserId(), id, LocalDate.now());
-        return "redirect:/restaurants";
-    }
+//
+//    @GetMapping("/allmenus")
+//    public String getAllWithoutMenu(Model model) {
+//        model.addAttribute("restaurants", getTo(service.getAllWithoutMenu()));
+//        return "restaurants";
+//    }
 }

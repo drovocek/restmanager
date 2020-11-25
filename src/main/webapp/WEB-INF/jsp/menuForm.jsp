@@ -14,18 +14,21 @@
     <jsp:useBean id="menu" type="edu.volkov.restmanager.model.Menu" scope="request"/>
 
     <form method="post" action="menus">
-        <input type="hidden" name="id" value="${menu.id}">
+        <input type="hidden" name="menuId" value="${menu.id}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
             <dd><input type="text" value="${menu.name}" name="name" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="common.date"/>:</dt>
-            <dd><input type="date" value="${menu.menuDate}" size=40 name="address" required></dd>
+            <dd><input type="date" value="${menu.menuDate}" size=40 name="menuDate" required></dd>
         </dl>
         <dl>
-            <dt><spring:message code="common.enable"/><br />:</dt>
-            <dd><input type="checkbox" value="${menu.enabled}" name="phone" required></dd>
+            <dt><spring:message code="common.enable"/>:</dt>
+            <dd>
+                <a><input type="radio" value="true" name="enabled" required>On</a>
+                <a><input type="radio" value="false" name="enabled" required>Off</a>
+            </dd>
         </dl>
         <button type="submit"><spring:message code="common.save"/></button>
         <button onclick="window.history.back()" type="button"><spring:message code="common.cancel"/></button>

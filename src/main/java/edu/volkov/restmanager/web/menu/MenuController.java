@@ -26,10 +26,11 @@ public class MenuController {
             @RequestParam(name = "menuId", required = false) Integer menuId,
             @RequestParam(name = "restaurantId", required = false) Integer restaurantId,
             @RequestParam(name = "name") String name,
-            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
+            @RequestParam(name = "menuDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
     ) {
         Menu menu = new Menu(menuId, name, menuDate);
 
+        System.out.println(menu);
         if (menu.isNew()) {
             service.create(menu, restaurantId);
         } else {
@@ -47,7 +48,8 @@ public class MenuController {
         Menu menu = (id == null)
                 ? new Menu("", LocalDate.now(), false)
                 : service.get(id);
-        model.addAttribute("restaurant", menu);
+        model.addAttribute("menu", menu);
+
         return "menuForm";
     }
 

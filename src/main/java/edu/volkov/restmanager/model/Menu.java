@@ -3,6 +3,7 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "restaurant")
 @Table(name = "menu")
 public class Menu extends AbstractNamedEntity {
 

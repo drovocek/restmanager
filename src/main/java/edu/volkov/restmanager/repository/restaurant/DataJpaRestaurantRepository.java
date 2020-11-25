@@ -1,12 +1,9 @@
 package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.model.Vote;
-import edu.volkov.restmanager.repository.user.CrudUserRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -14,16 +11,28 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
 
     private final CrudRestaurantRepository crudRestaurantRepository;
-    private final CrudUserRepository crudUserRepository;
 
-    public DataJpaRestaurantRepository(
-            CrudRestaurantRepository crudRestaurantRepository,
-            CrudUserRepository crudUserRepository
-    ) {
+    public DataJpaRestaurantRepository(CrudRestaurantRepository crudRestaurantRepository) {
         this.crudRestaurantRepository = crudRestaurantRepository;
-        this.crudUserRepository = crudUserRepository;
     }
 
+    //USER
+    @Override
+    public List<Restaurant> getFilteredByEnabledWithoutMenu(boolean enabled) {
+        return crudRestaurantRepository.getFilteredByEnabledWithoutMenu(enabled, SORT_NAME);
+    }
+
+    @Override
+    public boolean decrementVoteQuantity(Integer restaurantId) {
+        return crudRestaurantRepository.decrementVoteQuantity(restaurantId) != 0;
+    }
+
+    @Override
+    public boolean incrementVoteQuantity(Integer restaurantId) {
+        return crudRestaurantRepository.incrementVoteQuantity(restaurantId) != 0;
+    }
+
+    //ADMIN
     @Override
     public Restaurant save(Restaurant restaurant) {
         return crudRestaurantRepository.save(restaurant);
@@ -49,16 +58,17 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
         return crudRestaurantRepository.findAll(SORT_NAME);
     }
 
+
+    //COMMON
+//    @Override
+//    public List<Restaurant> getAllWithMenuBetween(LocalDate startDate, LocalDate endDate) {
+//        return crudRestaurantRepository.findAllByNameAndAddressRegex(startDate, endDate, SORT_NAME);
+//    }
+
     @Override
-    public List<Restaurant> getAllWithDayMenu(LocalDate date) {
-        return crudRestaurantRepository.getAllWithDayMenu(date, SORT_NAME);
+    public List<Restaurant> getAll() {
+        return crudRestaurantRepository.findAll(SORT_NAME);
     }
 
-    public boolean decrementVoteQuantity(Integer restaurantId) {
-        return crudRestaurantRepository.decrementVoteQuantity(restaurantId) != 0;
-    }
 
-    public boolean incrementVoteQuantity(Integer restaurantId) {
-        return crudRestaurantRepository.incrementVoteQuantity(restaurantId) != 0;
-    }
 }

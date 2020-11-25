@@ -13,16 +13,46 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static edu.volkov.restmanager.MenuTestData.*;
 import static edu.volkov.restmanager.RestaurantTestData.*;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static edu.volkov.restmanager.MenuTestData.*;
+
 
 public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
     private RestaurantService service;
+
+    //USER TESTS
+    @Test
+    public void getAllWithOneDayMenu() {
+        service.setDayMenuQuantity(1);
+        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
+        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
+
+        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
+        MENU_MATCHER.assertMatch(expectedDayMenus, todayActiveMenus);
+    }
+
+    @Test
+    public void getAllWithTwoDaysMenu() {
+        service.setDayMenuQuantity(2);
+        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
+        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
+
+        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
+        MENU_MATCHER.assertMatch(expectedDayMenus, allActiveMenus);
+    }
+
+    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .flatMap(restaurant -> restaurant.getMenus().stream())
+                .collect(Collectors.toList());
+    }
+
+    //ADMIN TESTS
 
     @Test
     public void create() {
@@ -78,18 +108,6 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         List<Restaurant> all = service.getAllWithoutMenu();
         all.forEach(System.out::println);
         REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
-    }
-
-    @Test
-    public void getAllWithDayMenu() {
-        List<Restaurant> all = service.getAllWithDayMenu(today);
-        all.forEach(x -> System.out.println(x.getName() + " " + x.getMenus()));
-        List<Menu> expectedDayMenus = all.stream()
-                .flatMap(restaurant -> restaurant.getMenus().stream())
-                .collect(Collectors.toList());
-
-        REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
-        MENU_MATCHER.assertMatch(expectedDayMenus, todayMenus);
     }
 
     @Test
