@@ -23,11 +23,6 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getAllByNameAndAddressPart(String name, String address) {
-        return crudRestaurantRepository.getAllByNameAndAddressPart(name, address, SORT_NAME);
-    }
-
-    @Override
     public boolean decrementVoteQuantity(Integer restaurantId) {
         return crudRestaurantRepository.decrementVoteQuantity(restaurantId) != 0;
     }
@@ -37,8 +32,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
         return crudRestaurantRepository.incrementVoteQuantity(restaurantId) != 0;
     }
 
-
-
+    //ADMIN
     @Override
     public Restaurant save(Restaurant restaurant) {
         return crudRestaurantRepository.save(restaurant);
@@ -75,7 +69,6 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.findAll(SORT_NAME);
     }
-
 
 
 }

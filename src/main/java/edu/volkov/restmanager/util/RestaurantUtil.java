@@ -74,15 +74,24 @@ public class RestaurantUtil {
                 .collect(Collectors.groupingBy(menu -> menu.getRestaurant().getId()));
 
         System.out.println(menusById);
-        return restaurants.stream().peek(
-                restaurant -> {
-                    List<Menu> newMenus = menusById.get(restaurant.getId());
-                    if (newMenus == null) {
-                        newMenus = new ArrayList<>();
-                    }
-                    restaurant.setMenus(newMenus);
-                })
+        return restaurants.stream().peek(restaurant -> {
+            restaurant.setMenus(
+                    Optional.ofNullable(menusById.get(restaurant.getId())).orElseGet(ArrayList::new)
+            );
+        }).collect(Collectors.toList());
+    }
+
+    public static List<Restaurant> getFiltered(Collection<Restaurant> restaurants, Predicate<Restaurant> filter) {
+        return restaurants.stream()
+                .filter(filter)
                 .collect(Collectors.toList());
+    }
+
+    public static Predicate<Restaurant> getFilter(String name, String address) {
+        String nameFilter = Optional.ofNullable(name).orElseGet(() -> "");
+        String addressFilter = Optional.ofNullable(address).orElseGet(() -> "");
+        return restaurant -> restaurant.getName().contains(nameFilter) &
+                restaurant.getAddress().contains(addressFilter);
     }
 }
 

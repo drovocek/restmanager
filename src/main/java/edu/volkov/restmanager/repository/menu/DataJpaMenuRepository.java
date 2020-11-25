@@ -20,6 +20,13 @@ public class DataJpaMenuRepository implements MenuRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+    //USER
+    @Override
+    public List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getFilteredByEnabledBetweenDatesWithRestaurant(enabled, startDate, endDate, SORT_NAME);
+    }
+
+    //ADMIN
     //TODO for Likes to
     @Override
     public Menu save(Menu menu, int restaurantId) {
@@ -44,11 +51,6 @@ public class DataJpaMenuRepository implements MenuRepository {
     @Override
     public List<Menu> getAll() {
         return crudMenuRepository.findAll(SORT_NAME);
-    }
-
-    @Override
-    public List<Menu> getFilteredByEnabledBetweenDates(boolean enabled, LocalDate startDate, LocalDate endDate) {
-        return crudMenuRepository.getFilteredByEnabledBetweenDates(enabled, startDate, endDate, SORT_NAME);
     }
 
     @Override

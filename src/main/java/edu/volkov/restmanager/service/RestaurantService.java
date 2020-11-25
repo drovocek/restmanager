@@ -14,8 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.addMenusToRestaurantsById;
+import static edu.volkov.restmanager.util.RestaurantUtil.*;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -41,15 +42,28 @@ public class RestaurantService {
     //USER
     @Transactional
     public List<Restaurant> getAllWithPreassignedQuantityEnabledMenu() {
+        List<Menu> menus = getPreassignedQuantityEnabledMenu();
+        List<Restaurant> restaurants = restaurantRepository.getFilteredByEnabledWithoutMenu(true);
+        return addMenusToRestaurantsById(menus, restaurants);
+    }
+
+    @Transactional
+    public List<Restaurant> getFilteredByNameAndAddressWithEnabledMenu(String name, String address) {
+        Predicate<Restaurant> nameAndAddressFilter = getFilter(name, address);
+        List<Menu> menus = getPreassignedQuantityEnabledMenu();
+        List<Restaurant> filteredRestaurants = getFiltered(
+                restaurantRepository.getFilteredByEnabledWithoutMenu(true), nameAndAddressFilter
+        );
+
+        return addMenusToRestaurantsById(menus, filteredRestaurants);
+    }
+
+    private List<Menu> getPreassignedQuantityEnabledMenu() {
         //TODO now()
 //        LocalDate startDay = LocalDate.now();
         LocalDate startDate = LocalDate.of(2020, 1, 27);
         LocalDate endDate = startDate.plus(dayMenuQuantity - 1, ChronoUnit.DAYS);
-
-        List<Menu> menus = menuRepository.getFilteredByEnabledBetweenDates(true, startDate, endDate);
-        List<Restaurant> restaurants = restaurantRepository.getFilteredByEnabledWithoutMenu(true);
-
-        return addMenusToRestaurantsById(menus, restaurants);
+        return menuRepository.getFilteredByEnabledBetweenDatesWithRestaurant(true, startDate, endDate);
     }
 
     @Transactional

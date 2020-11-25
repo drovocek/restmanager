@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface MenuRepository {
 
+    //USER
+    List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate);
+
+    //ADMIN
     Menu save(Menu menu, int restaurantId);
 
     boolean delete(Integer id);
@@ -14,8 +18,6 @@ public interface MenuRepository {
     Menu get(Integer id);
 
     List<Menu> getAll();
-
-    List<Menu> getFilteredByEnabledBetweenDates(boolean enabled, LocalDate startDate, LocalDate endDate);
 
     List<Menu> getAllByName(String name);
 }
