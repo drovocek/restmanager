@@ -8,7 +8,7 @@ import java.util.List;
 public interface MenuRepository {
 
     //USER
-    List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate);
+    List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
 
     //ADMIN
     Menu save(Menu menu, int restaurantId);

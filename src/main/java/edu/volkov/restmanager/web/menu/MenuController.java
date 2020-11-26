@@ -28,7 +28,7 @@ public class MenuController {
             @RequestParam(name = "name") String name,
             @RequestParam(name = "menuDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
     ) {
-        Menu menu = new Menu(menuId, name, menuDate);
+        Menu menu = new Menu(menuId, name, null, menuDate, false);
 
         System.out.println(menu);
         if (menu.isNew()) {
@@ -46,7 +46,7 @@ public class MenuController {
             Model model
     ) {
         Menu menu = (id == null)
-                ? new Menu("", LocalDate.now(), false)
+                ? new Menu(null, "", null, LocalDate.now(), false)
                 : service.get(id);
         model.addAttribute("menu", menu);
 
@@ -61,13 +61,13 @@ public class MenuController {
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("menus",service.getAll());
+        model.addAttribute("menus", service.getAll());
         return "menus";
     }
 
     @GetMapping("/getallbyname")
     public String getAllByName(@RequestParam(name = "name") String name, Model model) {
-        model.addAttribute("menus",service.getAllByName(name));
+        model.addAttribute("menus", service.getAllByName(name));
         return "menus";
     }
 }

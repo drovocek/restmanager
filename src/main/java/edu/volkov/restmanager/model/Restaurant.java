@@ -4,10 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -15,8 +18,11 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString(exclude = "menus")
+@ToString(exclude = {"menus"})
 @Entity
+@FilterJoinTables(
+        @FilterJoinTable(name = "betweenDates", condition = ":menu_date <= startDate and :maxLength >= endDate")
+)
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(name = "restaurants_unique_name_idx", columnNames = "name")})
 public class Restaurant extends AbstractNamedEntity {
 
@@ -32,16 +38,15 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
-    private boolean enabled = true;
-
-    @NotNull
-    @Column(name = "votes_quantity", nullable = false)
-    private Integer votesQuantity = 0;
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
+    private boolean enabled = false;
 
     @OrderBy("menuDate DESC")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Menu> menus;
+
+    @Formula("(SELECT COUNT(*) FROM Vote v WHERE v.restaurant_id = id)")
+    private int votesQuantity;
 
     public Restaurant(String name, String address, String phone) {
         this.name = name;
@@ -49,13 +54,7 @@ public class Restaurant extends AbstractNamedEntity {
         this.phone = phone;
     }
 
-    public Restaurant(Integer id, String name, String address, String phone) {
-        super(id, name);
-        this.address = address;
-        this.phone = phone;
-    }
-
-    public Restaurant(Integer id, String name, String address, String phone, boolean enabled, Integer votesQuantity) {
+    public Restaurant(Integer id, String name, String address, String phone, boolean enabled, int votesQuantity) {
         super(id, name);
         this.address = address;
         this.phone = phone;

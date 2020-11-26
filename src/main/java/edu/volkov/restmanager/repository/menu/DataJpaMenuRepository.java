@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class DataJpaMenuRepository implements MenuRepository {
-    private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
+    private static final Sort SORT_DATE = Sort.by(Sort.Direction.ASC, "id");
 
     private final CrudMenuRepository crudMenuRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
@@ -22,8 +22,8 @@ public class DataJpaMenuRepository implements MenuRepository {
 
     //USER
     @Override
-    public List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate) {
-        return crudMenuRepository.getFilteredByEnabledBetweenDatesWithRestaurant(enabled, startDate, endDate, SORT_NAME);
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getBetween(startDate, endDate, SORT_DATE);
     }
 
     //ADMIN
@@ -50,7 +50,7 @@ public class DataJpaMenuRepository implements MenuRepository {
 
     @Override
     public List<Menu> getAll() {
-        return crudMenuRepository.findAll(SORT_NAME);
+        return crudMenuRepository.findAll(SORT_DATE);
     }
 
     @Override

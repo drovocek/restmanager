@@ -18,12 +18,12 @@ VALUES ('USER', 0),
        ('ADMIN', 1),
        ('USER', 1);
 
-INSERT INTO restaurant (id, name, address, phone, votes_quantity)
-VALUES (0, 'rest1', 'address1', '+7 (911) 111-1111', 3),
-       (1, 'rest2', 'address2', '+7 (922) 222-2222', 1),
-       (2, 'rest3', 'address3', '+7 (933) 333-3333', 1),
-       (3, 'rest4', 'address4', '+7 (944) 444-4444', 2),
-       (4, 'rest5', 'address5', '+7 (955) 555-5555', 1);
+INSERT INTO restaurant (id, name, address, phone, enabled)
+VALUES (0, 'rest1', 'address1', '+7 (911) 111-1111', true),
+       (1, 'rest2', 'address2', '+7 (922) 222-2222', true),
+       (2, 'rest3', 'address3', '+7 (933) 333-3333', false),
+       (3, 'rest4', 'address4', '+7 (944) 444-4444', true),
+       (4, 'rest5', 'address5', '+7 (955) 555-5555', false);
 
 INSERT INTO vote (user_id, restaurant_id, vote_date)
 VALUES (0, 0, '2020-01-27'),
