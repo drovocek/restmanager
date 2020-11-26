@@ -2,16 +2,13 @@ package edu.volkov.restmanager.repository.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RestaurantRepository {
 
     //USER
-    List<Restaurant> getFilteredByEnabledWithoutMenu(boolean enabled);
-
-    boolean incrementVoteQuantity(Integer restaurantId);
-
-    boolean decrementVoteQuantity(Integer restaurantId);
+    List<Restaurant> getAll();
 
     //ADMIN
     Restaurant save(Restaurant restaurant);
@@ -24,5 +21,5 @@ public interface RestaurantRepository {
 
     List<Restaurant> getAllWithoutMenu();
 
-    List<Restaurant> getAll();
+    List<Restaurant> getBetweenWithEnabledMenu(LocalDate startDate, LocalDate endDate);
 }

@@ -2,19 +2,16 @@ package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.*;
+import static edu.volkov.restmanager.util.RestaurantUtil.addMenuToRestaurantById;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -23,55 +20,68 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
     private final MenuService menuService;
-    private final VoteService voteService;
 
-    private LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
-
-    public RestaurantService(RestaurantRepository repository, MenuService menuService, VoteService voteService) {
+    public RestaurantService(RestaurantRepository repository, MenuService menuService) {
         this.repository = repository;
         this.menuService = menuService;
-        this.voteService = voteService;
+    }
+
+    //COMMON
+    public List<Restaurant> getAll() {
+        return repository.getAll();
+    }
+
+    public List<Restaurant> getWithPreassignedQuantityMenu() {
+        List<Restaurant> withoutMenu = getAll();
+        List<Menu> byPreassignedQuantity = menuService.getByPreassignedQuantity();
+        List<Menu> filteredByEnabled = byPreassignedQuantity.stream().filter(Menu::isEnabled).collect(Collectors.toList());
+
+        return addMenuToRestaurantById(filteredByEnabled, withoutMenu);
     }
 
     //USER
-    @Transactional
-    public List<Restaurant> getAllWithPreassignedQuantityEnabledMenu() {
-        List<Menu> menus = menuService.getPreassignedQuantityEnabledMenu();
-        List<Restaurant> restaurants = getEnabledWithoutMenu();
-        return addMenusToRestaurantsById(menus, restaurants);
+
+    public List<Restaurant> getAllWithDayEnabledMenu() {
+        //TODAY
+        LocalDate startDate = LocalDate.of(2020, 1, 27);
+        LocalDate endDate = LocalDate.of(2020, 1, 27);
+
+        return repository.getBetweenWithEnabledMenu(startDate, endDate);
     }
 
-    public List<Restaurant> getEnabledWithoutMenu() {
-        return repository.getFilteredByEnabledWithoutMenu(true);
-    }
+    //ADMIN
+//    @Transactional
+//    public List<Restaurant> getAllWithPreassignedQuantityEnabledMenu() {
+//        List<Menu> menus = menuService.getPreassignedQuantityEnabledMenu();
+//        List<Restaurant> restaurants = getEnabledWithoutMenu();
+//        return addMenusToRestaurantsById(menus, restaurants);
+//    }
 
-    @Transactional
-    public List<Restaurant> getFilteredByNameAndAddressWithEnabledMenu(String name, String address) {
-        List<Menu> menus = menuService.getPreassignedQuantityEnabledMenu();
-        List<Restaurant> filteredRestaurants = getFilteredByNameAndAddress(name, address);
-
-        return addMenusToRestaurantsById(menus, filteredRestaurants);
-    }
-
-    public List<Restaurant> getFilteredByNameAndAddress(String name, String address) {
-        Predicate<Restaurant> nameAndAddressFilter = getFilter(name, address);
-        return getFiltered(repository.getFilteredByEnabledWithoutMenu(true), nameAndAddressFilter);
-    }
-
-    @Transactional
-    public void vote(int userId, int restaurantId) {
-        LocalDate votingDate = LocalDate.now();
-        boolean beforeTimeLimit = LocalTime.now().isBefore(changeTimeLimit);
-        Vote lastUserVoteToDate = voteService.get(userId, votingDate);
-
-        if (lastUserVoteToDate == null) {
-            voteService.constructAndCreate(userId, restaurantId, votingDate);
-        } else if (lastUserVoteToDate.getRestaurant().getId() == restaurantId) {
-            voteService.constructAndUpdate(lastUserVoteToDate.getId(), userId, restaurantId, votingDate);
-        } else if (beforeTimeLimit) {
-            voteService.delete(lastUserVoteToDate.getId());
-        }
-    }
+//    public List<Restaurant> getEnabledWithoutMenu() {
+//        return repository.getFilteredByEnabledWithoutMenu(true);
+//    }
+//
+//    @Transactional
+//    public List<Restaurant> getFilteredByNameAndAddressWithEnabledMenu(String name, String address) {
+////        List<Menu> menus = menuService.getPreassignedQuantityEnabledMenu();
+////        List<Restaurant> filteredRestaurants = getEnabledFilteredByNameAndAddress(name, address);
+//
+////        Predicate<Restaurant> nameAndAddressFilter = getFilter(name, address);
+////        List<Restaurant> filteredRestaurants = getFiltered(getEnabled(), nameAndAddressFilter);
+//
+////        return addMenusToRestaurantsById(menus, filteredRestaurants);
+//        List<Restaurant> filteredRestaurants = repository.getFilteredByEnabledWithoutMenu(true);
+//        return filteredRestaurants;
+//    }
+//
+//    public List<Restaurant> getEnabledFilteredByNameAndAddress(String name, String address) {
+//        Predicate<Restaurant> nameAndAddressFilter = getFilter(name, address);
+//        return getFiltered(repository.getFilteredByEnabledWithoutMenu(true), nameAndAddressFilter);
+//    }
+//
+//    public List<Restaurant> getEnabled() {
+//        return repository.getFilteredByEnabledWithoutMenu(true);
+//    }
 
     //ADMIN
     public Restaurant create(Restaurant restaurant) {
@@ -84,28 +94,28 @@ public class RestaurantService {
         checkNotFoundWithId(repository.save(restaurant), restaurant.getId());
     }
 
-    public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
-    }
-
     public Restaurant get(Integer id) {
         return checkNotFound(repository.get(id), "restaurant by id: " + id + "dos not exist");
     }
 
-    public Restaurant getByName(String name) {
-        Assert.notNull(name, "name must not be null");
-        return checkNotFound(repository.getByName(name), "name=" + name);
+    public void delete(int id) {
+        checkNotFoundWithId(repository.delete(id), id);
     }
 
-    public List<Restaurant> getAllWithoutMenu() {
-        return repository.getAllWithoutMenu();
-    }
-
-    public void setChangeTimeLimit(LocalTime changeTimeLimit) {
-        this.changeTimeLimit = changeTimeLimit;
-    }
-
-//    public List<Restaurant> getAllWithActiveMenuBetween(LocalDate startDate, LocalDate endDate) {
-//        return restaurantRepository.getAllWithMenuBetween(atStartOfDayOrMin(startDate), atStartDayOrMax(endDate));
+    //    public Restaurant getByName(String name) {
+//        Assert.notNull(name, "name must not be null");
+//        return checkNotFound(repository.getByName(name), "name=" + name);
 //    }
+//
+//    public List<Restaurant> getAllWithoutMenu() {
+//        return repository.getAllWithoutMenu();
+//    }
+//
+//    public void setChangeTimeLimit(LocalTime changeTimeLimit) {
+//        this.changeTimeLimit = changeTimeLimit;
+//    }
+//
+////    public List<Restaurant> getAllWithActiveMenuBetween(LocalDate startDate, LocalDate endDate) {
+////        return restaurantRepository.getAllWithMenuBetween(atStartOfDayOrMin(startDate), atStartDayOrMax(endDate));
+////    }
 }

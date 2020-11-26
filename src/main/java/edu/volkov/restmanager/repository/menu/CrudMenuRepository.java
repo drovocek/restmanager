@@ -13,8 +13,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     //USER
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.restaurant WHERE m.enabled = :enabled AND m.menuDate>=:startDate AND m.menuDate<=:endDate")
-    List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(Boolean enabled, LocalDate startDate, LocalDate endDate, Sort sorter);
+//    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.restaurant WHERE m.enabled = :enabled AND m.menuDate>=:startDate AND m.menuDate<=:endDate")
+//    List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(Boolean enabled, LocalDate startDate, LocalDate endDate, Sort sorter);
+
+    @Query("SELECT m FROM Menu m WHERE m.menuDate>=:startDate AND m.menuDate<=:endDate")
+    List<Menu> getBetween(LocalDate startDate, LocalDate endDate, Sort sorter);
 
     //ADMIN
     @Transactional

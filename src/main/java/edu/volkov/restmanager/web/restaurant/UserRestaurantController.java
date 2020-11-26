@@ -1,6 +1,10 @@
 package edu.volkov.restmanager.web.restaurant;
 
+import edu.volkov.restmanager.model.Restaurant;
+import edu.volkov.restmanager.service.MenuService;
 import edu.volkov.restmanager.service.RestaurantService;
+import edu.volkov.restmanager.service.VoteService;
+import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.web.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,32 +14,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getTo;
+import static edu.volkov.restmanager.util.RestaurantUtil.getFilterByNameAndAddress;
+import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
 
 @RequestMapping("/restaurants")
 @Controller
 public class UserRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final RestaurantService service;
+    private final RestaurantService restaurantService;
+    private final VoteService voteService;
 
-    public UserRestaurantController(RestaurantService service) {
-        this.service = service;
+    public UserRestaurantController(RestaurantService service, VoteService voteService, MenuService menuService) {
+        this.restaurantService = service;
+        this.voteService = voteService;
     }
 
     @GetMapping
-    public String getAllWithPreassignedQuantityEnabledMenu(Model model) {
+    public String getAllEnabled(Model model) {
         int userId = SecurityUtil.authUserId();
-        log.info("getAllWithPreassignedQuantityEnabledMenu for user {}", userId);
+        log.info("getFilteredByNameAndAddressWithEnabledMenu for user {}", userId);
 
-        model.addAttribute("restaurants", getTo(service.getAllWithPreassignedQuantityEnabledMenu()));
+        Predicate<Restaurant> filter = restaurant -> true;
+        List<RestaurantTo> tos = getFilteredTos(restaurantService.getAllWithDayEnabledMenu(), filter);
+
+        model.addAttribute("restaurants", tos);
         return "restaurants";
     }
 
     @GetMapping("/filter")
-    public String getFilteredByNameAndAddressWithEnabledMenu(
+    public String getFilteredEnabled(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String address,
             Model model
@@ -43,13 +54,16 @@ public class UserRestaurantController {
         int userId = SecurityUtil.authUserId();
         log.info("getFilteredByNameAndAddressWithEnabledMenu for user {}", userId);
 
-        model.addAttribute("restaurants", getTo(service.getFilteredByNameAndAddressWithEnabledMenu(name, address)));
+        Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
+        List<RestaurantTo> filteredTo = getFilteredTos(restaurantService.getAllWithDayEnabledMenu(), filter);
+
+        model.addAttribute("restaurants", filteredTo);
         return "restaurants";
     }
 
     @GetMapping("/vote")
     public String vote(Integer id) {
-        service.vote(SecurityUtil.authUserId(), id);
+        voteService.vote(SecurityUtil.authUserId(), id);
         return "redirect:/restaurants";
     }
 }

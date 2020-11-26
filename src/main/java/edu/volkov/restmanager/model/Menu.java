@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "restaurant")
 @Table(name = "menu")
 public class Menu extends AbstractNamedEntity {
 
@@ -36,21 +35,20 @@ public class Menu extends AbstractNamedEntity {
         this(menu.getId(), menu.getName(), menu.getRestaurant(), menu.getMenuDate(), menu.isEnabled());
     }
 
-    public Menu(Integer id, String name, LocalDate menuDate) {
-        super(id, name);
-        this.menuDate = menuDate;
-    }
-
-    public Menu(String name, LocalDate menuDate, boolean enabled) {
-        super(null, name);
-        this.menuDate = menuDate;
-        this.enabled = enabled;
-    }
-
     public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {
         super(id, name);
         this.restaurant = restaurant;
         this.menuDate = menuDate;
         this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "menuDate=" + menuDate +
+                ", enabled=" + enabled +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

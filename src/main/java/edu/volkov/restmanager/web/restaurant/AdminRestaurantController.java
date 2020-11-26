@@ -33,7 +33,7 @@ public class AdminRestaurantController {
             @RequestParam(name = "phone") String phone,
             @RequestParam(name = "phone") Boolean enabled
     ) {
-        Restaurant restaurant = new Restaurant(id, name, address, phone,enabled);
+        Restaurant restaurant = new Restaurant(id, name, address, phone,enabled,0);
 
         if (restaurant.isNew()) {
             service.create(restaurant);

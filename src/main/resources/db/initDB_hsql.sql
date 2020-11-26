@@ -30,7 +30,7 @@ CREATE TABLE restaurant
     name           VARCHAR(255)         NOT NULL,
     phone          VARCHAR(255)         NOT NULL,
     address        VARCHAR(255)         NOT NULL,
-    enabled        BOOLEAN DEFAULT TRUE NOT NULL,
+    enabled        BOOLEAN DEFAULT FALSE NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX restaurant_unique_name_idx ON restaurant (name);
@@ -52,7 +52,7 @@ CREATE TABLE menu
     name          VARCHAR(255)          NOT NULL,
     restaurant_id INTEGER               NOT NULL,
     menu_date     DATE    DEFAULT now() NOT NULL,
-    enabled       BOOLEAN DEFAULT TRUE  NOT NULL,
+    enabled       BOOLEAN DEFAULT FALSE  NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 

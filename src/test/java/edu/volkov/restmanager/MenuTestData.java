@@ -10,7 +10,7 @@ import java.util.List;
 import static edu.volkov.restmanager.RestaurantTestData.*;
 
 public class MenuTestData {
-    public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator();
+    public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator("restaurant");
 
     public final static int MENU1_ID = 0;
     public final static int MENU_NOT_FOUND_ID = 15;
@@ -32,6 +32,6 @@ public class MenuTestData {
 
     public static final List<Menu> allMenus = Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10, menu11);
     public static final List<Menu> todayMenus = Arrays.asList(menu1, menu2, menu4, menu7, menu8, menu9);
-    public static final List<Menu> todayActiveMenus = Arrays.asList(menu2, menu7);
-    public static final List<Menu> allActiveMenus = Arrays.asList(menu2, menu5, menu7, menu10);
+    public static final List<Menu> todayEnabledMenus = Arrays.asList(menu2, menu7);
+    public static final List<Menu> allEnabledMenus = Arrays.asList(menu2, menu5, menu7, menu10);
 }

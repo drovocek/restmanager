@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -13,6 +15,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 public class VoteService {
 
     private final VoteRepository repository;
+    private LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
     public VoteService(VoteRepository repository) {
         this.repository = repository;
@@ -21,6 +24,20 @@ public class VoteService {
     //USER
     public Vote get(int userId, LocalDate voteDate) {
         return repository.get(userId, voteDate);
+    }
+
+    public void vote(int userId, int restaurantId) {
+        LocalDate votingDate = LocalDate.now();
+        boolean beforeTimeLimit = LocalTime.now().isBefore(changeTimeLimit);
+        Vote lastUserVoteToDate = get(userId, votingDate);
+
+        if (lastUserVoteToDate == null) {
+            constructAndCreate(userId, restaurantId, votingDate);
+        } else if (lastUserVoteToDate.getRestaurant().getId() == restaurantId) {
+            constructAndUpdate(lastUserVoteToDate.getId(), userId, restaurantId, votingDate);
+        } else if (beforeTimeLimit) {
+            delete(lastUserVoteToDate.getId());
+        }
     }
 
     public Vote constructAndCreate(int userId, int restaurantId, LocalDate votingDate) {

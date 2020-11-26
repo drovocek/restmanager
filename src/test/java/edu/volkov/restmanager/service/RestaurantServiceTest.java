@@ -8,15 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.MenuTestData.*;
 import static edu.volkov.restmanager.RestaurantTestData.*;
-import static java.time.temporal.ChronoUnit.SECONDS;
-import static org.junit.Assert.assertEquals;
+import static edu.volkov.restmanager.MenuTestData.*;
 import static org.junit.Assert.assertThrows;
 
 
@@ -25,9 +22,75 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Autowired
     private RestaurantService service;
 
-    //USER TESTS
+    //USER
+    @Test
+    public void getAll() {
+        List<Restaurant> actual = service.getAll();
+        REST_MATCHER.assertMatch(actual, allRestaurants);
+    }
 
-//    getEnabledWithoutMenu()
+    @Test
+    public void getWithPreassignedQuantityMenu(){
+        List<Restaurant> actualRest = service.getWithPreassignedQuantityMenu();
+        List<Menu> actualMenu = getAllMenusFromRestaurants(actualRest);
+
+        REST_MATCHER.assertMatch(actualRest, allRestaurants);
+        MENU_MATCHER.assertMatch(actualMenu, todayEnabledMenus);
+    }
+
+    @Test
+    public void getAllWithDayEnabledMenu(){
+        List<Restaurant> actualRest = service.getAllWithDayEnabledMenu();
+        List<Menu> actualMenu = getAllMenusFromRestaurants(actualRest);
+
+        REST_MATCHER.assertMatch(actualRest, allRestaurants);
+        MENU_MATCHER.assertMatch(actualMenu, todayEnabledMenus);
+    }
+
+    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .flatMap(restaurant -> restaurant.getMenus().stream())
+                .collect(Collectors.toList());
+    }
+
+
+//    @Test
+//    public void getEnabledFilteredByNameAndAddress() {
+//        List<Restaurant> actual = service.getEnabledFilteredByNameAndAddress(null, null);
+//        System.out.println(actual);
+//        actual.forEach((x)-> System.out.println(x.getMenus()));
+//        REST_MATCHER.assertMatch(actual, allEnabledRestaurants);
+
+//        actual = service.getEnabledFilteredByNameAndAddress("", "");
+//        REST_MATCHER.assertMatch(actual, allEnabledRestaurants);
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("re", "");
+//        REST_MATCHER.assertMatch(actual, allEnabledRestaurants);
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("rest1", "");
+//        REST_MATCHER.assertMatch(actual, rest1);
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("t1", "");
+//        REST_MATCHER.assertMatch(actual, rest1);
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("r1", "");
+//        REST_MATCHER.assertMatch(actual, Collections.emptyList());
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("", "as");
+//        REST_MATCHER.assertMatch(actual, Collections.emptyList());
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("", "ss1");
+//        REST_MATCHER.assertMatch(actual, rest1);
+//
+//        actual = service.getEnabledFilteredByNameAndAddress("re", "ss1");
+//        REST_MATCHER.assertMatch(actual, rest1);
+//    }
+
+//    public void getEnabledWithoutMenu() {
+//        List<Restaurant> actual = service.getEnabledWithoutMenu();
+//        REST_MATCHER.assertMatch(actual, rest1, rest2, rest5);
+//    }
+
 //    @Test
 //    public void getAllWithOneDayMenu() {
 //        service.setDayMenuQuantity(1);
@@ -47,11 +110,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 //        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
 //    }
 
-//    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
-//        return restaurants.stream()
-//                .flatMap(restaurant -> restaurant.getMenus().stream())
-//                .collect(Collectors.toList());
-//    }
+
 
     //ADMIN TESTS
 
@@ -99,22 +158,10 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getByName() {
-        Restaurant restaurant = service.getByName(rest1.getName());
-        REST_MATCHER.assertMatch(restaurant, rest1);
-    }
-
-    @Test
-    public void getAllWithoutMenu() {
-        List<Restaurant> all = service.getAllWithoutMenu();
-        REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
-    }
-
-    @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303",true)), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303",true)), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Restaurant(null, "testName", "testAddress", "BadNumber",true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "testName", "testAddress", "BadNumber", true, 0)), ConstraintViolationException.class);
     }
 
     @Test

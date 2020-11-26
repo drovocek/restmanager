@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static edu.volkov.restmanager.util.DateTimeUtil.maxIfNull;
+import static edu.volkov.restmanager.util.DateTimeUtil.minIfNull;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -23,16 +25,16 @@ public class MenuService {
     }
 
     //USER
-    public List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate) {
-        return repository.getFilteredByEnabledBetweenDatesWithRestaurant(true, startDate, endDate);
-    }
-
-    public List<Menu> getPreassignedQuantityEnabledMenu() {
+    public List<Menu> getByPreassignedQuantity() {
         //TODO now()
 //        LocalDate startDay = LocalDate.now();
         LocalDate startDate = LocalDate.of(2020, 1, 27);
         LocalDate endDate = startDate.plus(dayMenuQuantity - 1, ChronoUnit.DAYS);
-        return getFilteredByEnabledBetweenDatesWithRestaurant(true, startDate, endDate);
+        return getBetween(startDate, endDate);
+    }
+
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        return repository.getBetween(minIfNull(startDate), maxIfNull(endDate));
     }
 
 
@@ -68,4 +70,8 @@ public class MenuService {
             this.dayMenuQuantity = dayMenuQuantity;
         }
     }
+
+    //    public List<Menu> getFilteredByEnabledBetweenDatesWithRestaurant(boolean enabled, LocalDate startDate, LocalDate endDate) {
+//        return repository.getFilteredByEnabledBetweenDatesWithRestaurant(true, startDate, endDate);
+//    }
 }
