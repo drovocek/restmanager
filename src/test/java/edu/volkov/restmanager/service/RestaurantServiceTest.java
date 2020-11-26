@@ -26,31 +26,32 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     private RestaurantService service;
 
     //USER TESTS
-    @Test
-    public void getAllWithOneDayMenu() {
-        service.setDayMenuQuantity(1);
-        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
-        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
 
-        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
-        MENU_MATCHER.assertMatch(expectedDayMenus, todayActiveMenus);
-    }
+//    getEnabledWithoutMenu()
+//    @Test
+//    public void getAllWithOneDayMenu() {
+//        service.setDayMenuQuantity(1);
+//        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
+//        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
+//
+//        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
+//        MENU_MATCHER.assertMatch(expectedDayMenus, todayActiveMenus);
+//    }
+//
+//    @Test
+//    public void getAllWithTwoDaysMenu() {
+//        service.setDayMenuQuantity(2);
+//        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
+//        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
+//
+//        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
+//    }
 
-    @Test
-    public void getAllWithTwoDaysMenu() {
-        service.setDayMenuQuantity(2);
-        List<Restaurant> restaurants = service.getAllWithPreassignedQuantityEnabledMenu();
-        List<Menu> expectedDayMenus = getAllMenusFromRestaurants(restaurants);
-
-        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
-        MENU_MATCHER.assertMatch(expectedDayMenus, allActiveMenus);
-    }
-
-    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .flatMap(restaurant -> restaurant.getMenus().stream())
-                .collect(Collectors.toList());
-    }
+//    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
+//        return restaurants.stream()
+//                .flatMap(restaurant -> restaurant.getMenus().stream())
+//                .collect(Collectors.toList());
+//    }
 
     //ADMIN TESTS
 
@@ -106,15 +107,14 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     public void getAllWithoutMenu() {
         List<Restaurant> all = service.getAllWithoutMenu();
-        all.forEach(System.out::println);
         REST_MATCHER.assertMatch(all, rest1, rest2, rest3, rest4, rest5);
     }
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303")), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303")), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Restaurant(null, "testName", "testAddress", "BadNumber")), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303",true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303",true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant(null, "testName", "testAddress", "BadNumber",true)), ConstraintViolationException.class);
     }
 
     @Test
@@ -134,65 +134,65 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         validateRootCause(() -> createWithPhone("+7 (777) 777-777", "testRest1"), ConstraintViolationException.class);
     }
 
-    @Test
-    public void votesQuantityTest() {
-        assertEquals(service.get(rest1.getId()).getVotesQuantity(), rest1.getVotesQuantity());
-        assertEquals(service.get(rest2.getId()).getVotesQuantity(), rest2.getVotesQuantity());
-        assertEquals(service.get(rest3.getId()).getVotesQuantity(), rest3.getVotesQuantity());
-        assertEquals(service.get(rest4.getId()).getVotesQuantity(), rest4.getVotesQuantity());
-        assertEquals(service.get(rest5.getId()).getVotesQuantity(), rest5.getVotesQuantity());
-    }
+//    @Test
+//    public void votesQuantityTest() {
+//        assertEquals(service.get(rest1.getId()).getVotesQuantity(), rest1.getVotesQuantity());
+//        assertEquals(service.get(rest2.getId()).getVotesQuantity(), rest2.getVotesQuantity());
+//        assertEquals(service.get(rest3.getId()).getVotesQuantity(), rest3.getVotesQuantity());
+//        assertEquals(service.get(rest4.getId()).getVotesQuantity(), rest4.getVotesQuantity());
+//        assertEquals(service.get(rest5.getId()).getVotesQuantity(), rest5.getVotesQuantity());
+//    }
 
-    @Test
-    public void voteBeforeTimeLimit() {
-        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+//    @Test
+//    public void voteBeforeTimeLimit() {
+//        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+//
+//        service.vote(0, rest1.getId(), LocalDate.now());
+//        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+//        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//    }
+//
+//    @Test
+//    public void voteDoubleBeforeTimeLimit() {
+//        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
+//        LocalDate voteDate = LocalDate.now();
+//
+//        service.vote(0, rest1.getId(), voteDate);
+//        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+//        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//
+//        service.vote(0, rest1.getId(), voteDate);
+//        actualLikeAmount = rest1.getVotesQuantity();
+//        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//    }
+//
+//    @Test
+//    public void voteAfterTimeLimit() {
+//        service.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
+//
+//        service.vote(0, rest1.getId(), LocalDate.now());
+//        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+//        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//    }
 
-        service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getVotesQuantity() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-    }
-
-    @Test
-    public void voteDoubleBeforeTimeLimit() {
-        service.setChangeTimeLimit(LocalTime.now().plus(5, SECONDS));
-        LocalDate voteDate = LocalDate.now();
-
-        service.vote(0, rest1.getId(), voteDate);
-        long actualLikeAmount = rest1.getVotesQuantity() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-
-        service.vote(0, rest1.getId(), voteDate);
-        actualLikeAmount = rest1.getVotesQuantity();
-        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-    }
-
-    @Test
-    public void voteAfterTimeLimit() {
-        service.setChangeTimeLimit(LocalTime.now().minus(1, SECONDS));
-
-        service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getVotesQuantity() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-    }
-
-    @Test
-    public void voteDoubleAfterTimeLimit() {
-        service.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
-
-        service.vote(0, rest1.getId(), LocalDate.now());
-        long actualLikeAmount = rest1.getVotesQuantity() + 1;
-        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-
-        service.vote(0, rest1.getId(), LocalDate.now());
-        actualLikeAmount = rest1.getVotesQuantity() + 1;
-        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
-        assertEquals(expectedLikeAmount, actualLikeAmount);
-    }
+//    @Test
+//    public void voteDoubleAfterTimeLimit() {
+//        service.setChangeTimeLimit(LocalTime.now().minus(5, SECONDS));
+//
+//        service.vote(0, rest1.getId(), LocalDate.now());
+//        long actualLikeAmount = rest1.getVotesQuantity() + 1;
+//        long expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//
+//        service.vote(0, rest1.getId(), LocalDate.now());
+//        actualLikeAmount = rest1.getVotesQuantity() + 1;
+//        expectedLikeAmount = service.get(rest1.getId()).getVotesQuantity();
+//        assertEquals(expectedLikeAmount, actualLikeAmount);
+//    }
 
     public void createWithPhone(String phone, String name) {
         Restaurant newRest = getNew();

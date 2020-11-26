@@ -49,7 +49,7 @@ public class UserRestaurantController {
 
     @GetMapping("/vote")
     public String vote(Integer id) {
-        service.vote(SecurityUtil.authUserId(), id, LocalDate.now());
+        service.vote(SecurityUtil.authUserId(), id);
         return "redirect:/restaurants";
     }
 }

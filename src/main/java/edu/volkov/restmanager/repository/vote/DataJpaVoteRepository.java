@@ -1,19 +1,15 @@
 package edu.volkov.restmanager.repository.vote;
 
-import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.repository.user.CrudUserRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public class DataJpaVoteRepository implements VoteRepository {
-    private static final Sort SORT_DATE = Sort.by(Sort.Direction.ASC, "vote_date");
 
     private final CrudVoteRepository crudVoteRepository;
     private final CrudUserRepository crudUserRepository;
@@ -29,28 +25,18 @@ public class DataJpaVoteRepository implements VoteRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+    //USER
     @Override
-    public Vote createAndSaveNewVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
-        Vote vote = createNewVote(userId, restaurantId, voteDate);
-        return save(vote);
-    }
-
-    private Vote createNewVote(Integer userId, Integer restaurantId, LocalDate voteDate) {
-        return new Vote(
-                null,
-                crudUserRepository.getOne(userId),
-                crudRestaurantRepository.getOne(restaurantId),
-                voteDate
-        );
-    }
-
-    private Vote save(Vote vote) {
+    public Vote save(Vote vote) {
+        if (!vote.isNew() && get(vote.getId(), vote.getVoteDate()) == null) {
+            return null;
+        }
         return crudVoteRepository.save(vote);
     }
 
     @Override
-    public boolean delete(int id) {
-        return crudVoteRepository.delete(id) != 0;
+    public boolean delete(int voteId) {
+        return crudVoteRepository.delete(voteId) != 0;
     }
 
     @Override
@@ -62,7 +48,12 @@ public class DataJpaVoteRepository implements VoteRepository {
     }
 
     @Override
-    public List<Vote> getAll() {
-        return crudVoteRepository.findAll(SORT_DATE);
+    public Vote constructVote(Integer voteId, Integer userId, Integer restaurantId, LocalDate voteDate) {
+        return new Vote(
+                voteId,
+                crudUserRepository.getOne(userId),
+                crudRestaurantRepository.getOne(restaurantId),
+                voteDate
+        );
     }
 }

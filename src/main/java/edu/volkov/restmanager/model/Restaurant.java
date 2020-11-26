@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString(exclude = "menus")
+@ToString(exclude = {"menus","votes"})
 @Entity
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(name = "restaurants_unique_name_idx", columnNames = "name")})
 public class Restaurant extends AbstractNamedEntity {
@@ -35,13 +35,15 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
-    @NotNull
-    @Column(name = "votes_quantity", nullable = false)
-    private Integer votesQuantity = 0;
-
     @OrderBy("menuDate DESC")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Menu> menus;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    private List<Menu> votes;
+
+    @Formula("(SELECT COUNT(*) FROM Votes v WHERE v.restaurant_id = id)")
+    private Integer votesQuantity;
 
     public Restaurant(String name, String address, String phone) {
         this.name = name;
@@ -49,21 +51,14 @@ public class Restaurant extends AbstractNamedEntity {
         this.phone = phone;
     }
 
-    public Restaurant(Integer id, String name, String address, String phone) {
-        super(id, name);
-        this.address = address;
-        this.phone = phone;
-    }
-
-    public Restaurant(Integer id, String name, String address, String phone, boolean enabled, Integer votesQuantity) {
+    public Restaurant(Integer id, String name, String address, String phone, boolean enabled) {
         super(id, name);
         this.address = address;
         this.phone = phone;
         this.enabled = enabled;
-        this.votesQuantity = votesQuantity;
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.isEnabled(), restaurant.getVotesQuantity());
+        this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.isEnabled());
     }
 }

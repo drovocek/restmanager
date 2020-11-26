@@ -15,7 +15,7 @@ public class RestaurantUtil {
                 restaurant.getName(),
                 restaurant.getAddress(),
                 restaurant.getPhone(),
-                restaurant.getVotesQuantity(),
+                restaurant.getVotes().size(),
                 restaurant.getMenus().stream().collect(Collectors.toList())
         );
     }

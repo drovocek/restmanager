@@ -31,7 +31,6 @@ CREATE TABLE restaurant
     phone          VARCHAR(255)         NOT NULL,
     address        VARCHAR(255)         NOT NULL,
     enabled        BOOLEAN DEFAULT TRUE NOT NULL,
-    votes_quantity INT                  NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX restaurant_unique_name_idx ON restaurant (name);

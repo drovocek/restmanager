@@ -30,9 +30,10 @@ public class AdminRestaurantController {
             @RequestParam(name = "id", required = false) Integer id,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "address") String address,
-            @RequestParam(name = "phone") String phone
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "phone") Boolean enabled
     ) {
-        Restaurant restaurant = new Restaurant(id, name, address, phone);
+        Restaurant restaurant = new Restaurant(id, name, address, phone,enabled);
 
         if (restaurant.isNew()) {
             service.create(restaurant);
