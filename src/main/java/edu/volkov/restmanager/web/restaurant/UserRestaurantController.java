@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilterByNameAndAddress;
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.RestaurantUtil.*;
 
 @RequestMapping("/restaurants")
 @Controller
@@ -33,12 +32,12 @@ public class UserRestaurantController {
         this.voteService = voteService;
     }
 
-    @GetMapping
+    @GetMapping("/restaurant")
     public String getWithDayEnabledMenu(Model model, Integer restId) {
         int userId = SecurityUtil.authUserId();
         log.info("getWithDayEnabledMenu by user {} for restaurant {}", userId, restId);
 
-        model.addAttribute("restaurant", restService.getWithDayEnabledMenu(restId));
+        model.addAttribute("restaurant", createToWithMenu(restService.getWithDayEnabledMenu(restId)));
         return "restaurant";
     }
 
@@ -48,7 +47,7 @@ public class UserRestaurantController {
         log.info("getAllEnabledWithoutMenu for user {}", userId);
 
         Predicate<Restaurant> filter = Restaurant::isEnabled;
-        List<RestaurantTo> tos = getFilteredTos(restService.getAllWithoutMenu(), filter);
+        List<RestaurantTo> tos = getFilteredTosWithEmptyMenu(restService.getAllWithoutMenu(), filter);
 
         model.addAttribute("restaurants", tos);
         return "restaurants";
@@ -64,15 +63,15 @@ public class UserRestaurantController {
         log.info("getFilteredEnabledWithoutMenu for user {}", userId);
 
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
-        List<RestaurantTo> filteredTos = getFilteredTos(restService.getAllWithoutMenu(), filter);
+        List<RestaurantTo> filteredTos = getFilteredTosWithEmptyMenu(restService.getAllWithoutMenu(), filter);
 
         model.addAttribute("restaurants", filteredTos);
         return "restaurants";
     }
 
     @GetMapping("/vote")
-    public String vote(Integer restId) {
-        voteService.vote(SecurityUtil.authUserId(), restId);
+    public String vote(Integer id) {
+        voteService.vote(SecurityUtil.authUserId(), id);
         return "redirect:/restaurants";
     }
 }

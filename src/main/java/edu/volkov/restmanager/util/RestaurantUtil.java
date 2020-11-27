@@ -9,21 +9,27 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RestaurantUtil {
-    public static RestaurantTo createTo(Restaurant restaurant) {
+    public static RestaurantTo createToWithDifMenuType(Restaurant restaurant, boolean isEmptyMenu) {
+        List<Menu> menus = (isEmptyMenu) ? Collections.emptyList() : restaurant.getMenus();
         return new RestaurantTo(
                 restaurant.id(),
                 restaurant.getName(),
                 restaurant.getAddress(),
                 restaurant.getPhone(),
                 restaurant.getVotesQuantity(),
-                restaurant.getMenus().stream().collect(Collectors.toList())
+                menus
         );
     }
 
-    public static List<RestaurantTo> getFilteredTos(Collection<Restaurant> restaurants, Predicate<Restaurant> filter) {
+    public static RestaurantTo createToWithMenu(Restaurant restaurant) {
+        return createToWithDifMenuType(restaurant, true);
+    }
+
+
+    public static List<RestaurantTo> getFilteredTosWithEmptyMenu(Collection<Restaurant> restaurants, Predicate<Restaurant> filter) {
         return restaurants.stream()
                 .filter(filter)
-                .map(RestaurantUtil::createTo)
+                .map(restaurant -> createToWithDifMenuType(restaurant, true))
                 .collect(Collectors.toList());
     }
 
