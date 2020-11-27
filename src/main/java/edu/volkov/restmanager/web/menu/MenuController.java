@@ -23,10 +23,10 @@ public class MenuController {
 
     @PostMapping
     public String save(
-            @RequestParam(name = "menuId", required = false) Integer menuId,
-            @RequestParam(name = "restaurantId", required = false) Integer restaurantId,
-            @RequestParam(name = "name") String name,
-            @RequestParam(name = "menuDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
+            @RequestParam(required = false) Integer menuId,
+            @RequestParam(required = false) Integer restaurantId,
+            @RequestParam String name,
+            @RequestParam (required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
     ) {
         Menu menu = new Menu(menuId, name, null, menuDate, false);
 
@@ -62,12 +62,6 @@ public class MenuController {
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("menus", service.getAll());
-        return "menus";
-    }
-
-    @GetMapping("/getallbyname")
-    public String getAllByName(@RequestParam(name = "name") String name, Model model) {
-        model.addAttribute("menus", service.getAllByName(name));
         return "menus";
     }
 }

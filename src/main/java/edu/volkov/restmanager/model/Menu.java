@@ -3,7 +3,6 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,10 +44,10 @@ public class Menu extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Menu{" +
-                "menuDate=" + menuDate +
-                ", enabled=" + enabled +
+                "  id=" + id +
                 ", name='" + name + '\'' +
-                ", id=" + id +
+                ", menuDate=" + menuDate +
+                ", enabled=" + enabled +
                 '}';
     }
 }

@@ -1,17 +1,12 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.addMenuToRestaurantById;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -19,34 +14,18 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 public class RestaurantService {
 
     private final RestaurantRepository repository;
-    private final MenuService menuService;
 
-    public RestaurantService(RestaurantRepository repository, MenuService menuService) {
+    public RestaurantService(RestaurantRepository repository) {
         this.repository = repository;
-        this.menuService = menuService;
-    }
-
-    //COMMON
-    public List<Restaurant> getAll() {
-        return repository.getAll();
-    }
-
-    public List<Restaurant> getWithPreassignedQuantityMenu() {
-        List<Restaurant> withoutMenu = getAll();
-        List<Menu> byPreassignedQuantity = menuService.getByPreassignedQuantity();
-        List<Menu> filteredByEnabled = byPreassignedQuantity.stream().filter(Menu::isEnabled).collect(Collectors.toList());
-
-        return addMenuToRestaurantById(filteredByEnabled, withoutMenu);
     }
 
     //USER
+    public Restaurant getWithDayEnabledMenu(Integer id) {
+        return checkNotFoundWithId(repository.getWithDayEnabledMenu(id), id);
+    }
 
-    public List<Restaurant> getAllWithDayEnabledMenu() {
-        //TODAY
-        LocalDate startDate = LocalDate.of(2020, 1, 27);
-        LocalDate endDate = LocalDate.of(2020, 1, 27);
-
-        return repository.getBetweenWithEnabledMenu(startDate, endDate);
+    public List<Restaurant> getAllWithoutMenu() {
+        return repository.getAllWithoutMenu();
     }
 
     //ADMIN

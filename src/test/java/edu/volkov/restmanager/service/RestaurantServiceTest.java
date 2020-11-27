@@ -3,6 +3,7 @@ package edu.volkov.restmanager.service;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.util.exception.NotFoundException;
+import org.hibernate.LazyInitializationException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.RestaurantTestData.*;
 import static edu.volkov.restmanager.MenuTestData.*;
+import static edu.volkov.restmanager.RestaurantTestData.*;
 import static org.junit.Assert.assertThrows;
 
 
@@ -24,34 +25,35 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     //USER
     @Test
-    public void getAll() {
-        List<Restaurant> actual = service.getAll();
+    public void getWithDayEnabledMenu() {
+        Restaurant actual = service.getWithDayEnabledMenu(1);
+        REST_MATCHER.assertMatch(actual, rest2);
+        MENU_MATCHER.assertMatch(actual.getMenus(), menu2);
+
+        actual= service.getWithDayEnabledMenu(4);
+        REST_MATCHER.assertMatch(actual, rest5);
+        MENU_MATCHER.assertMatch(actual.getMenus(), Collections.emptyList());
+    }
+
+    @Test
+    public void getWithDayEnabledMenuWithEmptyDayMenu() {
+        Restaurant actual= service.getWithDayEnabledMenu(4);
+        REST_MATCHER.assertMatch(actual, rest5);
+        MENU_MATCHER.assertMatch(actual.getMenus(), Collections.emptyList());
+    }
+
+    @Test
+    public void getWithDayEnabledMenuNotFound() {
+        assertThrows(NotFoundException.class, () -> service.getWithDayEnabledMenu(REST_NOT_FOUND_ID));
+    }
+
+    @Test
+    public void getAllWithoutMenu() {
+        List<Restaurant> actual = service.getAllWithoutMenu();
         REST_MATCHER.assertMatch(actual, allRestaurants);
+        assertThrows(LazyInitializationException.class, () -> actual.get(0).getMenus().get(0));
     }
 
-    @Test
-    public void getWithPreassignedQuantityMenu(){
-        List<Restaurant> actualRest = service.getWithPreassignedQuantityMenu();
-        List<Menu> actualMenu = getAllMenusFromRestaurants(actualRest);
-
-        REST_MATCHER.assertMatch(actualRest, allRestaurants);
-        MENU_MATCHER.assertMatch(actualMenu, todayEnabledMenus);
-    }
-
-    @Test
-    public void getAllWithDayEnabledMenu(){
-        List<Restaurant> actualRest = service.getAllWithDayEnabledMenu();
-        List<Menu> actualMenu = getAllMenusFromRestaurants(actualRest);
-
-        REST_MATCHER.assertMatch(actualRest, allRestaurants);
-        MENU_MATCHER.assertMatch(actualMenu, todayEnabledMenus);
-    }
-
-    private List<Menu> getAllMenusFromRestaurants(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .flatMap(restaurant -> restaurant.getMenus().stream())
-                .collect(Collectors.toList());
-    }
 
 
 //    @Test
@@ -109,7 +111,6 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 //
 //        REST_MATCHER.assertMatch(restaurants, rest1, rest2, rest3, rest4, rest5);
 //    }
-
 
 
     //ADMIN TESTS

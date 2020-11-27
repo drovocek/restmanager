@@ -3,13 +3,11 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.FilterJoinTable;
+import org.hibernate.annotations.FilterJoinTables;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -18,7 +16,6 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString(exclude = {"menus"})
 @Entity
 @FilterJoinTables(
         @FilterJoinTable(name = "betweenDates", condition = ":menu_date <= startDate and :maxLength >= endDate")
@@ -64,5 +61,17 @@ public class Restaurant extends AbstractNamedEntity {
 
     public Restaurant(Restaurant restaurant) {
         this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.isEnabled(), restaurant.getVotesQuantity());
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                " id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", enabled=" + enabled +
+                ", votesQuantity=" + votesQuantity +
+                '}';
     }
 }

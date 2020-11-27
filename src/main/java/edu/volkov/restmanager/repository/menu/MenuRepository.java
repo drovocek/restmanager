@@ -18,6 +18,4 @@ public interface MenuRepository {
     Menu get(Integer id);
 
     List<Menu> getAll();
-
-    List<Menu> getAllByName(String name);
 }

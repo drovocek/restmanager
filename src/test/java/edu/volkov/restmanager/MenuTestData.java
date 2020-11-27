@@ -17,7 +17,6 @@ public class MenuTestData {
     public final static LocalDate today = LocalDate.of(2020, 1, 27);
     public final static LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
 
-
     public static final Menu menu1 = new Menu(MENU1_ID, "menu1", rest1, today, false);
     public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", rest2, today, true);
     public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", rest2, tomorrow, false);

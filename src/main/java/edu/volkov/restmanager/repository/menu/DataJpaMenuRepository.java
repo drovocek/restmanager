@@ -21,10 +21,6 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     //USER
-    @Override
-    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
-        return crudMenuRepository.getBetween(startDate, endDate, SORT_DATE);
-    }
 
     //ADMIN
     //TODO for Likes to
@@ -54,7 +50,7 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public List<Menu> getAllByName(String name) {
-        return crudMenuRepository.findAllByName(name);
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getAllBetween(startDate, endDate, SORT_DATE);
     }
 }
