@@ -29,6 +29,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
         if (restaurant == null) {
             return null;
         } else {
+            //TODO now()
             LocalDate startDate = LocalDate.of(2020, 1, 27);
             LocalDate endDate = startDate;
             List<Menu> dayEnabledMenu = crudMenuRepo.getByRestIdBetweenDatesFilteredByEnabled(

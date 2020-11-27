@@ -22,7 +22,7 @@ public class RestaurantUtil {
     }
 
     public static RestaurantTo createToWithMenu(Restaurant restaurant) {
-        return createToWithDifMenuType(restaurant, true);
+        return createToWithDifMenuType(restaurant, false);
     }
 
 

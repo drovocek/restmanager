@@ -33,11 +33,14 @@ public class UserRestaurantController {
     }
 
     @GetMapping("/restaurant")
-    public String getWithDayEnabledMenu(Model model, Integer restId) {
+    public String getWithDayEnabledMenu(Model model, Integer id) {
         int userId = SecurityUtil.authUserId();
-        log.info("getWithDayEnabledMenu by user {} for restaurant {}", userId, restId);
+        log.info("getWithDayEnabledMenu by user {} for restaurant {}", userId, id);
 
-        model.addAttribute("restaurant", createToWithMenu(restService.getWithDayEnabledMenu(restId)));
+        RestaurantTo restaurantTo = createToWithMenu(restService.getWithDayEnabledMenu(id));
+        log.info("getWithDayEnabledMenu by user {} menu {}", userId, restaurantTo.getMenus());
+
+        model.addAttribute("restaurant", restaurantTo);
         return "restaurant";
     }
 
