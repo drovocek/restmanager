@@ -33,4 +33,18 @@ public class MenuTestData {
     public static final List<Menu> todayMenus = Arrays.asList(menu1, menu2, menu4, menu7, menu8, menu9);
     public static final List<Menu> todayEnabledMenus = Arrays.asList(menu2, menu7);
     public static final List<Menu> allEnabledMenus = Arrays.asList(menu2, menu5, menu7, menu10);
+
+    public static Menu getNew() {
+        return new Menu(null, "newMenu", rest1, TOMORROW, false);
+    }
+
+    public static Menu getUpdated() {
+        Menu updated = new Menu(menu1);
+        updated.setMenuDate(TOMORROW);
+        updated.setName("updatedName");
+        updated.setEnabled(false);
+        updated.setRestaurant(rest2);
+        return updated;
+    }
+
 }

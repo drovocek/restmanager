@@ -7,10 +7,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.util.DateTimeUtil.maxIfNull;
-import static edu.volkov.restmanager.util.DateTimeUtil.minIfNull;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
@@ -36,14 +33,19 @@ public class MenuService {
         checkNotFoundWithId(repository.save(menu, restaurantId), menu.getId());
     }
 
-    public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+    public void delete(int menuId, int restaurantId) {
+        checkNotFoundWithId(repository.delete(menuId, restaurantId), menuId);
     }
 
     public Menu get(Integer id) {
         return checkNotFound(repository.get(id), "menu by id: " + id + "dos not exist");
     }
 
+    public List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate) {
+        return repository.getByRestIdBetweenDates(restaurantId, startDate, endDate);
+    }
+
+    //
     public List<Menu> getAll() {
         return repository.getAll();
     }

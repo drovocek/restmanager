@@ -5,7 +5,6 @@ import edu.volkov.restmanager.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantRepository {
-
     //USER
     Restaurant getWithDayEnabledMenu(Integer id);
 

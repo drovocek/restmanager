@@ -17,21 +17,20 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m " +
             "WHERE m.restaurant.id=:restId AND " +
             "m.menuDate>=:startDate AND " +
-            "m.menuDate<=:endDate AND " +
-            "m.enabled=:enabled")
-    List<Menu> getByRestIdBetweenDatesFilteredByEnabled(
+            "m.menuDate<=:endDate")
+    List<Menu> getByRestIdBetweenDates(
             Integer restId,
             LocalDate startDate,
             LocalDate endDate,
-            Boolean enabled
+            Sort sort
     );
 
     @Query("SELECT m FROM Menu m WHERE m.menuDate>=:startDate AND m.menuDate<=:endDate")
     List<Menu> getAllBetween(LocalDate startDate, LocalDate endDate, Sort sorter);
 
     //ADMIN
-    @Transactional
     @Modifying
-    @Query("DELETE FROM  Menu m WHERE m.id=:menuId")
-    int delete(Integer menuId);
+    @Transactional
+    @Query("DELETE FROM Menu m WHERE m.id=:menuId AND m.restaurant.id=:restaurantId")
+    int delete(int menuId, int restaurantId);
 }
