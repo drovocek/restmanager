@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.repository.vote;
 
-import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.repository.user.CrudUserRepository;
@@ -28,7 +27,7 @@ public class DataJpaVoteRepository implements VoteRepository {
     //USER
     @Override
     public Vote save(Vote vote) {
-        if (!vote.isNew() && get(vote.getId(), vote.getVoteDate()) == null) {
+        if (!vote.isNew() && getByUserIdAndVoteDate(vote.getUser().getId(), vote.getVoteDate()) == null) {
             return null;
         }
         return crudVoteRepository.save(vote);
@@ -40,9 +39,8 @@ public class DataJpaVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote get(int userId, LocalDate voteDate) {
-        User user = crudUserRepository.getOne(userId);
-        return crudVoteRepository.findAllByUserAndVoteDate(user, voteDate)
+    public Vote getByUserIdAndVoteDate(int userId, LocalDate voteDate) {
+        return crudVoteRepository.findByUserIdAndVoteDate(userId, voteDate)
                 .filter(vote -> vote.getUser().getId() == userId)
                 .orElse(null);
     }

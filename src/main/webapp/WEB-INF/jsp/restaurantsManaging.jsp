@@ -9,6 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="restaurant.title"/></h3>
+    <a href="restaurantsManaging/form"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -16,17 +17,25 @@
             <th><spring:message code="restaurant.address"/></th>
             <th><spring:message code="restaurant.phone"/></th>
             <th><spring:message code="restaurant.likesAmount"/></th>
-            <th>Voting</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <c:forEach items="${restaurants}" var="restaurant">
             <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
-                <td><a href="restaurants/restaurant?id=${restaurant.id}">${restaurant.name}</a></td>
+                <td>${restaurant.name}
+<%--                    <c:forEach items="${restaurant.menus}" var="menus">--%>
+<%--                        <h4>${menus.name}:</h4>--%>
+<%--                    </c:forEach>--%>
+                </td>
                 <td>${restaurant.address}</td>
                 <td>${restaurant.phone}</td>
                 <td>${restaurant.likesAmount}</td>
-                <td><a href="restaurants/vote?id=${restaurant.id}">Vote</a></td>
+                <td><a href="restaurantsManaging/form?id=${restaurant.id}"><spring:message code="common.update"/></a>
+                </td>
+                <td><a href="restaurantsManaging/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
+                <td><a href="menus/restaurant?restaurantId=${restaurant.id}">Menu managing</a></td>
             </tr>
         </c:forEach>
     </table>

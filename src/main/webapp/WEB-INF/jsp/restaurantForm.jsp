@@ -13,7 +13,7 @@
     <h2>${restaurant.id == null ? createRestaurant : editRestaurant}</h2>
     <jsp:useBean id="restaurant" type="edu.volkov.restmanager.model.Restaurant" scope="request"/>
 
-    <form method="post" action="restaurants">
+    <form method="post" action="restaurantsManaging">
         <input type="hidden" name="id" value="${restaurant.id}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
@@ -24,8 +24,14 @@
             <dd><input type="text" value="${restaurant.address}" size=40 name="address" required></dd>
         </dl>
         <dl>
-            <dt><spring:message code="restaurant.phone"/><br />(+n (nnn) nnn-nnnn):</dt>
+            <dt><spring:message code="restaurant.phone"/><br/>(+n (nnn) nnn-nnnn):</dt>
             <dd><input type="text" value="${restaurant.phone}" name="phone" required></dd>
+        </dl>
+        <dl>
+            <dt><spring:message code="restaurant.enabled"/>:</dt>
+            <dd><a><input type="radio" value="true" name="enabled" required>On</a>
+                <a><input type="radio" value="false" name="enabled" required>Off</a>
+            </dd>
         </dl>
         <button type="submit"><spring:message code="common.save"/></button>
         <button onclick="window.history.back()" type="button"><spring:message code="common.cancel"/></button>

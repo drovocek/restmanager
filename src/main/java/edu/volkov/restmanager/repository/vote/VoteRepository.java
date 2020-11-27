@@ -3,6 +3,7 @@ package edu.volkov.restmanager.repository.vote;
 import edu.volkov.restmanager.model.Vote;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface VoteRepository {
 
@@ -10,7 +11,7 @@ public interface VoteRepository {
 
     boolean delete(int id);
 
-    Vote get(int userId, LocalDate voteDate);
+    Vote getByUserIdAndVoteDate(int userId, LocalDate voteDate);
 
     Vote save(Vote vote);
 }

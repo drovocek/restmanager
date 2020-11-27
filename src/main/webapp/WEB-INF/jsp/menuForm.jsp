@@ -15,6 +15,7 @@
 
     <form method="post" action="menus">
         <input type="hidden" name="menuId" value="${menu.id}">
+        <input type="hidden" name="restaurantId" value="${menu.restaurant.id}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
             <dd><input type="text" value="${menu.name}" name="name" required></dd>

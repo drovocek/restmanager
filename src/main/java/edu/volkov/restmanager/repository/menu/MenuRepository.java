@@ -13,11 +13,11 @@ public interface MenuRepository {
     //ADMIN
     Menu save(Menu menu, int restaurantId);
 
-    boolean delete(Integer id);
+    boolean delete(int menuId, int restaurantId);
 
-    Menu get(Integer id);
+    Menu get(int id);
 
     List<Menu> getAll();
 
-    List<Menu> getAllByName(String name);
+    List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate);
 }

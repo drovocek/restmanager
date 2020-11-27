@@ -17,47 +17,58 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilterByNameAndAddress;
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.RestaurantUtil.*;
 
 @RequestMapping("/restaurants")
 @Controller
 public class UserRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final RestaurantService restaurantService;
+    private final RestaurantService restService;
     private final VoteService voteService;
 
     public UserRestaurantController(RestaurantService service, VoteService voteService, MenuService menuService) {
-        this.restaurantService = service;
+        this.restService = service;
         this.voteService = voteService;
     }
 
-    @GetMapping
-    public String getAllEnabled(Model model) {
+    @GetMapping("/restaurant")
+    public String getWithDayEnabledMenu(Model model, Integer id) {
         int userId = SecurityUtil.authUserId();
-        log.info("getFilteredByNameAndAddressWithEnabledMenu for user {}", userId);
+        log.info("getWithDayEnabledMenu by user {} for restaurant {}", userId, id);
 
-        Predicate<Restaurant> filter = restaurant -> true;
-        List<RestaurantTo> tos = getFilteredTos(restaurantService.getAllWithDayEnabledMenu(), filter);
+        RestaurantTo restaurantTo = createToWithMenu(restService.getWithDayEnabledMenu(id));
+        log.info("getWithDayEnabledMenu by user {} menu {}", userId, restaurantTo.getMenus());
+
+        model.addAttribute("restaurant", restaurantTo);
+        return "restaurant";
+    }
+
+    @GetMapping
+    public String getAllEnabledWithoutMenu(Model model) {
+        int userId = SecurityUtil.authUserId();
+        log.info("getAllEnabledWithoutMenu for user {}", userId);
+
+        Predicate<Restaurant> filter = Restaurant::isEnabled;
+        List<RestaurantTo> tos = getFilteredTosWithEmptyMenu(restService.getAllWithoutMenu(), filter);
 
         model.addAttribute("restaurants", tos);
         return "restaurants";
     }
 
     @GetMapping("/filter")
-    public String getFilteredEnabled(
+    public String getFilteredEnabledWithoutMenu(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String address,
             Model model
     ) {
         int userId = SecurityUtil.authUserId();
-        log.info("getFilteredByNameAndAddressWithEnabledMenu for user {}", userId);
+        log.info("getFilteredEnabledWithoutMenu for user {}", userId);
 
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
-        List<RestaurantTo> filteredTo = getFilteredTos(restaurantService.getAllWithDayEnabledMenu(), filter);
+        List<RestaurantTo> filteredTos = getFilteredTosWithEmptyMenu(restService.getAllWithoutMenu(), filter);
 
-        model.addAttribute("restaurants", filteredTo);
+        model.addAttribute("restaurants", filteredTos);
         return "restaurants";
     }
 

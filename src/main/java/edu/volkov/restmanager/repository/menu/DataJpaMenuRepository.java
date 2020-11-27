@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class DataJpaMenuRepository implements MenuRepository {
-    private static final Sort SORT_DATE = Sort.by(Sort.Direction.ASC, "id");
+    private static final Sort SORT_DATE = Sort.by(Sort.Direction.DESC, "menuDate");
 
     private final CrudMenuRepository crudMenuRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
@@ -21,10 +21,6 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     //USER
-    @Override
-    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
-        return crudMenuRepository.getBetween(startDate, endDate, SORT_DATE);
-    }
 
     //ADMIN
     //TODO for Likes to
@@ -39,22 +35,28 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public boolean delete(Integer id) {
-        return crudMenuRepository.delete(id) != 0;
+    public boolean delete(int menuId, int restaurantId) {
+        return crudMenuRepository.delete(menuId, restaurantId) != 0;
     }
 
     @Override
-    public Menu get(Integer id) {
+    public Menu get(int id) {
         return crudMenuRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Menu> getAll() {
-        return crudMenuRepository.findAll(SORT_DATE);
+    public List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getByRestIdBetweenDates(restaurantId, startDate, endDate, SORT_DATE);
     }
 
     @Override
-    public List<Menu> getAllByName(String name) {
-        return crudMenuRepository.findAllByName(name);
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        return crudMenuRepository.getAllBetween(startDate, endDate, SORT_DATE);
+    }
+
+    //
+    @Override
+    public List<Menu> getAll() {
+        return crudMenuRepository.findAll(SORT_DATE);
     }
 }
