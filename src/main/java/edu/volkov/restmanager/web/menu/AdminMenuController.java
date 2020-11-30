@@ -38,7 +38,6 @@ public class AdminMenuController {
     ) {
         Menu menu = new Menu(menuId, name, null, menuDate, enabled);
 
-        System.out.println(menu);
         if (menu.isNew()) {
             service.create(menu, restaurantId);
         } else {

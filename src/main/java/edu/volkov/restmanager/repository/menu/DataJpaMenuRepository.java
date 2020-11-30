@@ -51,12 +51,12 @@ public class DataJpaMenuRepository implements MenuRepository {
         return crudMenuRepository.getByRestIdBetweenDates(restaurantId, startDate, endDate, SORT_DATE);
     }
 
+    //
     @Override
     public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
         return crudMenuRepository.getAllBetween(startDate, endDate, SORT_DATE);
     }
 
-    //
     @Override
     public List<Menu> getAll() {
         return crudMenuRepository.findAll(SORT_DATE);

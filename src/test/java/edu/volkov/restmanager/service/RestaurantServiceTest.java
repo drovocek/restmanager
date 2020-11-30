@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Collections;
 import java.util.List;
 
-import static edu.volkov.restmanager.MenuTestData.MENU_MATCHER;
-import static edu.volkov.restmanager.MenuTestData.menu2;
-import static edu.volkov.restmanager.RestaurantTestData.*;
+import static edu.volkov.restmanager.testdata.MenuTestData.MENU_MATCHER;
+import static edu.volkov.restmanager.testdata.MenuTestData.rest1EnabledMenus;
+import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
 import static org.junit.Assert.assertThrows;
 
 
@@ -25,20 +24,9 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     //USER
     @Test
     public void getWithDayEnabledMenu() {
-        Restaurant actual = service.getWithDayEnabledMenu(1);
-        REST_MATCHER.assertMatch(actual, rest2);
-        MENU_MATCHER.assertMatch(actual.getMenus(), menu2);
-
-        actual = service.getWithDayEnabledMenu(4);
-        REST_MATCHER.assertMatch(actual, rest5);
-        MENU_MATCHER.assertMatch(actual.getMenus(), Collections.emptyList());
-    }
-
-    @Test
-    public void getWithDayEnabledMenuWithEmptyDayMenu() {
-        Restaurant actual = service.getWithDayEnabledMenu(4);
-        REST_MATCHER.assertMatch(actual, rest5);
-        MENU_MATCHER.assertMatch(actual.getMenus(), Collections.emptyList());
+        Restaurant actual = service.getWithDayEnabledMenu(0);
+        REST_MATCHER.assertMatch(actual, rest1);
+        MENU_MATCHER.assertMatch(actual.getMenus(), rest1EnabledMenus);
     }
 
     @Test
@@ -49,7 +37,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     public void getAllWithoutMenu() {
         List<Restaurant> actual = service.getAllWithoutMenu();
-        REST_MATCHER.assertMatch(actual, allRestaurants);
+        REST_MATCHER.assertMatch(actual, rest1, rest2);
         assertThrows(LazyInitializationException.class, () -> actual.get(0).getMenus().get(0));
     }
 

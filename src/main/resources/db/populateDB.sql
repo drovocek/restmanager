@@ -1,4 +1,6 @@
 DELETE
+FROM menu_item;
+DELETE
 FROM menu;
 DELETE
 FROM vote;
@@ -9,14 +11,17 @@ FROM users;
 DELETE
 FROM restaurant;
 
+
 INSERT INTO users (id, name, email, password)
-VALUES (0, 'User', 'user@yandex.ru', 'password'),
-       (1, 'Admin', 'admin@gmail.com', 'admin');
+VALUES (0, 'User1', 'user1@yandex.ru', 'password1'),
+       (1, 'User2', 'user2@yandex.ru', 'password2'),
+       (2, 'Admin', 'admin@gmail.com', 'admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('USER', 0),
-       ('ADMIN', 1),
-       ('USER', 1);
+       ('USER', 1),
+       ('ADMIN', 2),
+       ('USER', 2);
 
 INSERT INTO restaurant (id, name, address, phone, enabled)
 VALUES (0, 'rest1', 'address1', '+7 (911) 111-1111', true),
@@ -48,18 +53,24 @@ VALUES (0, 'menu1', 0, '2020-01-27', false),
        (9, 'menu10', 4, '2020-01-28', true),
        (10, 'menu11', 4, '2020-01-28', false);
 
--- INSERT INTO dish (name, price, enabled)
--- VALUES ('gooDish1',111,'true'),
---        ('gooDish1',222,'true'),
---        ('gooDish1',333,'true'),
---        ('gooDish1',444,'true'),
---        ('gooDish1',555,'true');
---
-
---
--- INSERT INTO menu_item (menu_id, dish_id)
--- VALUES (0,0),
---        (0,1),
---        (0,2),
---        (0,3),
---        (0,4);
+INSERT INTO menu_item (id, name, menu_id, price)
+VALUES (0, 'menItm1', 0, 100),
+       (1, 'menItm2', 0, 101),
+       (2, 'menItm3', 0, 102),
+       (3, 'menItm4', 0, 103),
+       (4, 'menItm5', 1, 104),
+       (5, 'menItm6', 1, 105),
+       (6, 'menItm7', 1, 106),
+       (7, 'menItm8', 2, 107),
+       (8, 'menItm9', 2, 108),
+       (9, 'menItm10', 3, 109),
+       (10, 'menItm11', 3, 1010),
+       (11, 'menItm12', 3, 1011),
+       (12, 'menItm13', 4, 1012),
+       (13, 'menItm14', 4, 1013),
+       (14, 'menItm15', 4, 1014),
+       (15, 'menItm16', 5, 1015),
+       (16, 'menItm17', 5, 1016),
+       (17, 'menItm18', 5, 1017),
+       (18, 'menItm19', 5, 1018),
+       (19, 'menItm20', 5, 1019);
