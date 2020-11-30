@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
@@ -18,7 +18,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "users_unique_email_idx", columnNames = "email")})
 public class User extends AbstractNamedEntity {
@@ -33,8 +32,8 @@ public class User extends AbstractNamedEntity {
     private String password;
 
     @NotNull
-    @Column(name = "registered", nullable = false, columnDefinition = "date default now()")
-    private LocalDate registered = LocalDate.now();
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
+    private LocalDateTime registered = LocalDateTime.now();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
@@ -54,20 +53,35 @@ public class User extends AbstractNamedEntity {
     @Column(name = "role")
     private Set<Role> roles;
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, LocalDate registered) {
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, true, LocalDateTime.now(), EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, LocalDateTime registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.roles = roles;
         this.registered = registered;
+        setRoles(roles);
     }
 
-    public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled(), user.getRoles(), user.getRegistered());
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRegistered(), u.getRoles());
     }
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email=" + email +
+                ", name=" + name +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
+                '}';
+    }
+
 }

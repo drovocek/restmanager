@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", true, EnumSet.of(Role.USER, Role.ADMIN), LocalDate.now())));
+                service.create(new User(null, "Duplicate", "user1@yandex.ru", "newPass", Role.USER)));
     }
 
     @Test
@@ -102,13 +103,13 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void getAll() {
         List<User> all = service.getAll();
-        USER_MATCHER.assertMatch(all, admin, user);
+        USER_MATCHER.assertMatch(all, admin, user1, user2);
     }
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", true, EnumSet.of(Role.USER), LocalDate.now())), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new User(null, "User", "  ", "password", true, EnumSet.of(Role.USER), LocalDate.now())), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", true, EnumSet.of(Role.USER), LocalDate.now())), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.USER)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.USER)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)), ConstraintViolationException.class);
     }
 }

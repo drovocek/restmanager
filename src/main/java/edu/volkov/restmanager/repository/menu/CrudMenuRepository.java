@@ -2,6 +2,7 @@ package edu.volkov.restmanager.repository.menu;
 
 import edu.volkov.restmanager.model.Menu;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     //USER
+    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m " +
             "WHERE m.restaurant.id=:restId AND " +
             "m.menuDate>=:startDate AND " +
@@ -24,9 +26,6 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
             LocalDate endDate,
             Sort sort
     );
-
-    @Query("SELECT m FROM Menu m WHERE m.menuDate>=:startDate AND m.menuDate<=:endDate")
-    List<Menu> getAllBetween(LocalDate startDate, LocalDate endDate, Sort sorter);
 
     //ADMIN
     @Modifying

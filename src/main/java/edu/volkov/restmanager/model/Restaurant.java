@@ -39,7 +39,7 @@ public class Restaurant extends AbstractNamedEntity {
     private boolean enabled = false;
 
     @OrderBy("menuDate DESC")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant",fetch = FetchType.LAZY)
     private List<Menu> menus;
 
     @Formula("(SELECT COUNT(*) FROM Vote v WHERE v.restaurant_id = id)")

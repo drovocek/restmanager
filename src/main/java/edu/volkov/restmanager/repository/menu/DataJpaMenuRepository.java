@@ -4,6 +4,7 @@ import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,12 +25,12 @@ public class DataJpaMenuRepository implements MenuRepository {
 
     //ADMIN
     //TODO for Likes to
+    @Transactional
     @Override
     public Menu save(Menu menu, int restaurantId) {
-        if (!menu.isNew() && get(menu.getId()) == null) {
+        if (!menu.isNew() && get(menu.getId(), restaurantId) == null) {
             return null;
         }
-
         menu.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
         return crudMenuRepository.save(menu);
     }
@@ -40,23 +41,14 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Menu get(int id) {
-        return crudMenuRepository.findById(id).orElse(null);
+    public Menu get(int menuId, int restaurantId) {
+        return crudMenuRepository.findById(menuId)
+                .filter(meal -> meal.getRestaurant().getId() == restaurantId)
+                .orElse(null);
     }
 
     @Override
     public List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate) {
         return crudMenuRepository.getByRestIdBetweenDates(restaurantId, startDate, endDate, SORT_DATE);
-    }
-
-    @Override
-    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
-        return crudMenuRepository.getAllBetween(startDate, endDate, SORT_DATE);
-    }
-
-    //
-    @Override
-    public List<Menu> getAll() {
-        return crudMenuRepository.findAll(SORT_DATE);
     }
 }
