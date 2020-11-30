@@ -10,8 +10,8 @@ public class RestaurantTestData {
     public final static int REST2_ID = REST1_ID + 1;
     public final static int REST_NOT_FOUND_ID = 10;
 
-    public static final Restaurant rest1 = new Restaurant(REST1_ID, "rest1", "address1", "+7 (911) 111-1111", true, 3);
-    public static final Restaurant rest2 = new Restaurant(REST2_ID, "rest2", "address2", "+7 (922) 222-2222", true, 1);
+    public static final Restaurant rest1 = new Restaurant(REST1_ID, "rest1", "address1", "+7 (911) 111-1111", true, 4);
+    public static final Restaurant rest2 = new Restaurant(REST2_ID, "rest2", "address2", "+7 (922) 222-2222", true, 4);
     public static final Restaurant duplicateNameRest = new Restaurant(null, "rest1", "address2", "+7 (966) 666-6666", true, 0);
 
     public static Restaurant getNew() {

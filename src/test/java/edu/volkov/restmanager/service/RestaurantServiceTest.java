@@ -11,7 +11,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static edu.volkov.restmanager.testdata.MenuTestData.MENU_MATCHER;
-import static edu.volkov.restmanager.testdata.MenuTestData.rest1EnabledMenus;
+import static edu.volkov.restmanager.testdata.MenuTestData.rest1DayEnabledMenus;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
 import static org.junit.Assert.assertThrows;
 
@@ -26,7 +26,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     public void getWithDayEnabledMenu() {
         Restaurant actual = service.getWithDayEnabledMenu(0);
         REST_MATCHER.assertMatch(actual, rest1);
-        MENU_MATCHER.assertMatch(actual.getMenus(), rest1EnabledMenus);
+        MENU_MATCHER.assertMatch(actual.getMenus(), rest1DayEnabledMenus);
     }
 
     @Test

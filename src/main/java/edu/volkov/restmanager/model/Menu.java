@@ -31,12 +31,11 @@ public class Menu extends AbstractNamedEntity {
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     private boolean enabled = false;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<MenuItem> menuItems;
 
     public Menu(Menu menu) {
-        this(menu.getId(), menu.getName(), menu.getRestaurant(), menu.getMenuDate(), menu.isEnabled());
+        this(menu.getId(), menu.getName(), menu.getRestaurant(), menu.getMenuDate(), menu.isEnabled(), menu.getMenuItems());
     }
 
     public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {

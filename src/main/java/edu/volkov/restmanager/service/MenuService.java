@@ -44,9 +44,4 @@ public class MenuService {
     public List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate) {
         return repository.getByRestIdBetweenDates(restaurantId, startDate, endDate);
     }
-
-    //
-    public List<Menu> getAll() {
-        return repository.getAll();
-    }
 }

@@ -37,4 +37,13 @@ public class MenuItem extends AbstractNamedEntity {
         this.menu = menu;
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
