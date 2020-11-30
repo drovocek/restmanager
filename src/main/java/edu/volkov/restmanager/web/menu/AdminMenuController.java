@@ -32,9 +32,11 @@ public class AdminMenuController {
             @RequestParam(required = false) Integer menuId,
             Integer restaurantId,
             String name,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate
+            Boolean enabled,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate,
+            Model model
     ) {
-        Menu menu = new Menu(menuId, name, null, menuDate, false);
+        Menu menu = new Menu(menuId, name, null, menuDate, enabled);
 
         System.out.println(menu);
         if (menu.isNew()) {
@@ -43,25 +45,29 @@ public class AdminMenuController {
             service.update(menu, restaurantId);
         }
 
-        return "redirect:/menus";
+        model.addAttribute("restaurantId", restaurantId);
+        return "redirect:/menus/restaurant";
     }
 
     @GetMapping("/menuForm")
     public String updateOrCreate(
             @RequestParam(required = false) Integer menuId,
+            @RequestParam Integer restaurantId,
             Model model) {
         Menu menu = (menuId == null)
                 ? new Menu(null, "", null, LocalDate.now(), false)
-                : service.get(menuId);
+                : service.get(menuId, restaurantId);
         model.addAttribute("menu", menu);
+        model.addAttribute("restaurantId", restaurantId);
 
         return "menuForm";
     }
 
     @GetMapping("/delete")
-    public String erase(Integer menuId, Integer restaurantId) {
+    public String erase(Integer menuId, Integer restaurantId, Model model) {
         service.delete(menuId, restaurantId);
-        return "redirect:/menus";
+        model.addAttribute("restaurantId", restaurantId);
+        return "redirect:/menus/restaurant";
     }
 
     @GetMapping("/restaurant")
@@ -69,8 +75,8 @@ public class AdminMenuController {
         int userId = SecurityUtil.authUserId();
         log.info("getAllByRestId for user {}", userId);
 
-        LocalDate startDate = LocalDate.of(2010,1,1);
-        LocalDate endDate = LocalDate.of(2030,1,1);
+        LocalDate startDate = LocalDate.of(2010, 1, 1);
+        LocalDate endDate = LocalDate.of(2030, 1, 1);
 
         List<Menu> allByRestId = service.getByRestIdBetweenDates(restaurantId, startDate, endDate);
         log.info("getAllByRestId for user {} return", allByRestId);

@@ -9,6 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="menu.title"/></h3>
+    <a href="menus/menuForm?menuId=&restaurantId=0"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>

@@ -37,8 +37,8 @@ public class MenuService {
         checkNotFoundWithId(repository.delete(menuId, restaurantId), menuId);
     }
 
-    public Menu get(Integer id) {
-        return checkNotFound(repository.get(id), "menu by id: " + id + "dos not exist");
+    public Menu get(int menuId, int restaurantId) {
+        return checkNotFound(repository.get(menuId, restaurantId), "menu by id: " + menuId + "dos not exist for rest:" + restaurantId);
     }
 
     public List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate) {

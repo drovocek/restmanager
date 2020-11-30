@@ -43,7 +43,7 @@ public class MenuTestData {
         updated.setMenuDate(TOMORROW);
         updated.setName("updatedName");
         updated.setEnabled(false);
-        updated.setRestaurant(rest2);
+        updated.setRestaurant(rest1);
         return updated;
     }
 
