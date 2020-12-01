@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.*;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.*;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 @RequestMapping("/restaurants")
@@ -36,7 +36,7 @@ public class UserRestaurantController {
     public String getEnabled(Integer id, Model model) {
         log.info("\n getEnabled for restaurant {}", id);
         Restaurant rest = restRepo.getWithDayEnabledMenu(id);
-        RestaurantTo restTo = getTo(
+        RestaurantTo restTo = createTo(
                 checkNotFoundWithId(
                         rest.isEnabled() ? rest : null,
                         id

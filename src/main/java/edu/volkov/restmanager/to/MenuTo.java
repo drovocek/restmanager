@@ -1,28 +1,28 @@
 package edu.volkov.restmanager.to;
 
-import edu.volkov.restmanager.model.Menu;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class RestaurantTo {
+public class MenuTo {
 
     private final Integer id;
 
     private final String name;
 
-    private final String address;
+    private final LocalDate menuDate;
 
-    private final String phone;
+    private final boolean enabled;
 
-    private final int likesAmount;
+    private final Integer restId;
 
-    private final List<Menu> menus;
+    private final List<MenuItemTo> menuItems;
 }

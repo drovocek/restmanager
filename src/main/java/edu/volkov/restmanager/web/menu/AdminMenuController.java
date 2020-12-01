@@ -2,6 +2,7 @@ package edu.volkov.restmanager.web.menu;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.repository.menu.MenuRepository;
+import edu.volkov.restmanager.to.MenuTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
+import static edu.volkov.restmanager.util.model.MenuUtil.createTo;
+import static edu.volkov.restmanager.util.model.MenuUtil.getTos;
 
 @RequestMapping("/menus")
 @Controller
@@ -30,7 +34,7 @@ public class AdminMenuController {
     }
 
     @PostMapping
-    public String save(
+    public String updateOrCreate(
             @RequestParam(required = false) Integer id,
             Integer restId,
             String name,
@@ -38,9 +42,10 @@ public class AdminMenuController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate,
             Model model
     ) {
+        log.info("\n updateOrCreate menu:{} of restaurant:{}", id, restId);
         Menu menu = new Menu(id, name, null, menuDate, enabled);
 
-        if (menu.isNew()) {
+        if (menu.getId() == null) {
             log.info("\n create menu fo restaurant:{}", restId);
             menuRepo.save(menu, restId);
         } else {
@@ -52,19 +57,16 @@ public class AdminMenuController {
         return "redirect:/menus/restaurant";
     }
 
-    @GetMapping("/menuForm")
-    public String updateOrCreate(
-            @RequestParam(required = false) Integer id,
-            @RequestParam Integer restId,
-            Model model) {
-        log.info("\n updateOrCreate menu:{} of restaurant:{}", id, restId);
-        Menu menu = (id == null)
-                ? new Menu(null, "", null, LocalDate.now(), false)
-                : checkNotFound(menuRepo.get(id, restId),
-                "menu by id: " + id + "dos not exist for rest:" + restId);
-        model.addAttribute("menu", menu);
-        model.addAttribute("restId", restId);
+    @GetMapping("/update")
+    public String update(Integer id, Integer restId, Model model) {
+        MenuTo to = createTo(checkNotFound(menuRepo.get(id, restId), "menu by id: " + id + "dos not exist for rest:" + restId));
+        model.addAttribute("menuTo", to);
+        return "menuForm";
+    }
 
+    @GetMapping("/create")
+    public String create(Integer restId, Model model) {
+        model.addAttribute("menuTo", new MenuTo(null, "def", LocalDate.now(), false, restId, Collections.emptyList()));
         return "menuForm";
     }
 
@@ -80,9 +82,10 @@ public class AdminMenuController {
     @GetMapping("/restaurant")
     public String getAll(Integer restId, Model model) {
         log.info("\n getAll for restaurant:{}", restId);
-        List<Menu> allByRestId = menuRepo.getAll(restId);
+        List<MenuTo> tos = getTos(menuRepo.getAll(restId));
 
-        model.addAttribute("menus", allByRestId);
+        model.addAttribute("menuTos", tos);
+        log.info("\n getAll end {}", tos);
         return "menus";
     }
 
@@ -93,9 +96,9 @@ public class AdminMenuController {
             Integer restId,
             Model model) {
         log.info("\n getBetween start{}, end{} for restaurant:{}", startDate, endDate, restId);
-        List<Menu> allByRestId = menuRepo.getBetween(startDate, endDate, restId);
+        List<MenuTo> tos = getTos(menuRepo.getBetween(startDate, endDate, restId));
 
-        model.addAttribute("menus", allByRestId);
+        model.addAttribute("menuTos", tos);
         return "menus";
     }
 }

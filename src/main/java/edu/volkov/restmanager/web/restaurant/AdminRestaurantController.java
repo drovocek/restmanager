@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTos;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 

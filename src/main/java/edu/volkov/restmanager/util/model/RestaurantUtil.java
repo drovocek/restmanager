@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.util;
+package edu.volkov.restmanager.util.model;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.to.RestaurantTo;
@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RestaurantUtil {
-    public static RestaurantTo getTo(Restaurant rest) {
+    public static RestaurantTo createTo(Restaurant rest) {
         return new RestaurantTo(
                 rest.id(),
                 rest.getName(),
@@ -23,7 +23,7 @@ public class RestaurantUtil {
     public static List<RestaurantTo> getFilteredTos(List<Restaurant> rests, Predicate<Restaurant> filter) {
         return rests.stream()
                 .filter(filter)
-                .map(RestaurantUtil::getTo)
+                .map(RestaurantUtil::createTo)
                 .collect(Collectors.toList());
     }
 
