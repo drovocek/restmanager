@@ -33,7 +33,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
             //TODO now()
             LocalDate startDate = LocalDate.of(2020, 1, 27);
             LocalDate endDate = startDate;
-            List<Menu> dayMenu = crudMenuRepo.getByRestIdBetweenDates(id, startDate, endDate, SORT_NAME);
+            List<Menu> dayMenu = crudMenuRepo.getBetween(startDate, endDate, id);
             List<Menu> dayEnabledMenu = dayMenu.stream().filter(Menu::isEnabled).collect(Collectors.toList());
 
             restaurant.setMenus(dayEnabledMenu);

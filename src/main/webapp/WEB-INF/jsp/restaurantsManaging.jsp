@@ -35,7 +35,7 @@
                 <td><a href="restaurantsManaging/form?id=${restaurant.id}"><spring:message code="common.update"/></a>
                 </td>
                 <td><a href="restaurantsManaging/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
-                <td><a href="menus/restaurant?restaurantId=${restaurant.id}">Menu managing</a></td>
+                <td><a href="menus/restaurant?restId=${restaurant.id}">Menu managing</a></td>
             </tr>
         </c:forEach>
     </table>

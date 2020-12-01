@@ -1,7 +1,6 @@
 package edu.volkov.restmanager.web.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.service.MenuService;
 import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.service.VoteService;
 import edu.volkov.restmanager.to.RestaurantTo;
@@ -27,7 +26,7 @@ public class UserRestaurantController {
     private final RestaurantService restService;
     private final VoteService voteService;
 
-    public UserRestaurantController(RestaurantService service, VoteService voteService, MenuService menuService) {
+    public UserRestaurantController(RestaurantService service, VoteService voteService) {
         this.restService = service;
         this.voteService = voteService;
     }
