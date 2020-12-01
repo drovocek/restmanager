@@ -9,7 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="restaurant.title"/></h3>
-    <a href="restaurantsManaging/form"><spring:message code="common.add"/></a>
+    <a href="restaurantsManaging/create"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -25,14 +25,11 @@
             <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
                 <td>${restaurant.name}
-<%--                    <c:forEach items="${restaurant.menus}" var="menus">--%>
-<%--                        <h4>${menus.name}:</h4>--%>
-<%--                    </c:forEach>--%>
                 </td>
                 <td>${restaurant.address}</td>
                 <td>${restaurant.phone}</td>
                 <td>${restaurant.likesAmount}</td>
-                <td><a href="restaurantsManaging/form?id=${restaurant.id}"><spring:message code="common.update"/></a>
+                <td><a href="restaurantsManaging/update?id=${restaurant.id}"><spring:message code="common.update"/></a>
                 </td>
                 <td><a href="restaurantsManaging/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
                 <td><a href="menus/restaurant?restId=${restaurant.id}">Menu managing</a></td>

@@ -10,22 +10,22 @@
     <h3><spring:message code="restaurant.restaurantManaging"/></h3>
     <spring:message code="common.create" var="createRestaurant"/>
     <spring:message code="common.edit" var="editRestaurant"/>
-    <h2>${restaurant.id == null ? createRestaurant : editRestaurant}</h2>
-    <jsp:useBean id="restaurant" type="edu.volkov.restmanager.model.Restaurant" scope="request"/>
+    <h2>${restTo.id == null ? createRestaurant : editRestaurant}</h2>
+    <jsp:useBean id="restTo" type="edu.volkov.restmanager.to.RestaurantTo" scope="request"/>
 
     <form method="post" action="restaurantsManaging">
-        <input type="hidden" name="id" value="${restaurant.id}">
+        <input type="hidden" name="id" value="${restTo.id}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
-            <dd><input type="text" value="${restaurant.name}" name="name" required></dd>
+            <dd><input type="text" value="${restTo.name}" name="name" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="restaurant.address"/>:</dt>
-            <dd><input type="text" value="${restaurant.address}" size=40 name="address" required></dd>
+            <dd><input type="text" value="${restTo.address}" size=40 name="address" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="restaurant.phone"/><br/>(+n (nnn) nnn-nnnn):</dt>
-            <dd><input type="text" value="${restaurant.phone}" name="phone" required></dd>
+            <dd><input type="text" value="${restTo.phone}" name="phone" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="restaurant.enabled"/>:</dt>

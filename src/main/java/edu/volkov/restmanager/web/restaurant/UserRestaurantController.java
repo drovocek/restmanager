@@ -43,7 +43,7 @@ public class UserRestaurantController {
                 )
         );
 
-        model.addAttribute("restaurant", restTo);
+        model.addAttribute("restTo", restTo);
         return "restaurant";
     }
 
@@ -53,7 +53,7 @@ public class UserRestaurantController {
         Predicate<Restaurant> filter = Restaurant::isEnabled;
         List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 
-        model.addAttribute("restaurants", tos);
+        model.addAttribute("restTos", tos);
         return "restaurants";
     }
 
@@ -67,7 +67,7 @@ public class UserRestaurantController {
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
         List<RestaurantTo> filteredTos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 
-        model.addAttribute("restaurants", filteredTos);
+        model.addAttribute("restTos", filteredTos);
         return "restaurants";
     }
 
