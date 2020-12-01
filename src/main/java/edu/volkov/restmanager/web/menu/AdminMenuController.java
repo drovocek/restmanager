@@ -23,10 +23,10 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 public class AdminMenuController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final MenuRepository repository;
+    private final MenuRepository menuRepo;
 
-    public AdminMenuController(MenuRepository repository) {
-        this.repository = repository;
+    public AdminMenuController(MenuRepository menuRepo) {
+        this.menuRepo = menuRepo;
     }
 
     @PostMapping
@@ -42,10 +42,10 @@ public class AdminMenuController {
 
         if (menu.isNew()) {
             log.info("create menu fo restaurant:{}", restId);
-            repository.save(menu, restId);
+            menuRepo.save(menu, restId);
         } else {
             log.info("update menu:{} of restaurant:{}", id, restId);
-            checkNotFoundWithId(repository.save(menu, restId), menu.getId());
+            checkNotFoundWithId(menuRepo.save(menu, restId), menu.getId());
         }
 
         model.addAttribute("restId", restId);
@@ -60,7 +60,7 @@ public class AdminMenuController {
         log.info("updateOrCreate menu:{} of restaurant:{}", id, restId);
         Menu menu = (id == null)
                 ? new Menu(null, "", null, LocalDate.now(), false)
-                : checkNotFound(repository.get(id, restId),
+                : checkNotFound(menuRepo.get(id, restId),
                 "menu by id: " + id + "dos not exist for rest:" + restId);
         model.addAttribute("menu", menu);
         model.addAttribute("restId", restId);
@@ -71,7 +71,7 @@ public class AdminMenuController {
     @GetMapping("/delete")
     public String erase(Integer id, Integer restId, Model model) {
         log.info("erase menu:{} of restaurant:{}", id, restId);
-        checkNotFoundWithId(repository.delete(id, restId), (int) id);
+        checkNotFoundWithId(menuRepo.delete(id, restId), (int) id);
 
         model.addAttribute("restId", restId);
         return "redirect:/menus/restaurant";
@@ -80,7 +80,7 @@ public class AdminMenuController {
     @GetMapping("/restaurant")
     public String getAll(Integer restId, Model model) {
         log.info("getAll for restaurant:{}", restId);
-        List<Menu> allByRestId = repository.getAll(restId);
+        List<Menu> allByRestId = menuRepo.getAll(restId);
 
         model.addAttribute("menus", allByRestId);
         return "menus";
@@ -93,7 +93,7 @@ public class AdminMenuController {
             Integer restId,
             Model model) {
         log.info("getBetween start{}, end{} for restaurant:{}", startDate, endDate, restId);
-        List<Menu> allByRestId = repository.getBetween(startDate, endDate, restId);
+        List<Menu> allByRestId = menuRepo.getBetween(startDate, endDate, restId);
 
         model.addAttribute("menus", allByRestId);
         return "menus";

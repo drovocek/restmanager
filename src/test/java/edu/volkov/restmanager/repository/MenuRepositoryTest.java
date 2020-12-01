@@ -1,9 +1,10 @@
-package edu.volkov.restmanager.service;
+package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.AbstractBaseEntity;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.repository.menu.MenuRepository;
+import edu.volkov.restmanager.AbstractTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +20,7 @@ import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
-public class MenuServiceTest extends AbstractServiceTest {
+public class MenuRepositoryTest extends AbstractTest {
 
     @Autowired
     protected MenuRepository repository;

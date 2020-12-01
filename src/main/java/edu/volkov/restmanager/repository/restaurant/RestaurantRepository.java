@@ -8,7 +8,7 @@ public interface RestaurantRepository {
     //USER
     Restaurant getWithDayEnabledMenu(Integer id);
 
-    List<Restaurant> getAllWithoutMenu();
+    List<Restaurant> getAllWithDayEnabledMenu();
 
     //ADMIN
     Restaurant save(Restaurant restaurant);

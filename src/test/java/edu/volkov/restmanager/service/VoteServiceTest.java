@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.service;
 
+import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Vote;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import static edu.volkov.restmanager.UserTestData.USER1_ID;
 import static edu.volkov.restmanager.service.VoteService.setTimeLimit;
 import static org.junit.Assert.*;
 
-public class VoteServiceTest extends AbstractServiceTest {
+public class VoteServiceTest extends AbstractTest {
 
     @Autowired
     protected VoteService service;

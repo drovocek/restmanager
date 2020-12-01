@@ -1,9 +1,7 @@
 package edu.volkov.restmanager.testdata;
 
 import edu.volkov.restmanager.TestMatcher;
-import edu.volkov.restmanager.model.AbstractBaseEntity;
 import edu.volkov.restmanager.model.Menu;
-import edu.volkov.restmanager.model.MenuItem;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -33,6 +31,8 @@ public class MenuTestData {
     public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", rest2, TOMORROW, true, menu6MenuItems);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
+    public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));
+
     public static final List<Menu> rest1Menus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3));
     public static final List<Menu> rest1EnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu3));
     public static final List<Menu> rest1DayEnabledMenus = orderByDateDesc(Arrays.asList(menu2));
