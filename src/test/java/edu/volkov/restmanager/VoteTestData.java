@@ -9,8 +9,8 @@ import java.util.List;
 
 import static edu.volkov.restmanager.testdata.RestaurantTestData.rest1;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.rest2;
-import static edu.volkov.restmanager.UserTestData.user1;
-import static edu.volkov.restmanager.UserTestData.user2;
+import static edu.volkov.restmanager.testdata.UserTestData.user1;
+import static edu.volkov.restmanager.testdata.UserTestData.user2;
 
 public class VoteTestData {
     public final static int VOTE1_ID = 0;

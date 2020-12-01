@@ -5,15 +5,18 @@ import edu.volkov.restmanager.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantRepository {
-    //USER
-    Restaurant getWithDayEnabledMenu(Integer id);
 
-    List<Restaurant> getAllWithoutMenu();
-
-    //ADMIN
+    // null if not found, when updated
     Restaurant save(Restaurant restaurant);
 
-    boolean delete(Integer id);
+    // null if not found
+    boolean delete(int id);
 
-    Restaurant get(Integer id);
+    // null if not found
+    Restaurant get(int id);
+
+    // null if not found
+    Restaurant getWithDayEnabledMenu(int id);
+
+    List<Restaurant> getAllWithDayEnabledMenu();
 }

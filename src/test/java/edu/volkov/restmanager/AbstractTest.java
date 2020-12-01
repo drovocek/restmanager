@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.service;
+package edu.volkov.restmanager;
 
 import edu.volkov.restmanager.TimingRules;
 import org.junit.ClassRule;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThrows;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-abstract public class AbstractServiceTest {
+abstract public class AbstractTest {
 
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;

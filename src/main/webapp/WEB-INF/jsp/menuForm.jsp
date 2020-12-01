@@ -14,8 +14,8 @@
     <jsp:useBean id="menu" type="edu.volkov.restmanager.model.Menu" scope="request"/>
 
     <form method="post" action="menus">
-        <input type="hidden" name="menuId" value="${menu.id}">
-        <input type="hidden" name="restaurantId" value="${restaurantId}">
+        <input type="hidden" name="id" value="${menu.id}">
+        <input type="hidden" name="restId" value="${restId}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
             <dd><input type="text" value="${menu.name}" name="name" required></dd>

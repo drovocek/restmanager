@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.service;
 
+import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Role;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.util.exception.NotFoundException;
@@ -8,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
-import static edu.volkov.restmanager.UserTestData.*;
+import static edu.volkov.restmanager.testdata.UserTestData.*;
 import static org.junit.Assert.assertThrows;
 
-public class UserServiceTest extends AbstractServiceTest {
+public class UserServiceTest extends AbstractTest {
 
     @Autowired
     protected UserService service;

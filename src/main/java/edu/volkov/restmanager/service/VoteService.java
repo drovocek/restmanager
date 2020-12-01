@@ -5,12 +5,12 @@ import edu.volkov.restmanager.repository.vote.VoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -18,31 +18,30 @@ public class VoteService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final VoteRepository repository;
-    private static LocalTime changeTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
+    private static LocalTime changeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
     public VoteService(VoteRepository repository) {
         this.repository = repository;
     }
 
-    //USER
-    public Vote getByUserIdAndVoteDate(int userId, LocalDate voteDate) {
-        return repository.getByUserIdAndVoteDate(userId, voteDate);
+    public Vote get(int userId, LocalDate voteDate) {
+        return repository.get(userId, voteDate);
     }
 
-    public void vote(int userId, int restaurantId) {
+    public void vote(int userId, int restId) {
         LocalDate votingDate = LocalDate.now();
-        boolean beforeTimeLimit = LocalTime.now().isBefore(changeTimeLimit);
-        Vote lastUserVoteToDate = getByUserIdAndVoteDate(userId, votingDate);
+        boolean inLimit = LocalTime.now().isBefore(changeLimit);
+        Vote lastVote = get(userId, votingDate);
 
-        if (lastUserVoteToDate == null) {
+        if (lastVote == null) {
             log.info("\n create vote");
-            constructAndCreate(userId, restaurantId, votingDate);
-        } else if (lastUserVoteToDate.getRestaurant().getId() != restaurantId && beforeTimeLimit) {
-            log.info("\n update vote {}", lastUserVoteToDate.getId());
-            constructAndUpdate(lastUserVoteToDate.getId(), userId, restaurantId, votingDate);
-        } else if (beforeTimeLimit) {
-            log.info("\n delete vote {}", lastUserVoteToDate.getId());
-            delete(lastUserVoteToDate.getId());
+            create(userId, restId, votingDate);
+        } else if (lastVote.getRestaurant().getId() != restId && inLimit) {
+            log.info("\n update vote {}", lastVote.getId());
+            update(lastVote.getId(), userId, restId, votingDate);
+        } else if (inLimit) {
+            log.info("\n delete vote {}", lastVote.getId());
+            delete(lastVote.getId());
         }
     }
 
@@ -50,25 +49,15 @@ public class VoteService {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
-    private Vote constructAndCreate(int userId, int restaurantId, LocalDate votingDate) {
-        Assert.isTrue(userId >= 0, "userId must be >= 0");
-        Assert.isTrue(restaurantId >= 0, "userId must be >= 0");
-        Assert.notNull(votingDate, "votingDate must be not null");
-        Vote saved = repository.constructVote(null, userId, restaurantId, votingDate);
-
-        return repository.save(saved);
+    public static void setTimeLimit(LocalTime time) {
+        changeLimit = time;
     }
 
-    private void constructAndUpdate(int voteId, int userId, int restaurantId, LocalDate votingDate) {
-        Assert.isTrue(userId >= 0, "userId must be >= 0");
-        Assert.isTrue(restaurantId >= 0, "userId must be >= 0");
-        Assert.notNull(votingDate, "votingDate must be not null");
-        Vote updated = repository.constructVote(voteId, userId, restaurantId, votingDate);
-
-        checkNotFoundWithId(repository.save(updated), userId);
+    private void update(Integer voteId, Integer userId, Integer restId, LocalDate voteDate) {
+        checkNotFoundWithId(repository.save(voteId, userId, restId, voteDate), voteId);
     }
 
-    public static void setTimeLimit(LocalTime time){
-        changeTimeLimit=time;
+    private void create(Integer userId, Integer restId, LocalDate voteDate) {
+        checkNotFound(repository.save(null, userId, restId, voteDate), "vote don't save");
     }
 }

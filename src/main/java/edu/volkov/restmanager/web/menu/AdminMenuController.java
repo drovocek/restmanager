@@ -1,8 +1,7 @@
 package edu.volkov.restmanager.web.menu;
 
 import edu.volkov.restmanager.model.Menu;
-import edu.volkov.restmanager.service.MenuService;
-import edu.volkov.restmanager.web.SecurityUtil;
+import edu.volkov.restmanager.repository.menu.MenuRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,69 +15,85 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.List;
 
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
+
 @RequestMapping("/menus")
 @Controller
 public class AdminMenuController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final MenuService service;
+    private final MenuRepository menuRepo;
 
-    public AdminMenuController(MenuService service) {
-        this.service = service;
+    public AdminMenuController(MenuRepository menuRepo) {
+        this.menuRepo = menuRepo;
     }
 
     @PostMapping
     public String save(
-            @RequestParam(required = false) Integer menuId,
-            Integer restaurantId,
+            @RequestParam(required = false) Integer id,
+            Integer restId,
             String name,
             Boolean enabled,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate,
             Model model
     ) {
-        Menu menu = new Menu(menuId, name, null, menuDate, enabled);
+        Menu menu = new Menu(id, name, null, menuDate, enabled);
 
         if (menu.isNew()) {
-            service.create(menu, restaurantId);
+            log.info("\n create menu fo restaurant:{}", restId);
+            menuRepo.save(menu, restId);
         } else {
-            service.update(menu, restaurantId);
+            log.info("\n update menu:{} of restaurant:{}", id, restId);
+            checkNotFoundWithId(menuRepo.save(menu, restId), menu.getId());
         }
 
-        model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("restId", restId);
         return "redirect:/menus/restaurant";
     }
 
     @GetMapping("/menuForm")
     public String updateOrCreate(
-            @RequestParam(required = false) Integer menuId,
-            @RequestParam Integer restaurantId,
+            @RequestParam(required = false) Integer id,
+            @RequestParam Integer restId,
             Model model) {
-        Menu menu = (menuId == null)
+        log.info("\n updateOrCreate menu:{} of restaurant:{}", id, restId);
+        Menu menu = (id == null)
                 ? new Menu(null, "", null, LocalDate.now(), false)
-                : service.get(menuId, restaurantId);
+                : checkNotFound(menuRepo.get(id, restId),
+                "menu by id: " + id + "dos not exist for rest:" + restId);
         model.addAttribute("menu", menu);
-        model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("restId", restId);
 
         return "menuForm";
     }
 
     @GetMapping("/delete")
-    public String erase(Integer menuId, Integer restaurantId, Model model) {
-        service.delete(menuId, restaurantId);
-        model.addAttribute("restaurantId", restaurantId);
+    public String delete(int id, int restId, Model model) {
+        log.info("\n delete menu:{} of restaurant:{}", id, restId);
+        checkNotFoundWithId(menuRepo.delete(id, restId), id);
+
+        model.addAttribute("restId", restId);
         return "redirect:/menus/restaurant";
     }
 
     @GetMapping("/restaurant")
-    public String getAllByRestId(Integer restaurantId, Model model) {
-        int userId = SecurityUtil.authUserId();
-        log.info("getAllByRestId for user {}", userId);
+    public String getAll(Integer restId, Model model) {
+        log.info("\n getAll for restaurant:{}", restId);
+        List<Menu> allByRestId = menuRepo.getAll(restId);
 
-        LocalDate startDate = LocalDate.of(2010, 1, 1);
-        LocalDate endDate = LocalDate.of(2030, 1, 1);
+        model.addAttribute("menus", allByRestId);
+        return "menus";
+    }
 
-        List<Menu> allByRestId = service.getByRestIdBetweenDates(restaurantId, startDate, endDate);
-        log.info("getAllByRestId for user {} return", allByRestId);
+    @GetMapping("/filter")
+    public String getBetween(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            Integer restId,
+            Model model) {
+        log.info("\n getBetween start{}, end{} for restaurant:{}", startDate, endDate, restId);
+        List<Menu> allByRestId = menuRepo.getBetween(startDate, endDate, restId);
 
         model.addAttribute("menus", allByRestId);
         return "menus";

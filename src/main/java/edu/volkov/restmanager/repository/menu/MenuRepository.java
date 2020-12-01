@@ -6,13 +6,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MenuRepository {
-    //ADMIN
-    Menu save(Menu menu, int restaurantId);
+    // null if updated menu do not belong to restId
+    Menu save(Menu menu, int restId);
 
-    boolean delete(int menuId, int restaurantId);
+    // false if menu do not belong to restId
+    boolean delete(int id, int restId);
 
-    Menu get(int menuId, int restaurantId);
+    // null if menu do not belong to restId
+    Menu get(int id, int restId);
 
+    // ORDERED date desc
+    List<Menu> getAll(int restId);
 
-    List<Menu> getByRestIdBetweenDates(Integer restaurantId, LocalDate startDate, LocalDate endDate);
+    // ORDERED date desc
+    List<Menu> getBetween(LocalDate startDate, LocalDate endDate, int restId);
 }

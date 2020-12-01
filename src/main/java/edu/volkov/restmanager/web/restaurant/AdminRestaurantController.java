@@ -1,7 +1,7 @@
 package edu.volkov.restmanager.web.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.service.RestaurantService;
+import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import edu.volkov.restmanager.to.RestaurantTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTosWithEmptyMenu;
+import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 
 @RequestMapping("/restaurantsManaging")
@@ -23,15 +24,15 @@ import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTosWithEmpty
 public class AdminRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final RestaurantService service;
+    private final RestaurantRepository restRepo;
 
-    public AdminRestaurantController(RestaurantService service) {
-        this.service = service;
+    public AdminRestaurantController(RestaurantRepository restRepo) {
+        this.restRepo = restRepo;
     }
 
     @PostMapping
     public String save(
-            @RequestParam(name = "id", required = false) Integer id,
+            @RequestParam(required = false) Integer id,
             String name,
             String address,
             String phone,
@@ -40,33 +41,42 @@ public class AdminRestaurantController {
         Restaurant restaurant = new Restaurant(id, name, address, phone, enabled, 0);
 
         if (restaurant.isNew()) {
-            service.create(restaurant);
+            log.info("\n create restaurant");
+            restRepo.save(restaurant);
         } else {
-            service.update(restaurant);
+            log.info("\n update restaurant");
+            checkNotFoundWithId(restRepo.save(restaurant), restaurant.getId());
         }
 
         return "redirect:/restaurantsManaging";
     }
 
     @GetMapping("/form")
-    public String updateOrCreate(@RequestParam(required = false) Integer id, Model model) {
+    public String updateOrCreate(
+            @RequestParam(required = false) Integer id,
+            Model model
+    ) {
+        log.info("\n updateOrCreate for restaurant {}", id);
         Restaurant restaurant = (id == null)
                 ? new Restaurant("", "", "+7(495) 000-0000")
-                : service.get(id);
+                : restRepo.get(id);
+
         model.addAttribute("restaurant", restaurant);
         return "restaurantForm";
     }
 
     @GetMapping("/delete")
-    public String erase(Integer id) {
-        service.delete(id);
+    public String erase(int id) {
+        log.info("\n erase for restaurant {}", id);
+        checkNotFoundWithId(restRepo.delete(id), id);
         return "redirect:/restaurantsManaging";
     }
 
     @GetMapping
-    public String getAllWithoutMenu(Model model) {
-        Predicate<Restaurant> filter = restaurant -> true;
-        List<RestaurantTo> tos = getFilteredTosWithEmptyMenu(service.getAllWithoutMenu(), filter);
+    public String getAll(Model model) {
+        log.info("\n getAll restaurants");
+        Predicate<Restaurant> filter = rest -> true;
+        List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 
         model.addAttribute("restaurants", tos);
         return "restaurantsManaging";

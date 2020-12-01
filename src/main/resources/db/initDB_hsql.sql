@@ -59,9 +59,10 @@ CREATE TABLE menu
 
 CREATE TABLE menu_item
 (
-    id      INT IDENTITY NOT NULL,
-    name    VARCHAR(255) NOT NULL,
-    menu_id INTEGER      NOT NULL,
-    price   INTEGER      NOT NULL,
+    id      INT IDENTITY          NOT NULL,
+    name    VARCHAR(255)          NOT NULL,
+    menu_id INTEGER               NOT NULL,
+    price   INTEGER               NOT NULL,
+    enabled BOOLEAN DEFAULT FALSE NOT NULL,
     FOREIGN KEY (menu_id) REFERENCES menu (id) ON DELETE CASCADE
 );
