@@ -43,7 +43,7 @@ public class AdminMenuController {
             Model model
     ) {
         log.info("\n updateOrCreate menu:{} of restaurant:{}", id, restId);
-        Menu menu = new Menu(id, name, null, menuDate, enabled);
+        Menu menu = new Menu(id, name, menuDate, enabled);
 
         if (menu.getId() == null) {
             log.info("\n create menu fo restaurant:{}", restId);

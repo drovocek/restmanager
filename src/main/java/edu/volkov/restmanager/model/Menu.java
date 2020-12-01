@@ -55,13 +55,6 @@ public class Menu extends AbstractNamedEntity {
         this.enabled = enabled;
     }
 
-    public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {
-        super(id, name);
-        this.restaurant = restaurant;
-        this.menuDate = menuDate;
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return "Menu{" +

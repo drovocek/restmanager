@@ -10,9 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.testdata.RestaurantTestData.rest1;
-import static edu.volkov.restmanager.testdata.RestaurantTestData.rest2;
-
 public class MenuTestData {
     public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant", "menuItems");
 
@@ -23,12 +20,12 @@ public class MenuTestData {
     public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
     public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
-    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", rest1, TODAY, false);
-    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", rest1, TODAY, true);
-    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", rest1, TOMORROW, true);
-    public static final Menu menu4 = new Menu(MENU1_ID + 3, "menu4", rest2, TODAY, true);
-    public static final Menu menu5 = new Menu(MENU1_ID + 4, "menu5", rest2, TOMORROW, false);
-    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", rest2, TOMORROW, true);
+    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", TODAY, false);
+    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", TODAY, true);
+    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", TOMORROW, true);
+    public static final Menu menu4 = new Menu(MENU1_ID + 3, "menu4", TODAY, true);
+    public static final Menu menu5 = new Menu(MENU1_ID + 4, "menu5", TOMORROW, false);
+    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", TOMORROW, true);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));
@@ -40,9 +37,8 @@ public class MenuTestData {
     public static final List<Menu> rest2Menus = orderByDateDesc(Arrays.asList(menu4, menu5, menu6));
     public static final List<Menu> rest2EnabledMenus = orderByDateDesc(Arrays.asList(menu4, menu6));
 
-
     public static Menu getNew() {
-        return new Menu(null, "newMenu", rest1, TOMORROW, false);
+        return new Menu(null, "newMenu", TOMORROW, false);
     }
 
     public static Menu getUpdated() {
