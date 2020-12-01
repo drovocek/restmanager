@@ -28,17 +28,17 @@ public class VoteService {
         return repository.get(userId, voteDate);
     }
 
-    public void vote(int userId, int restaurantId) {
+    public void vote(int userId, int restId) {
         LocalDate votingDate = LocalDate.now();
         boolean inLimit = LocalTime.now().isBefore(changeLimit);
         Vote lastVote = get(userId, votingDate);
 
         if (lastVote == null) {
             log.info("\n create vote");
-            create(userId, restaurantId, votingDate);
-        } else if (lastVote.getRestaurant().getId() != restaurantId && inLimit) {
+            create(userId, restId, votingDate);
+        } else if (lastVote.getRestaurant().getId() != restId && inLimit) {
             log.info("\n update vote {}", lastVote.getId());
-            update(lastVote.getId(), userId, restaurantId, votingDate);
+            update(lastVote.getId(), userId, restId, votingDate);
         } else if (inLimit) {
             log.info("\n delete vote {}", lastVote.getId());
             delete(lastVote.getId());

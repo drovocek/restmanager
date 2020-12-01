@@ -3,7 +3,6 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -13,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -53,6 +53,9 @@ public class User extends AbstractNamedEntity {
     @Column(name = "role")
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Vote> votes;
+
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, true, LocalDateTime.now(), EnumSet.of(role, roles));
     }
@@ -73,6 +76,7 @@ public class User extends AbstractNamedEntity {
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
+
     @Override
     public String toString() {
         return "User{" +

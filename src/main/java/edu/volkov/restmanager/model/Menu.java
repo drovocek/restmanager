@@ -3,39 +3,51 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @Entity
 @Table(name = "menu")
 public class Menu extends AbstractNamedEntity {
 
+    @Getter
+    @Setter
+    @Column(name = "menu_date", nullable = false, columnDefinition = "data")
+    @NotNull
+    private LocalDate menuDate = LocalDate.now();
+
+    @Getter
+    @Setter
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
+    private boolean enabled = false;
+
+    @Getter
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name = "menu_date", nullable = false, columnDefinition = "data")
-    @NotNull
-    private LocalDate menuDate = LocalDate.now();
-
-    @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
-    private boolean enabled = false;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<MenuItem> menuItems;
 
     public Menu(Menu menu) {
-        this(menu.getId(), menu.getName(), menu.getRestaurant(), menu.getMenuDate(), menu.isEnabled(), menu.getMenuItems());
+        this(menu.getId(), menu.getName(), menu.getMenuDate(), menu.isEnabled());
+    }
+
+    public Menu(Integer id, String name, LocalDate menuDate, boolean enabled) {
+        super(id, name);
+        this.menuDate = menuDate;
+        this.enabled = enabled;
     }
 
     public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {
@@ -43,18 +55,6 @@ public class Menu extends AbstractNamedEntity {
         this.restaurant = restaurant;
         this.menuDate = menuDate;
         this.enabled = enabled;
-    }
-
-    public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled, List<MenuItem> menuItems) {
-        super(id, name);
-        this.restaurant = restaurant;
-        this.menuDate = menuDate;
-        this.enabled = enabled;
-        setMenuItems(menuItems);
-    }
-
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -66,5 +66,15 @@ public class Menu extends AbstractNamedEntity {
                 ", enabled=" + enabled +
                 ", menuItems=" + menuItems +
                 '}';
+    }
+
+    public List<MenuItem> getMenuItems() {
+        return menuItems.stream().collect(Collectors.toList());
+    }
+
+    public void setMenus(Collection<MenuItem> menuItems) {
+        this.menuItems = CollectionUtils.isEmpty(menuItems) ?
+                Collections.emptyList() :
+                menuItems.stream().collect(Collectors.toList());
     }
 }

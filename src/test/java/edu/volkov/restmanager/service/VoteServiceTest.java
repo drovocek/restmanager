@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
-import static edu.volkov.restmanager.UserTestData.USER1_ID;
 import static edu.volkov.restmanager.service.VoteService.setTimeLimit;
+import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
+import static edu.volkov.restmanager.testdata.UserTestData.USER1_ID;
 import static org.junit.Assert.*;
 
 public class VoteServiceTest extends AbstractTest {

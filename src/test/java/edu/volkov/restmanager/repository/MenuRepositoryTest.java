@@ -1,20 +1,20 @@
 package edu.volkov.restmanager.repository;
 
+import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.AbstractBaseEntity;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.repository.menu.MenuRepository;
-import edu.volkov.restmanager.AbstractTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.testdata.MenuItemTestData.MENU_ITEM_MATCHER;
+import static edu.volkov.restmanager.testdata.MenuItemTestData.*;
+import static edu.volkov.restmanager.testdata.MenuTestData.getNew;
+import static edu.volkov.restmanager.testdata.MenuTestData.getUpdated;
 import static edu.volkov.restmanager.testdata.MenuTestData.*;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
 import static org.junit.Assert.assertFalse;
@@ -57,12 +57,10 @@ public class MenuRepositoryTest extends AbstractTest {
         assertNull(repository.get(MENU_NOT_FOUND_ID, REST1_ID));
     }
 
-    //TODO NEED FIX
     @Test
     public void update() {
         Menu updated = getUpdated();
         repository.save(updated, REST1_ID);
-        System.out.println("!!!!!!!!!");
         Menu actual = repository.get(MENU1_ID, REST1_ID);
         MENU_MATCHER.assertMatch(actual, getUpdated());
     }
@@ -75,14 +73,11 @@ public class MenuRepositoryTest extends AbstractTest {
 
     @Test
     public void getByRestIdBetweenDatesOpenBoarders() {
-        LocalDate startDate = LocalDate.of(2010, 1, 1);
-        LocalDate endDate = LocalDate.of(2030, 1, 1);
-
-        List<Menu> betweenDates = repository.getBetween(startDate, endDate, REST1_ID);
+        List<Menu> betweenDates = repository.getBetween(MIN_DATE, MAX_DATE, REST1_ID);
         MENU_MATCHER.assertMatch(betweenDates, rest1Menus);
         MENU_ITEM_MATCHER.assertMatch(
                 extractMenuItemsOrderById(betweenDates),
-                extractMenuItemsOrderById(rest1Menus)
+                rest1AllMenuItems
         );
     }
 
@@ -92,7 +87,7 @@ public class MenuRepositoryTest extends AbstractTest {
         MENU_MATCHER.assertMatch(betweenDates, rest1Menus);
         MENU_ITEM_MATCHER.assertMatch(
                 extractMenuItemsOrderById(betweenDates),
-                extractMenuItemsOrderById(rest1Menus)
+                rest1AllMenuItems
         );
     }
 
@@ -102,7 +97,7 @@ public class MenuRepositoryTest extends AbstractTest {
         MENU_MATCHER.assertMatch(betweenDates, menu1, menu2);
         MENU_ITEM_MATCHER.assertMatch(
                 extractMenuItemsOrderById(betweenDates),
-                extractMenuItemsOrderById(Arrays.asList(menu1, menu2))
+                rest1TodayMenuItems
         );
     }
 

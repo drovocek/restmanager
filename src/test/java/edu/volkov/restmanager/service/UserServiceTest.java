@@ -12,7 +12,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.EnumSet;
 import java.util.List;
 
-import static edu.volkov.restmanager.UserTestData.*;
+import static edu.volkov.restmanager.testdata.UserTestData.*;
 import static org.junit.Assert.assertThrows;
 
 public class UserServiceTest extends AbstractTest {

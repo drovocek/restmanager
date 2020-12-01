@@ -35,7 +35,7 @@ public class DataJpaMenuItemRepository implements MenuItemRepository {
 
     @Override
     public MenuItem get(int id, int menuId) {
-        return crudMenuItemRepository.findById(menuId)
+        return crudMenuItemRepository.findById(id)
                 .filter(menuItm -> menuItm.getMenu().getId() == menuId)
                 .orElse(null);
     }

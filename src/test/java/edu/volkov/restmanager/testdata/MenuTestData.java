@@ -6,29 +6,29 @@ import edu.volkov.restmanager.model.Menu;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.volkov.restmanager.testdata.MenuItemTestData.*;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.rest1;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.rest2;
 
 public class MenuTestData {
     public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant", "menuItems");
 
-    public final static int MENU1_ID = 0;
-    public final static int MENU_NOT_FOUND_ID = 15;
-    public final static LocalDate TODAY = LocalDate.of(2020, 1, 27);
-    public final static LocalDate TOMORROW = TODAY.plus(1, ChronoUnit.DAYS);
+    public static final int MENU1_ID = 0;
+    public static final int MENU_NOT_FOUND_ID = 15;
+    public static final LocalDate TODAY = LocalDate.of(2020, 1, 27);
+    public static final LocalDate TOMORROW = TODAY.plus(1, ChronoUnit.DAYS);
+    public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
+    public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
-    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", rest1, TODAY, false, menu1MenuItems);
-    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", rest1, TODAY, true, menu2MenuItems);
-    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", rest1, TOMORROW, true, menu3MenuItems);
-    public static final Menu menu4 = new Menu(MENU1_ID + 3, "menu4", rest2, TODAY, true, menu4MenuItems);
-    public static final Menu menu5 = new Menu(MENU1_ID + 4, "menu5", rest2, TOMORROW, false, menu5MenuItems);
-    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", rest2, TOMORROW, true, menu6MenuItems);
+    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", rest1, TODAY, false);
+    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", rest1, TODAY, true);
+    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", rest1, TOMORROW, true);
+    public static final Menu menu4 = new Menu(MENU1_ID + 3, "menu4", rest2, TODAY, true);
+    public static final Menu menu5 = new Menu(MENU1_ID + 4, "menu5", rest2, TOMORROW, false);
+    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", rest2, TOMORROW, true);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));
@@ -42,7 +42,7 @@ public class MenuTestData {
 
 
     public static Menu getNew() {
-        return new Menu(null, "newMenu", rest1, TOMORROW, false, Collections.emptyList());
+        return new Menu(null, "newMenu", rest1, TOMORROW, false);
     }
 
     public static Menu getUpdated() {
@@ -50,7 +50,6 @@ public class MenuTestData {
         updated.setMenuDate(TOMORROW);
         updated.setName("updatedName");
         updated.setEnabled(false);
-        updated.setMenuItems(updatedMenuItems);
         return updated;
     }
 

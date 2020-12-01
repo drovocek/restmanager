@@ -69,9 +69,9 @@ public class AdminMenuController {
     }
 
     @GetMapping("/delete")
-    public String erase(Integer id, Integer restId, Model model) {
-        log.info("\n erase menu:{} of restaurant:{}", id, restId);
-        checkNotFoundWithId(menuRepo.delete(id, restId), (int) id);
+    public String delete(int id, int restId, Model model) {
+        log.info("\n delete menu:{} of restaurant:{}", id, restId);
+        checkNotFoundWithId(menuRepo.delete(id, restId), id);
 
         model.addAttribute("restId", restId);
         return "redirect:/menus/restaurant";

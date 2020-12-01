@@ -5,36 +5,33 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "menu_item")
 public class MenuItem extends AbstractNamedEntity {
 
+    @Column(name = "price", nullable = false)
+    private Integer price;
+
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
+    private boolean enabled = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @NotNull
     private Menu menu;
 
-    @Column(name = "price", nullable = false)
-    private Integer price;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "dish_id", nullable = false)
-//    @NotNull
-//    private Dish dish;
-
     public MenuItem() {
     }
 
-    public MenuItem(MenuItem menuItem) {
-        this(menuItem.getId(), menuItem.getName(), menuItem.getMenu(), menuItem.getPrice());
+    public MenuItem(MenuItem menuItm) {
+        this(menuItm.getId(), menuItm.getName(), menuItm.isEnabled(), menuItm.getPrice());
     }
 
-    public MenuItem(Integer id, String name, Menu menu, Integer price) {
+    public MenuItem(Integer id, String name, Boolean enabled, Integer price) {
         super(id, name);
-        this.menu = menu;
+        this.enabled = enabled;
         this.price = price;
     }
 

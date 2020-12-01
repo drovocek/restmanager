@@ -1,12 +1,13 @@
-package edu.volkov.restmanager;
+package edu.volkov.restmanager.testdata;
 
+import edu.volkov.restmanager.TestMatcher;
 import edu.volkov.restmanager.model.Role;
 import edu.volkov.restmanager.model.User;
 
 import java.util.Collections;
 
 public class UserTestData {
-    public static final TestMatcher<User> USER_MATCHER = TestMatcher.usingIgnoringFieldsComparator(User.class, "registered");
+    public static final TestMatcher<User> USER_MATCHER = TestMatcher.usingIgnoringFieldsComparator(User.class, "registered", "votes");
 
     public static final int USER1_ID = 0;
     public static final int ADMIN_ID = 2;
