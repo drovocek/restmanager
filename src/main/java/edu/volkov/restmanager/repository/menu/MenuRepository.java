@@ -16,8 +16,8 @@ public interface MenuRepository {
     Menu get(int id, int restId);
 
     // ORDERED date desc
-    List<Menu> getBetween(LocalDate startDate, LocalDate endDate, int restId);
+    List<Menu> getAll(int restId);
 
     // ORDERED date desc
-    List<Menu> getAll(int restId);
+    List<Menu> getBetween(LocalDate startDate, LocalDate endDate, int restId);
 }

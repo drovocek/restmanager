@@ -10,47 +10,46 @@ import java.time.LocalDate;
 @Repository
 public class DataJpaVoteRepository implements VoteRepository {
 
-    private final CrudVoteRepository crudVoteRepository;
-    private final CrudUserRepository crudUserRepository;
-    private final CrudRestaurantRepository crudRestaurantRepository;
+    private final CrudVoteRepository crudVoteRepo;
+    private final CrudUserRepository crudUserRepo;
+    private final CrudRestaurantRepository crudRestRepo;
 
     public DataJpaVoteRepository(
-            CrudVoteRepository crudVoteRepository,
-            CrudUserRepository crudUserRepository,
-            CrudRestaurantRepository crudRestaurantRepository
+            CrudVoteRepository crudVoteRepo,
+            CrudUserRepository crudUserRepo,
+            CrudRestaurantRepository crudRestRepo
     ) {
-        this.crudVoteRepository = crudVoteRepository;
-        this.crudUserRepository = crudUserRepository;
-        this.crudRestaurantRepository = crudRestaurantRepository;
+        this.crudVoteRepo = crudVoteRepo;
+        this.crudUserRepo = crudUserRepo;
+        this.crudRestRepo = crudRestRepo;
     }
 
-    //USER
     @Override
-    public Vote save(Vote vote) {
-        if (!vote.isNew() && getByUserIdAndVoteDate(vote.getUser().getId(), vote.getVoteDate()) == null) {
+    public Vote save(Integer voteId, Integer userId, Integer restId, LocalDate voteDate) {
+        if (voteId != null && get(userId, voteDate) == null) {
             return null;
         }
-        return crudVoteRepository.save(vote);
+        Vote vote = construct(voteId, userId, restId, voteDate);
+        return crudVoteRepo.save(vote);
     }
 
     @Override
     public boolean delete(int voteId) {
-        return crudVoteRepository.delete(voteId) != 0;
+        return crudVoteRepo.delete(voteId) != 0;
     }
 
     @Override
-    public Vote getByUserIdAndVoteDate(int userId, LocalDate voteDate) {
-        return crudVoteRepository.findByUserIdAndVoteDate(userId, voteDate)
-                .filter(vote -> vote.getUser().getId() == userId)
+    public Vote get(Integer userId, LocalDate voteDate) {
+        return crudVoteRepo.findByUserIdAndVoteDate(userId, voteDate)
+                .filter(vote -> vote.getUser().getId().equals(userId))
                 .orElse(null);
     }
 
-    @Override
-    public Vote constructVote(Integer voteId, Integer userId, Integer restaurantId, LocalDate voteDate) {
+    private Vote construct(Integer voteId, Integer userId, Integer restaurantId, LocalDate voteDate) {
         return new Vote(
                 voteId,
-                crudUserRepository.getOne(userId),
-                crudRestaurantRepository.getOne(restaurantId),
+                crudUserRepo.getOne(userId),
+                crudRestRepo.getOne(restaurantId),
                 voteDate
         );
     }

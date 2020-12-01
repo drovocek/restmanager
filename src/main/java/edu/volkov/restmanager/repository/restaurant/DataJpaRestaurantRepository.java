@@ -30,7 +30,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     //USER
     @Override
     @Transactional
-    public Restaurant getWithDayEnabledMenu(Integer id) {
+    public Restaurant getWithDayEnabledMenu(int id) {
         Restaurant restaurant = crudRestRepo.findById(id).orElse(null);
         if (restaurant == null || !restaurant.isEnabled()) {
             return null;
@@ -77,12 +77,12 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(int id) {
         return crudRestRepo.delete(id) != 0;
     }
 
     @Override
-    public Restaurant get(Integer id) {
+    public Restaurant get(int id) {
         return crudRestRepo.findById(id).orElse(null);
     }
 }

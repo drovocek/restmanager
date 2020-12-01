@@ -21,11 +21,11 @@ public class DataJpaUserRepository implements UserRepository {
         return crudUserRepository.save(user);
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(int id) {
         return crudUserRepository.delete(id) != 0;
     }
 
-    public User get(Integer id) {
+    public User get(int id) {
         return crudUserRepository.findById(id).orElse(null);
     }
 

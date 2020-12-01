@@ -34,7 +34,7 @@ public class UserRestaurantController {
 
     @GetMapping("/restaurant")
     public String getEnabled(Integer id, Model model) {
-        log.info("getEnabled for restaurant {}", id);
+        log.info("\n getEnabled for restaurant {}", id);
         Restaurant rest = restRepo.getWithDayEnabledMenu(id);
         RestaurantTo restTo = getTo(
                 checkNotFoundWithId(
@@ -49,7 +49,7 @@ public class UserRestaurantController {
 
     @GetMapping
     public String getAllEnabled(Model model) {
-        log.info("getAllEnabled restaurants");
+        log.info("\n getAllEnabled restaurants");
         Predicate<Restaurant> filter = Restaurant::isEnabled;
         List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 
@@ -63,7 +63,7 @@ public class UserRestaurantController {
             @RequestParam(required = false) String address,
             Model model
     ) {
-        log.info("getFiltered restaurants");
+        log.info("\n getFiltered restaurants");
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
         List<RestaurantTo> filteredTos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 
@@ -72,8 +72,10 @@ public class UserRestaurantController {
     }
 
     @GetMapping("/vote")
-    public String vote(Integer id) {
-        voteService.vote(SecurityUtil.authUserId(), id);
+    public String vote(int id) {
+        int userId = SecurityUtil.authUserId();
+        log.info("\n vote user:{} by restaurant:{}", userId, id);
+        voteService.vote(userId, id);
         return "redirect:/restaurants";
     }
 }

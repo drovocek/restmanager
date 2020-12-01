@@ -21,7 +21,7 @@ public class VoteServiceTest extends AbstractTest {
     @Test
     public void vote() {
         service.vote(USER1_ID, REST1_ID);
-        assertNotNull(service.getByUserIdAndVoteDate(USER1_ID, LocalDate.now()));
+        assertNotNull(service.get(USER1_ID, LocalDate.now()));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class VoteServiceTest extends AbstractTest {
         setTimeLimit(LocalTime.MAX);
         service.vote(USER1_ID, REST1_ID);
         service.vote(USER1_ID, REST1_ID);
-        assertNull(service.getByUserIdAndVoteDate(USER1_ID, LocalDate.now()));
+        assertNull(service.get(USER1_ID, LocalDate.now()));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class VoteServiceTest extends AbstractTest {
         setTimeLimit(LocalTime.MIN);
         service.vote(USER1_ID, REST1_ID);
         service.vote(USER1_ID, REST1_ID);
-        assertNotNull(service.getByUserIdAndVoteDate(USER1_ID, LocalDate.now()));
+        assertNotNull(service.get(USER1_ID, LocalDate.now()));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class VoteServiceTest extends AbstractTest {
         setTimeLimit(LocalTime.MAX);
         service.vote(USER1_ID, REST1_ID);
         service.vote(USER1_ID, REST1_ID + 1);
-        Vote vote = service.getByUserIdAndVoteDate(USER1_ID, LocalDate.now());
+        Vote vote = service.get(USER1_ID, LocalDate.now());
         assertEquals((long) vote.getRestaurant().getId(), REST1_ID + 1);
     }
 
@@ -54,7 +54,7 @@ public class VoteServiceTest extends AbstractTest {
         setTimeLimit(LocalTime.MIN);
         service.vote(USER1_ID, REST1_ID);
         service.vote(USER1_ID, REST1_ID + 1);
-        Vote vote = service.getByUserIdAndVoteDate(USER1_ID, LocalDate.now());
+        Vote vote = service.get(USER1_ID, LocalDate.now());
         assertEquals((long) vote.getRestaurant().getId(), REST1_ID);
     }
 }

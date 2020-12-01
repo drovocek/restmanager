@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface VoteRepository {
-
-    Vote constructVote(Integer voteId, Integer userId, Integer restaurantId, LocalDate voteDate);
-
+    // null if not found
     boolean delete(int id);
 
-    Vote getByUserIdAndVoteDate(int userId, LocalDate voteDate);
+    // null if not found
+    Vote get(Integer userId, LocalDate voteDate);
 
-    Vote save(Vote vote);
+    // null if not found, when updated
+    Vote save(Integer voteId, Integer userId, Integer restId, LocalDate voteDate);
 }

@@ -41,10 +41,10 @@ public class AdminRestaurantController {
         Restaurant restaurant = new Restaurant(id, name, address, phone, enabled, 0);
 
         if (restaurant.isNew()) {
-            log.info("create restaurant");
+            log.info("\n create restaurant");
             restRepo.save(restaurant);
         } else {
-            log.info("update restaurant");
+            log.info("\n update restaurant");
             checkNotFoundWithId(restRepo.save(restaurant), restaurant.getId());
         }
 
@@ -56,7 +56,7 @@ public class AdminRestaurantController {
             @RequestParam(required = false) Integer id,
             Model model
     ) {
-        log.info("updateOrCreate for restaurant {}", id);
+        log.info("\n updateOrCreate for restaurant {}", id);
         Restaurant restaurant = (id == null)
                 ? new Restaurant("", "", "+7(495) 000-0000")
                 : restRepo.get(id);
@@ -67,14 +67,14 @@ public class AdminRestaurantController {
 
     @GetMapping("/delete")
     public String erase(int id) {
-        log.info("erase for restaurant {}", id);
+        log.info("\n erase for restaurant {}", id);
         checkNotFoundWithId(restRepo.delete(id), id);
         return "redirect:/restaurantsManaging";
     }
 
     @GetMapping
     public String getAll(Model model) {
-        log.info("getAll restaurants");
+        log.info("\n getAll restaurants");
         Predicate<Restaurant> filter = rest -> true;
         List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
 

@@ -41,10 +41,10 @@ public class AdminMenuController {
         Menu menu = new Menu(id, name, null, menuDate, enabled);
 
         if (menu.isNew()) {
-            log.info("create menu fo restaurant:{}", restId);
+            log.info("\n create menu fo restaurant:{}", restId);
             menuRepo.save(menu, restId);
         } else {
-            log.info("update menu:{} of restaurant:{}", id, restId);
+            log.info("\n update menu:{} of restaurant:{}", id, restId);
             checkNotFoundWithId(menuRepo.save(menu, restId), menu.getId());
         }
 
@@ -57,7 +57,7 @@ public class AdminMenuController {
             @RequestParam(required = false) Integer id,
             @RequestParam Integer restId,
             Model model) {
-        log.info("updateOrCreate menu:{} of restaurant:{}", id, restId);
+        log.info("\n updateOrCreate menu:{} of restaurant:{}", id, restId);
         Menu menu = (id == null)
                 ? new Menu(null, "", null, LocalDate.now(), false)
                 : checkNotFound(menuRepo.get(id, restId),
@@ -70,7 +70,7 @@ public class AdminMenuController {
 
     @GetMapping("/delete")
     public String erase(Integer id, Integer restId, Model model) {
-        log.info("erase menu:{} of restaurant:{}", id, restId);
+        log.info("\n erase menu:{} of restaurant:{}", id, restId);
         checkNotFoundWithId(menuRepo.delete(id, restId), (int) id);
 
         model.addAttribute("restId", restId);
@@ -79,7 +79,7 @@ public class AdminMenuController {
 
     @GetMapping("/restaurant")
     public String getAll(Integer restId, Model model) {
-        log.info("getAll for restaurant:{}", restId);
+        log.info("\n getAll for restaurant:{}", restId);
         List<Menu> allByRestId = menuRepo.getAll(restId);
 
         model.addAttribute("menus", allByRestId);
@@ -92,7 +92,7 @@ public class AdminMenuController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             Integer restId,
             Model model) {
-        log.info("getBetween start{}, end{} for restaurant:{}", startDate, endDate, restId);
+        log.info("\n getBetween start{}, end{} for restaurant:{}", startDate, endDate, restId);
         List<Menu> allByRestId = menuRepo.getBetween(startDate, endDate, restId);
 
         model.addAttribute("menus", allByRestId);
