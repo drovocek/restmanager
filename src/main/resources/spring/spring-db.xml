@@ -28,11 +28,6 @@
           p:username="${database.username}"
           p:password="${database.password}"/>
 
-    <!--    <beans profile="tomcat">-->
-    <!--        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/topjava"/>-->
-    <!--        <context:property-placeholder location="classpath:db/tomcat.properties" system-properties-mode="OVERRIDE"/>-->
-    <!--    </beans>-->
-
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="edu.volkov.**.model">
@@ -52,7 +47,6 @@
         </property>
     </bean>
 
-    <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
 
