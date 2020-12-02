@@ -24,23 +24,23 @@ import static org.junit.Assert.*;
 public class RestaurantRepositoryTest extends AbstractTest {
 
     @Autowired
-    private RestaurantRepository repo;
+    private RestaurantRepository repository;
 
     @Test
     public void getWithDayEnabledMenu() {
-        Restaurant actual = repo.getWithDayEnabledMenu(REST1_ID);
+        Restaurant actual = repository.getWithDayEnabledMenu(REST1_ID);
         REST_MATCHER.assertMatch(actual, rest1);
         MENU_MATCHER.assertMatch(actual.getMenus(), rest1DayEnabledMenus);
     }
 
     @Test
     public void getWithDayEnabledMenuNotFound() {
-        assertNull(repo.getWithDayEnabledMenu(REST_NOT_FOUND_ID));
+        assertNull(repository.getWithDayEnabledMenu(REST_NOT_FOUND_ID));
     }
 
     @Test
     public void getAllWithDayEnabledMenu() {
-        List<Restaurant> actualRests = repo.getAllWithDayEnabledMenu();
+        List<Restaurant> actualRests = repository.getAllWithDayEnabledMenu();
         REST_MATCHER.assertMatch(actualRests, rest1, rest2);
         List<Menu> actualMenus = extractMenuOrderById(actualRests);
         MENU_MATCHER.assertMatch(actualMenus, allDayEnabledMenus);
@@ -48,52 +48,52 @@ public class RestaurantRepositoryTest extends AbstractTest {
 
     @Test
     public void create() {
-        Restaurant created = repo.save(getNew());
+        Restaurant created = repository.save(getNew());
         int createdId = created.getId();
         Restaurant newRest = getNew();
         newRest.setId(createdId);
         REST_MATCHER.assertMatch(created, newRest);
-        REST_MATCHER.assertMatch(repo.get(createdId), newRest);
+        REST_MATCHER.assertMatch(repository.get(createdId), newRest);
     }
 
     @Test
     public void duplicateNameCreate() {
-        assertThrows(DataAccessException.class, () -> repo.save(duplicateNameRest));
+        assertThrows(DataAccessException.class, () -> repository.save(duplicateNameRest));
     }
 
     @Test
     public void update() {
-        repo.save(getUpdated());
-        REST_MATCHER.assertMatch(repo.get(REST1_ID), getUpdated());
+        repository.save(getUpdated());
+        REST_MATCHER.assertMatch(repository.get(REST1_ID), getUpdated());
     }
 
     @Test
     public void delete() {
-        repo.delete(REST1_ID);
-        assertNull(repo.get(REST1_ID));
+        repository.delete(REST1_ID);
+        assertNull(repository.get(REST1_ID));
     }
 
     @Test
     public void deletedNotFound() {
-        assertFalse(repo.delete(REST_NOT_FOUND_ID));
+        assertFalse(repository.delete(REST_NOT_FOUND_ID));
     }
 
     @Test
     public void get() {
-        Restaurant dbRest = repo.get(REST1_ID);
+        Restaurant dbRest = repository.get(REST1_ID);
         REST_MATCHER.assertMatch(dbRest, rest1);
     }
 
     @Test
     public void getNotFound() {
-        assertNull(repo.get(REST_NOT_FOUND_ID));
+        assertNull(repository.get(REST_NOT_FOUND_ID));
     }
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> repo.save(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
-        validateRootCause(() -> repo.save(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
-        validateRootCause(() -> repo.save(new Restaurant(null, "testName", "testAddress", "BadNumber", true, 0)), ConstraintViolationException.class);
+        validateRootCause(() -> repository.save(new Restaurant(null, "  ", "testAddress", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
+        validateRootCause(() -> repository.save(new Restaurant(null, "testName", "  ", "+7 (903) 003-0303", true, 0)), ConstraintViolationException.class);
+        validateRootCause(() -> repository.save(new Restaurant(null, "testName", "testAddress", "BadNumber", true, 0)), ConstraintViolationException.class);
     }
 
     @Test
@@ -117,7 +117,7 @@ public class RestaurantRepositoryTest extends AbstractTest {
         Restaurant newRest = getNew();
         newRest.setPhone(phone);
         newRest.setName(name);
-        repo.save(newRest);
+        repository.save(newRest);
     }
 
     private List<Menu> extractMenuOrderById(List<Restaurant> rests) {
