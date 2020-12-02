@@ -22,7 +22,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 import static edu.volkov.restmanager.util.model.MenuUtil.createTo;
 import static edu.volkov.restmanager.util.model.MenuUtil.getTos;
 
-@RequestMapping("/menus")
+@RequestMapping("/admin/menus")
 @Controller
 public class AdminMenuController {
 

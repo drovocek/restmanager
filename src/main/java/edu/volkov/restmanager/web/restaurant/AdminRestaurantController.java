@@ -22,7 +22,7 @@ import static edu.volkov.restmanager.util.model.RestaurantUtil.createToWithoutMe
 import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTos;
 
 
-@RequestMapping("/restaurantsManaging")
+@RequestMapping("/admin/restaurants")
 @Controller
 public class AdminRestaurantController {
 

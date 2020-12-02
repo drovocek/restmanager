@@ -16,7 +16,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 import static edu.volkov.restmanager.util.model.MenuItemUtil.createTo;
 
-@RequestMapping("/menuItems")
+@RequestMapping("/admin/menuItems")
 @Controller
 public class AdminMenuItemController {
 

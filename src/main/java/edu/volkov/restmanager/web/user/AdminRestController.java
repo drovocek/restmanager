@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Controller
+@Controller("/admin/users")
 public class AdminRestController extends AbstractUserController {
 
     @Override
