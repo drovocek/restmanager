@@ -54,12 +54,12 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     public void update() throws Exception {
         User updated = UserTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(userService.get(ADMIN_ID), updated);
+        USER_MATCHER.assertMatch(userService.get(USER1_ID), updated);
     }
 
     @Test

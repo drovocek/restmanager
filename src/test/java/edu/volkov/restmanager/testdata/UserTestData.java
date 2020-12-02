@@ -22,7 +22,7 @@ public class UserTestData {
     }
 
     public static User getUpdated() {
-        User updated = new User(admin);
+        User updated = new User(user1);
         updated.setEmail("update@gmail.com");
         updated.setName("UpdatedName");
         updated.setPassword("newPass");
