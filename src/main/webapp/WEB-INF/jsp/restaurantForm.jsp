@@ -7,11 +7,9 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><spring:message code="restaurant.restaurantManaging"/></h3>
-    <spring:message code="common.create" var="createRestaurant"/>
-    <spring:message code="common.edit" var="editRestaurant"/>
-    <h2>${restTo.id == null ? createRestaurant : editRestaurant}</h2>
     <jsp:useBean id="restTo" type="edu.volkov.restmanager.to.RestaurantTo" scope="request"/>
+    <h3><spring:message code="restaurant.restaurantManaging"/></h3>
+    <h3><spring:message code="${restTo.id == null ? 'common.create' : 'common.edit'}"/></h3>
 
     <form method="post" action="restaurantsManaging">
         <input type="hidden" name="id" value="${restTo.id}">

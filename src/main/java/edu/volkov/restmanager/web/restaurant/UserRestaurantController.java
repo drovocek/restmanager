@@ -36,7 +36,7 @@ public class UserRestaurantController {
     public String getEnabled(Integer id, Model model) {
         log.info("\n getEnabled for restaurant {}", id);
         Restaurant rest = restRepo.getWithDayEnabledMenu(id);
-        RestaurantTo restTo = createTo(
+        RestaurantTo restTo = createToWithMenu(
                 checkNotFoundWithId(
                         rest.isEnabled() ? rest : null,
                         id

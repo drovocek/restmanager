@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
-import static edu.volkov.restmanager.util.model.RestaurantUtil.createTo;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.createToWithoutMenu;
 import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTos;
 
 
@@ -56,8 +56,8 @@ public class AdminRestaurantController {
 
     @GetMapping("/update")
     public String update(Integer id, Model model) {
-        RestaurantTo to = createTo(checkNotFound(repository.get(id), "restaurant by id: " + id + "dos not exist"));
-        model.addAttribute("menuTo", to);
+        RestaurantTo to = createToWithoutMenu(checkNotFound(repository.get(id), "restaurant by id: " + id + "dos not exist"));
+        model.addAttribute("restTo", to);
         return "restaurantForm";
     }
 

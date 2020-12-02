@@ -21,18 +21,18 @@
             <th></th>
         </tr>
         </thead>
-        <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
+        <c:forEach items="${restaurants}" var="restTo">
+            <jsp:useBean id="restTo" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
-                <td>${restaurant.name}
+                <td>${restTo.name}
                 </td>
-                <td>${restaurant.address}</td>
-                <td>${restaurant.phone}</td>
-                <td>${restaurant.likesAmount}</td>
-                <td><a href="restaurantsManaging/update?id=${restaurant.id}"><spring:message code="common.update"/></a>
+                <td>${restTo.address}</td>
+                <td>${restTo.phone}</td>
+                <td>${restTo.likesAmount}</td>
+                <td><a href="restaurantsManaging/update?id=${restTo.id}"><spring:message code="common.update"/></a>
                 </td>
-                <td><a href="restaurantsManaging/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
-                <td><a href="menus/restaurant?restId=${restaurant.id}">Menu managing</a></td>
+                <td><a href="restaurantsManaging/delete?id=${restTo.id}"><spring:message code="common.delete"/></a></td>
+                <td><a href="menus/restaurant?restId=${restTo.id}">Menu managing</a></td>
             </tr>
         </c:forEach>
     </table>
