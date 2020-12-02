@@ -54,7 +54,7 @@ public class AdminMenuController {
         }
 
         model.addAttribute("restId", restId);
-        return "redirect:/menus/restaurant";
+        return "redirect:/admin/menus/restaurant";
     }
 
     @GetMapping("/update")
@@ -76,7 +76,7 @@ public class AdminMenuController {
         checkNotFoundWithId(menuRepo.delete(id, restId), id);
 
         model.addAttribute("restId", restId);
-        return "redirect:/menus/restaurant";
+        return "redirect:/admin/menus/restaurant";
     }
 
     @GetMapping("/restaurant")
