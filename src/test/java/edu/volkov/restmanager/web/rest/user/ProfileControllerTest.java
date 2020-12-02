@@ -10,12 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static edu.volkov.restmanager.testdata.UserTestData.*;
-import static edu.volkov.restmanager.web.rest.user.ProfileRestController.REST_URL;
+import static edu.volkov.restmanager.web.rest.user.ProfileController.REST_URL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ProfileRestControllerTest extends AbstractControllerTest {
+public class ProfileControllerTest extends AbstractControllerTest {
 
     @Autowired
     protected UserService userService;
