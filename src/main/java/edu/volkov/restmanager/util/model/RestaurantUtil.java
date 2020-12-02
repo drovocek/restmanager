@@ -33,7 +33,7 @@ public class RestaurantUtil {
     }
 
 
-    public static List<RestaurantTo> getFilteredTos(List<Restaurant> rests, Predicate<Restaurant> filter) {
+    public static List<RestaurantTo> getFilteredTosWithMenu(List<Restaurant> rests, Predicate<Restaurant> filter) {
         return rests.stream()
                 .filter(filter)
                 .map(RestaurantUtil::createToWithMenu)

@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.restaurant;
+package edu.volkov.restmanager.web.jsp.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
@@ -19,17 +19,17 @@ import java.util.function.Predicate;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 import static edu.volkov.restmanager.util.model.RestaurantUtil.createToWithoutMenu;
-import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTosWithMenu;
 
 
 @RequestMapping("/admin/restaurants")
 @Controller
-public class AdminRestaurantController {
+public class JspAdminRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final RestaurantRepository repository;
 
-    public AdminRestaurantController(RestaurantRepository repository) {
+    public JspAdminRestaurantController(RestaurantRepository repository) {
         this.repository = repository;
     }
 
@@ -79,7 +79,7 @@ public class AdminRestaurantController {
     public String getAll(Model model) {
         log.info("\n getAll restaurants");
         Predicate<Restaurant> filter = rest -> true;
-        List<RestaurantTo> tos = getFilteredTos(repository.getAllWithDayEnabledMenu(), filter);
+        List<RestaurantTo> tos = getFilteredTosWithMenu(repository.getAllWithDayEnabledMenu(), filter);
 
         model.addAttribute("restaurants", tos);
         return "restaurantsManaging";

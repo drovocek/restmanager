@@ -1,11 +1,18 @@
 package edu.volkov.restmanager.web;
 
+import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.UserService;
+import edu.volkov.restmanager.to.RestaurantTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.function.Predicate;
+
+import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTosWithMenu;
 
 @Controller
 public class RootController {
@@ -21,11 +28,6 @@ public class RootController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("users", userService.getAll());
@@ -33,11 +35,8 @@ public class RootController {
     }
 
     @PostMapping("/users")
-    public String setUser(@RequestParam(name = "userId", required = false) Integer userId) {
+    public String setUser(@RequestParam(required = false) Integer userId) {
         SecurityUtil.setAuthUserId(userId);
-        if (SecurityUtil.isAdmin()) {
-            return "redirect:restaurantManaging";
-        }
-        return "redirect:restaurantMenuVote";
+        return "redirect:restaurants";
     }
 }

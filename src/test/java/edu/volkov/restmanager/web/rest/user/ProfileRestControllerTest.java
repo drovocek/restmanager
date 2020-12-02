@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.user;
+package edu.volkov.restmanager.web.rest.user;
 
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static edu.volkov.restmanager.testdata.UserTestData.*;
-import static edu.volkov.restmanager.web.user.ProfileRestController.REST_URL;
+import static edu.volkov.restmanager.web.rest.user.ProfileRestController.REST_URL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

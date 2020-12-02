@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.user;
+package edu.volkov.restmanager.web.rest.user;
 
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;

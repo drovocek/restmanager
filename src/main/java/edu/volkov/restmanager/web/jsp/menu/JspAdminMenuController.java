@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.menu;
+package edu.volkov.restmanager.web.jsp.menu;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.repository.menu.MenuRepository;
@@ -24,12 +24,12 @@ import static edu.volkov.restmanager.util.model.MenuUtil.getTos;
 
 @RequestMapping("/admin/menus")
 @Controller
-public class AdminMenuController {
+public class JspAdminMenuController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final MenuRepository menuRepo;
 
-    public AdminMenuController(MenuRepository menuRepo) {
+    public JspAdminMenuController(MenuRepository menuRepo) {
         this.menuRepo = menuRepo;
     }
 
