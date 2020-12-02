@@ -9,7 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="restaurant.title"/></h3>
-    <a href="restaurantsManaging/create"><spring:message code="common.add"/></a>
+    <a href="admin/restaurants/create"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -29,10 +29,10 @@
                 <td>${restTo.address}</td>
                 <td>${restTo.phone}</td>
                 <td>${restTo.likesAmount}</td>
-                <td><a href="restaurantsManaging/update?id=${restTo.id}"><spring:message code="common.update"/></a>
+                <td><a href="admin/restaurants/update?id=${restTo.id}"><spring:message code="common.update"/></a>
                 </td>
-                <td><a href="restaurantsManaging/delete?id=${restTo.id}"><spring:message code="common.delete"/></a></td>
-                <td><a href="menus/restaurant?restId=${restTo.id}">Menu managing</a></td>
+                <td><a href="admin/restaurants/delete?id=${restTo.id}"><spring:message code="common.delete"/></a></td>
+                <td><a href="admin/menus/restaurant?restId=${restTo.id}">Menu managing</a></td>
             </tr>
         </c:forEach>
     </table>

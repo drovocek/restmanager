@@ -11,7 +11,7 @@
     <h3><spring:message code="restaurant.restaurantManaging"/></h3>
     <h3><spring:message code="${restTo.id == null ? 'common.create' : 'common.edit'}"/></h3>
 
-    <form method="post" action="restaurantsManaging">
+    <form method="post" action="admin/restaurants/">
         <input type="hidden" name="id" value="${restTo.id}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>

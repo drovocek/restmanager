@@ -9,7 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="menu.title"/></h3>
-    <a href="menus/create?id=&restId=0"><spring:message code="common.add"/></a>
+    <a href="admin/menus/create?id=&restId=0"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -28,10 +28,10 @@
                 <td>${menuTo.menuDate}</td>
                 <td>${menuTo.enabled}</td>
                 <td>Empty</td>
-                <td><a href="menus/update?id=${menuTo.id}&restId=${menuTo.restId}"><spring:message
+                <td><a href="admin/menus/update?id=${menuTo.id}&restId=${menuTo.restId}"><spring:message
                         code="common.update"/></a>
                 </td>
-                <td><a href="menus/delete?id=${menuTo.id}&restId=${menuTo.restId}"><spring:message
+                <td><a href="admin/menus/delete?id=${menuTo.id}&restId=${menuTo.restId}"><spring:message
                         code="common.delete"/></a></td>
             </tr>
         </c:forEach>

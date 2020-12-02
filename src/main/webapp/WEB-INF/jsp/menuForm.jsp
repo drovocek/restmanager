@@ -11,7 +11,7 @@
     <h3><spring:message code="menu.menuManaging"/></h3>
     <h3><spring:message code="${menuTo.id == null ? 'common.create' : 'common.edit'}"/></h3>
 
-    <form method="post" action="menus">
+    <form method="post" action="admin/menus">
         <input type="hidden" name="id" value="${menuTo.id}">
         <input type="hidden" name="restId" value="${menuTo.restId}">
         <dl>

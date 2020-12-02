@@ -51,7 +51,7 @@ public class AdminRestaurantController {
             checkNotFoundWithId(repository.save(restaurant), restaurant.getId());
         }
 
-        return "redirect:/restaurantsManaging";
+        return "redirect:/admin/restaurants";
     }
 
     @GetMapping("/update")
@@ -72,7 +72,7 @@ public class AdminRestaurantController {
     public String erase(int id) {
         log.info("\n erase for restaurant {}", id);
         checkNotFoundWithId(repository.delete(id), id);
-        return "redirect:/restaurantsManaging";
+        return "redirect:/admin/restaurants";
     }
 
     @GetMapping
