@@ -72,6 +72,16 @@ public class MenuRepositoryTest extends AbstractTest {
     }
 
     @Test
+    public void getAll() {
+        List<Menu> all = repository.getAll(REST1_ID);
+        MENU_MATCHER.assertMatch(all, rest1Menus);
+        MENU_ITEM_MATCHER.assertMatch(
+                extractMenuItemsOrderById(all),
+                rest1AllMenuItems
+        );
+    }
+
+    @Test
     public void getByRestIdBetweenDatesOpenBoarders() {
         List<Menu> betweenDates = repository.getBetween(MIN_DATE, MAX_DATE, REST1_ID);
         MENU_MATCHER.assertMatch(betweenDates, rest1Menus);

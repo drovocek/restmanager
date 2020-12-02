@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.restaurant;
+package edu.volkov.restmanager.web.jsp.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
@@ -12,22 +12,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.getFilteredTos;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.createToWithoutMenu;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilteredTosWithMenu;
 
 
-@RequestMapping("/restaurantsManaging")
+@RequestMapping("/admin/restaurants")
 @Controller
-public class AdminRestaurantController {
+public class JspAdminRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final RestaurantRepository restRepo;
+    private final RestaurantRepository repository;
 
-    public AdminRestaurantController(RestaurantRepository restRepo) {
-        this.restRepo = restRepo;
+    public JspAdminRestaurantController(RestaurantRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
@@ -42,41 +45,41 @@ public class AdminRestaurantController {
 
         if (restaurant.isNew()) {
             log.info("\n create restaurant");
-            restRepo.save(restaurant);
+            repository.save(restaurant);
         } else {
             log.info("\n update restaurant");
-            checkNotFoundWithId(restRepo.save(restaurant), restaurant.getId());
+            checkNotFoundWithId(repository.save(restaurant), restaurant.getId());
         }
 
-        return "redirect:/restaurantsManaging";
+        return "redirect:/admin/restaurants";
     }
 
-    @GetMapping("/form")
-    public String updateOrCreate(
-            @RequestParam(required = false) Integer id,
-            Model model
-    ) {
-        log.info("\n updateOrCreate for restaurant {}", id);
-        Restaurant restaurant = (id == null)
-                ? new Restaurant("", "", "+7(495) 000-0000")
-                : restRepo.get(id);
+    @GetMapping("/update")
+    public String update(Integer id, Model model) {
+        RestaurantTo to = createToWithoutMenu(checkNotFound(repository.get(id), "restaurant by id: " + id + "dos not exist"));
+        model.addAttribute("restTo", to);
+        return "restaurantForm";
+    }
 
-        model.addAttribute("restaurant", restaurant);
+    @GetMapping("/create")
+    public String create(Model model) {
+        RestaurantTo toDef = new RestaurantTo(null, "def", "", "+7(495) 000-0000", 0, Collections.emptyList());
+        model.addAttribute("restTo", toDef);
         return "restaurantForm";
     }
 
     @GetMapping("/delete")
     public String erase(int id) {
         log.info("\n erase for restaurant {}", id);
-        checkNotFoundWithId(restRepo.delete(id), id);
-        return "redirect:/restaurantsManaging";
+        checkNotFoundWithId(repository.delete(id), id);
+        return "redirect:/admin/restaurants";
     }
 
     @GetMapping
     public String getAll(Model model) {
         log.info("\n getAll restaurants");
         Predicate<Restaurant> filter = rest -> true;
-        List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
+        List<RestaurantTo> tos = getFilteredTosWithMenu(repository.getAllWithDayEnabledMenu(), filter);
 
         model.addAttribute("restaurants", tos);
         return "restaurantsManaging";

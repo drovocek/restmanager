@@ -19,14 +19,14 @@
             <th>Voting</th>
         </tr>
         </thead>
-        <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
+        <c:forEach items="${restTos}" var="restTo">
+            <jsp:useBean id="restTo" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
-                <td><a href="restaurants/restaurant?id=${restaurant.id}">${restaurant.name}</a></td>
-                <td>${restaurant.address}</td>
-                <td>${restaurant.phone}</td>
-                <td>${restaurant.likesAmount}</td>
-                <td><a href="restaurants/vote?id=${restaurant.id}">Vote</a></td>
+                <td><a href="restaurants/restaurant?id=${restTo.id}">${restTo.name}</a></td>
+                <td>${restTo.address}</td>
+                <td>${restTo.phone}</td>
+                <td>${restTo.likesAmount}</td>
+                <td><a href="restaurants/vote?id=${restTo.id}">Vote</a></td>
             </tr>
         </c:forEach>
     </table>

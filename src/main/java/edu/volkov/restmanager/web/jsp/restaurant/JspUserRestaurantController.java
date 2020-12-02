@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.web.restaurant;
+package edu.volkov.restmanager.web.jsp.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.RestaurantUtil.*;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.*;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 @RequestMapping("/restaurants")
 @Controller
-public class UserRestaurantController {
+public class JspUserRestaurantController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final RestaurantRepository restRepo;
     private final VoteService voteService;
 
-    public UserRestaurantController(RestaurantRepository restRepo, VoteService voteService) {
+    public JspUserRestaurantController(RestaurantRepository restRepo, VoteService voteService) {
         this.restRepo = restRepo;
         this.voteService = voteService;
     }
@@ -36,14 +36,14 @@ public class UserRestaurantController {
     public String getEnabled(Integer id, Model model) {
         log.info("\n getEnabled for restaurant {}", id);
         Restaurant rest = restRepo.getWithDayEnabledMenu(id);
-        RestaurantTo restTo = getTo(
+        RestaurantTo restTo = createToWithMenu(
                 checkNotFoundWithId(
                         rest.isEnabled() ? rest : null,
                         id
                 )
         );
 
-        model.addAttribute("restaurant", restTo);
+        model.addAttribute("restTo", restTo);
         return "restaurant";
     }
 
@@ -51,9 +51,9 @@ public class UserRestaurantController {
     public String getAllEnabled(Model model) {
         log.info("\n getAllEnabled restaurants");
         Predicate<Restaurant> filter = Restaurant::isEnabled;
-        List<RestaurantTo> tos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
+        List<RestaurantTo> tos = getFilteredTosWithMenu(restRepo.getAllWithDayEnabledMenu(), filter);
 
-        model.addAttribute("restaurants", tos);
+        model.addAttribute("restTos", tos);
         return "restaurants";
     }
 
@@ -65,9 +65,9 @@ public class UserRestaurantController {
     ) {
         log.info("\n getFiltered restaurants");
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
-        List<RestaurantTo> filteredTos = getFilteredTos(restRepo.getAllWithDayEnabledMenu(), filter);
+        List<RestaurantTo> filteredTos = getFilteredTosWithMenu(restRepo.getAllWithDayEnabledMenu(), filter);
 
-        model.addAttribute("restaurants", filteredTos);
+        model.addAttribute("restTos", filteredTos);
         return "restaurants";
     }
 

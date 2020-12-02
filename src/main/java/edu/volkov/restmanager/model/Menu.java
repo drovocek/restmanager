@@ -3,6 +3,9 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -37,7 +40,9 @@ public class Menu extends AbstractNamedEntity {
     @NotNull
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
+    //@Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 200)
     private List<MenuItem> menuItems;
 
     public Menu(Menu menu) {
@@ -46,13 +51,6 @@ public class Menu extends AbstractNamedEntity {
 
     public Menu(Integer id, String name, LocalDate menuDate, boolean enabled) {
         super(id, name);
-        this.menuDate = menuDate;
-        this.enabled = enabled;
-    }
-
-    public Menu(Integer id, String name, Restaurant restaurant, LocalDate menuDate, boolean enabled) {
-        super(id, name);
-        this.restaurant = restaurant;
         this.menuDate = menuDate;
         this.enabled = enabled;
     }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
-
     @Transactional
     @Modifying
     @Query("DELETE FROM Vote v WHERE v.id=:id")

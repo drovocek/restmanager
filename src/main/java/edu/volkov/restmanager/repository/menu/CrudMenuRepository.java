@@ -21,7 +21,6 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate DESC")
     List<Menu> getAll(int restId);
 
-    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m " +
             "WHERE m.restaurant.id=:restId AND " +
             "m.menuDate>=:startDate AND " +
@@ -29,7 +28,7 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
             " ORDER BY m.menuDate DESC")
     List<Menu> getBetween(LocalDate startDate, LocalDate endDate, int restId);
 
-    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
+    //@EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m " +
             "WHERE m.menuDate>=:startDate AND " +
             "m.menuDate<=:endDate" +

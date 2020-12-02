@@ -7,22 +7,20 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
+    <jsp:useBean id="menuTo" type="edu.volkov.restmanager.to.MenuTo" scope="request"/>
     <h3><spring:message code="menu.menuManaging"/></h3>
-    <spring:message code="common.create" var="createMenu"/>
-    <spring:message code="common.edit" var="editMenu"/>
-    <h2>${restaurant.id == null ? createMenu : editMenu}</h2>
-    <jsp:useBean id="menu" type="edu.volkov.restmanager.model.Menu" scope="request"/>
+    <h3><spring:message code="${menuTo.id == null ? 'common.create' : 'common.edit'}"/></h3>
 
-    <form method="post" action="menus">
-        <input type="hidden" name="id" value="${menu.id}">
-        <input type="hidden" name="restId" value="${restId}">
+    <form method="post" action="admin/menus">
+        <input type="hidden" name="id" value="${menuTo.id}">
+        <input type="hidden" name="restId" value="${menuTo.restId}">
         <dl>
             <dt><spring:message code="common.name"/>:</dt>
-            <dd><input type="text" value="${menu.name}" name="name" required></dd>
+            <dd><input type="text" value="${menuTo.name}" name="name" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="common.date"/>:</dt>
-            <dd><input type="date" value="${menu.menuDate}" size=40 name="menuDate" required></dd>
+            <dd><input type="date" value="${menuTo.menuDate}" size=40 name="menuDate" required></dd>
         </dl>
         <dl>
             <dt><spring:message code="common.enable"/>:</dt>

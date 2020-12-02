@@ -9,7 +9,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><spring:message code="restaurant.title"/></h3>
-    <a href="restaurantsManaging/form"><spring:message code="common.add"/></a>
+    <a href="admin/restaurants/create"><spring:message code="common.add"/></a>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -21,21 +21,18 @@
             <th></th>
         </tr>
         </thead>
-        <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
+        <c:forEach items="${restaurants}" var="restTo">
+            <jsp:useBean id="restTo" scope="page" type="edu.volkov.restmanager.to.RestaurantTo"/>
             <tr>
-                <td>${restaurant.name}
-<%--                    <c:forEach items="${restaurant.menus}" var="menus">--%>
-<%--                        <h4>${menus.name}:</h4>--%>
-<%--                    </c:forEach>--%>
+                <td>${restTo.name}
                 </td>
-                <td>${restaurant.address}</td>
-                <td>${restaurant.phone}</td>
-                <td>${restaurant.likesAmount}</td>
-                <td><a href="restaurantsManaging/form?id=${restaurant.id}"><spring:message code="common.update"/></a>
+                <td>${restTo.address}</td>
+                <td>${restTo.phone}</td>
+                <td>${restTo.likesAmount}</td>
+                <td><a href="admin/restaurants/update?id=${restTo.id}"><spring:message code="common.update"/></a>
                 </td>
-                <td><a href="restaurantsManaging/delete?id=${restaurant.id}"><spring:message code="common.delete"/></a></td>
-                <td><a href="menus/restaurant?restId=${restaurant.id}">Menu managing</a></td>
+                <td><a href="admin/restaurants/delete?id=${restTo.id}"><spring:message code="common.delete"/></a></td>
+                <td><a href="admin/menus/restaurant?restId=${restTo.id}">Menu managing</a></td>
             </tr>
         </c:forEach>
     </table>

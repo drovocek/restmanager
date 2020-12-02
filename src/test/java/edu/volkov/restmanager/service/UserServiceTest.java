@@ -68,7 +68,7 @@ public class UserServiceTest extends AbstractTest {
     public void update() {
         User updated = getUpdated();
         service.update(updated);
-        USER_MATCHER.assertMatch(service.get(ADMIN_ID), getUpdated());
+        USER_MATCHER.assertMatch(service.get(USER1_ID), getUpdated());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class UserServiceTest extends AbstractTest {
         User updatedWithoutRoles2 = getUpdated();
         updatedWithoutRoles2.setRoles(EnumSet.noneOf(Role.class));
 
-        USER_MATCHER.assertMatch(service.get(ADMIN_ID), updatedWithoutRoles2);
+        USER_MATCHER.assertMatch(service.get(USER1_ID), updatedWithoutRoles2);
     }
 
     @Test
