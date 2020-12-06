@@ -2,11 +2,12 @@ package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.AuthorizedUser;
 import edu.volkov.restmanager.model.User;
-import edu.volkov.restmanager.repository.user.UserRepository;
+import edu.volkov.restmanager.repository.user.CrudUserRepository;
 import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.model.UserUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,11 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
 
-    private final UserRepository repository;
+    private final CrudUserRepository repository;
 
-    public UserService(UserRepository repository) {
+    private static final Sort SORT_NAME_EMAIL = Sort.by(Sort.Direction.ASC, "name", "email");
+
+    public UserService(CrudUserRepository repository) {
         this.repository = repository;
     }
 
@@ -34,11 +37,11 @@ public class UserService implements UserDetailsService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public User get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
     public User getByEmail(String email) {
@@ -47,7 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAll() {
-        return repository.getAll();
+        return repository.findAll(SORT_NAME_EMAIL);
     }
 
     public void update(User user) {
@@ -58,7 +61,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(UserTo userTo) {
         User user = get(userTo.id());
-        User updatedUser = UserUtil.updateFromTo(user, userTo);
+        UserUtil.updateFromTo(user, userTo);
     }
 
     @Transactional

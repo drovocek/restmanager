@@ -55,9 +55,6 @@ public class Restaurant extends AbstractNamedEntity {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<Menu> menus;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private List<Vote> votes;
-
     public Restaurant(String name, String address, String phone) {
         this.name = name;
         this.address = address;
@@ -76,6 +73,16 @@ public class Restaurant extends AbstractNamedEntity {
         this(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getPhone(), restaurant.isEnabled(), restaurant.getVotesQuantity());
     }
 
+    public List<Menu> getMenus() {
+        return menus.stream().collect(Collectors.toList());
+    }
+
+    public void setMenus(Collection<Menu> menus) {
+        this.menus = CollectionUtils.isEmpty(menus) ?
+                Collections.emptyList() :
+                menus.stream().collect(Collectors.toList());
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" +
@@ -86,15 +93,5 @@ public class Restaurant extends AbstractNamedEntity {
                 ", enabled=" + enabled +
                 ", votesQuantity=" + votesQuantity +
                 '}';
-    }
-
-    public List<Menu> getMenus() {
-        return menus.stream().collect(Collectors.toList());
-    }
-
-    public void setMenus(Collection<Menu> menus) {
-        this.menus = CollectionUtils.isEmpty(menus) ?
-                Collections.emptyList() :
-                menus.stream().collect(Collectors.toList());
     }
 }

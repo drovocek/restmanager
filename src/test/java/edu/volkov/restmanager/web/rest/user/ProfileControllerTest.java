@@ -49,7 +49,8 @@ public class ProfileControllerTest extends AbstractControllerTest {
     @Test
     public void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
-        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+        perform(MockMvcRequestBuilders.put(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(user1))
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())

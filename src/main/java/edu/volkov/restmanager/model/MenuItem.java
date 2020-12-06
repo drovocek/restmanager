@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class MenuItem extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @NotNull
+    @JsonIgnore
     private Menu menu;
 
     public MenuItem() {

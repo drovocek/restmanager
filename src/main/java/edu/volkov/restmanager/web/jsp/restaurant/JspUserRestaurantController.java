@@ -36,12 +36,11 @@ public class JspUserRestaurantController {
     public String getEnabled(Integer id, Model model) {
         log.info("\n getEnabled for restaurant {}", id);
         Restaurant rest = restRepo.getWithDayEnabledMenu(id);
-        RestaurantTo restTo = createToWithMenu(
+        Restaurant restTo =
                 checkNotFoundWithId(
                         rest.isEnabled() ? rest : null,
                         id
-                )
-        );
+                );
 
         model.addAttribute("restTo", restTo);
         return "restaurant";
@@ -51,7 +50,7 @@ public class JspUserRestaurantController {
     public String getAllEnabled(Model model) {
         log.info("\n getAllEnabled restaurants");
         Predicate<Restaurant> filter = Restaurant::isEnabled;
-        List<RestaurantTo> tos = getFilteredTosWithMenu(restRepo.getAllWithDayEnabledMenu(), filter);
+        List<Restaurant> tos = filtrate(restRepo.getAllWithDayEnabledMenu(), filter);
 
         model.addAttribute("restTos", tos);
         return "restaurants";
@@ -65,7 +64,7 @@ public class JspUserRestaurantController {
     ) {
         log.info("\n getFiltered restaurants");
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
-        List<RestaurantTo> filteredTos = getFilteredTosWithMenu(restRepo.getAllWithDayEnabledMenu(), filter);
+        List<Restaurant> filteredTos = filtrate(restRepo.getAllWithDayEnabledMenu(), filter);
 
         model.addAttribute("restTos", filteredTos);
         return "restaurants";

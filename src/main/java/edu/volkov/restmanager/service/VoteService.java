@@ -17,7 +17,9 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 public class VoteService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final VoteRepository repository;
+
     private static LocalTime changeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
     public VoteService(VoteRepository repository) {

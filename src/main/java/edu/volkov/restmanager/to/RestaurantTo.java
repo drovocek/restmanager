@@ -1,38 +1,48 @@
 package edu.volkov.restmanager.to;
 
-import edu.volkov.restmanager.model.Menu;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-import java.beans.ConstructorProperties;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-public class RestaurantTo {
+@Setter
+@NoArgsConstructor
+public class RestaurantTo extends BaseTo implements Serializable {
 
-    private final Integer id;
+    private static final long serialVersionUID = 1L;
 
-    private final String name;
+    @NotBlank
+    @Size(min = 2, max = 100)
+    private String name;
 
-    private final String address;
+    @NotBlank
+    @Size(min = 5, max = 200)
+    private String address;
 
-    private final String phone;
+    @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
+    @Size(max = 20)
+    private String phone;
 
-    private final int likesAmount;
-
-    private final List<Menu> menus;
-
-    @ConstructorProperties({"id", "name", "address", "phone", "likesAmount", "menus"})
-    public RestaurantTo(Integer id, String name, String address, String phone, int likesAmount, List<Menu> menus) {
-        this.id = id;
+    public RestaurantTo(Integer id, String name, String address, String phone) {
+        super(id);
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.likesAmount = likesAmount;
-        this.menus = menus;
+    }
+
+    @Override
+    public String toString() {
+        return "RestaurantTo{" +
+                " id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

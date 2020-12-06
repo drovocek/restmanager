@@ -3,7 +3,9 @@ package edu.volkov.restmanager.web.rest.restaurant;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
 import edu.volkov.restmanager.testdata.RestaurantTestData;
+import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;
+import edu.volkov.restmanager.util.model.RestaurantUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
@@ -13,12 +15,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
+import static edu.volkov.restmanager.TestUtil.userHttpBasic;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
-import static edu.volkov.restmanager.util.model.RestaurantUtil.createToWithoutMenu;
-import static org.junit.Assert.assertThrows;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static edu.volkov.restmanager.testdata.UserTestData.admin;
+import static edu.volkov.restmanager.testdata.UserTestData.user1;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AdminRestaurantControllerTest extends AbstractControllerTest {
 
@@ -27,54 +32,85 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Autowired
     protected RestaurantRepository repository;
 
+
     @Test
-    public void create() throws Exception {
+    public void get() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID)
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(REST_MATCHER.contentJson(rest1));
+    }
+
+    @Test
+    public void delete() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL + REST1_ID)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertNull(repository.get(REST1_ID));
+    }
+
+    @Test
+    public void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(user1)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void update() throws Exception {
+        RestaurantTo updatedTo = new RestaurantTo(REST1_ID, "updatedName", "updatedAddress", "+7 (988) 888-8888");
+        perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andExpect(status().isNoContent());
+
+        REST_MATCHER.assertMatch(repository.get(REST1_ID), RestaurantUtil.updateFromTo(new Restaurant(rest1), updatedTo));
+    }
+
+    @Test
+    public void createWithLocation() throws Exception {
         Restaurant newRest = RestaurantTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(newRest)))
                 .andExpect(status().isCreated());
 
         Restaurant created = readFromJson(action, Restaurant.class);
-        int newId = created.getId();
+        int newId = created.id();
         newRest.setId(newId);
         REST_MATCHER.assertMatch(created, newRest);
         REST_MATCHER.assertMatch(repository.get(newId), newRest);
     }
 
     @Test
-    public void update() throws Exception {
-        Restaurant updated = RestaurantTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isNoContent());
-        REST_MATCHER.assertMatch(repository.get(REST1_ID), updated);
-    }
-
-    @Test
-    public void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + REST1_ID))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-        System.out.println(repository.get(REST1_ID));
-        assertThrows(NotFoundException.class, () -> repository.get(REST1_ID));
-    }
-
-    @Test
-    public void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_TO_MATCHER.contentJson(createToWithoutMenu(rest1)));
-    }
-
-    @Test
     public void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(REST_MATCHER.contentJson(rest1, rest2));
+    }
+
+    @Test
+    public void enable() throws Exception {
+        perform(MockMvcRequestBuilders.patch(REST_URL + REST1_ID)
+                .param("enabled", "false")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        assertFalse(repository.get(REST1_ID).isEnabled());
     }
 }
