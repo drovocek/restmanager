@@ -5,7 +5,7 @@ import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.to.RestaurantTo;
 
 public class RestaurantTestData {
-    public static TestMatcher<Restaurant> REST_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Restaurant.class, "menus", "votes");
+    public static TestMatcher<Restaurant> REST_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Restaurant.class, "menus");
     public static TestMatcher<RestaurantTo> REST_TO_MATCHER = TestMatcher.usingEqualsComparator(RestaurantTo.class);
 
     public final static int REST1_ID = 0;

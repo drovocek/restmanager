@@ -1,6 +1,7 @@
 package edu.volkov.restmanager.web.rest.user;
 
 import edu.volkov.restmanager.model.User;
+import edu.volkov.restmanager.to.UserTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
+import static edu.volkov.restmanager.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(value = AdminController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,16 +47,22 @@ public class AdminController extends AbstractUserController {
         super.delete(id);
     }
 
-    @Override
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
-        super.update(user, id);
+    public void update(@RequestBody UserTo userTo) {
+        super.update(userTo, userTo.id());
     }
 
     @Override
     @GetMapping("/by")
     public User getByMail(@RequestParam String email) {
         return super.getByMail(email);
+    }
+
+    @Override
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+        super.enable(id, enabled);
     }
 }

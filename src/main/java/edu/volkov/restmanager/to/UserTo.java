@@ -1,31 +1,47 @@
 package edu.volkov.restmanager.to;
 
-import edu.volkov.restmanager.model.Role;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class UserTo {
+@Setter
+@NoArgsConstructor
+public class UserTo extends BaseTo implements Serializable {
 
-    private final Integer id;
+    private static final long serialVersionUID = 1L;
 
-    private final String name;
+    @NotBlank
+    @Size(min = 2, max = 100)
+    private String name;
 
-    private final String email;
+    @Email
+    @NotBlank
+    @Size(max = 100)
+    private String email;
 
-    private final String password;
+    @NotBlank
+    @Size(min = 5, max = 32, message = "length must be between 5 and 32 characters")
+    private String password;
 
-    private final LocalDateTime registered;
+    public UserTo(Integer id, String name, String email, String password) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-    private final boolean enabled;
-
-    private final Set<Role> roles;
+    @Override
+    public String toString() {
+        return "UserTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

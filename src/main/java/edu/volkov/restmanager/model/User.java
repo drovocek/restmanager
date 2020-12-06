@@ -50,9 +50,6 @@ public class User extends AbstractNamedEntity {
     @BatchSize(size = 200)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Vote> votes;
-
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, true, LocalDateTime.now(), EnumSet.of(role, roles));
     }
