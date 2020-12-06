@@ -1,31 +1,71 @@
 package edu.volkov.restmanager.to;
 
-import edu.volkov.restmanager.model.Role;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
-@ToString
-@EqualsAndHashCode
 @AllArgsConstructor
-public class UserTo {
+public class UserTo extends BaseTo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    private final Integer id;
+    @NotBlank
+    @Size(min = 2, max = 100)
+    private String name;
 
-    private final String name;
+    @Email
+    @NotBlank
+    @Size(max = 100)
+    private String email;
 
-    private final String email;
+    @NotBlank
+    @Size(min = 5, max = 32, message = "length must be between 5 and 32 characters")
+    private String password;
 
-    private final String password;
+    public UserTo() {
+    }
 
-    private final LocalDateTime registered;
+    public UserTo(Integer id, String name, String email, String password) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-    private final boolean enabled;
+    public String getPassword() {
+        return password;
+    }
 
-    private final Set<Role> roles;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

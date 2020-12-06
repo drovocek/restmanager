@@ -12,6 +12,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.assureIdConsistent;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNew;
 
 public abstract class AbstractUserController {
+
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -47,5 +48,10 @@ public abstract class AbstractUserController {
     public User getByMail(String email) {
         log.info("getByEmail {}", email);
         return service.getByEmail(email);
+    }
+
+    public void enable(int id, boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", id);
+        service.enable(id, enabled);
     }
 }

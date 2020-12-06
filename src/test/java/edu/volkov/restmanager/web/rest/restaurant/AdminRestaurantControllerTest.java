@@ -49,7 +49,6 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
-
         REST_MATCHER.assertMatch(repository.get(REST1_ID), updated);
     }
 
