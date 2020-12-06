@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(UserTo userTo) {
         User user = get(userTo.id());
-        UserUtil.updateFromTo(user, userTo);
+        User updatedUser = UserUtil.updateFromTo(user, userTo);
     }
 
     @Transactional
