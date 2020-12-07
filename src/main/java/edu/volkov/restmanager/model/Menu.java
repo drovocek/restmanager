@@ -38,7 +38,6 @@ public class Menu extends AbstractNamedEntity {
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
-    //@Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
     private List<MenuItem> menuItems;
 

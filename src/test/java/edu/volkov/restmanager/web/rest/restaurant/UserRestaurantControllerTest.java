@@ -40,6 +40,29 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void getFilteredEnabledWithDayEnabledMenuAll() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL+ "filter?name=&address="))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                        rest1WithDayEnabledMenusAndItems,
+                        rest2WithDayEnabledMenusAndItems
+                        )
+                );
+    }
+
+    @Test
+    public void getFilteredEnabledWithDayEnabledMenuByName() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .with(userHttpBasic(user1))
+                .param("name", "rest1").param("address", "address1"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(REST_MATCHER_WITH_MENU.contentJson(rest1WithDayEnabledMenusAndItems));
+    }
+
+    @Test
     public void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk());

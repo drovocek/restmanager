@@ -29,7 +29,7 @@ public class RootController {
         return "users";
     }
 
-    @PostMapping("/restaurants")
+    @PostMapping("/")
     public String setUser() {
         return "redirect:restaurants";
     }

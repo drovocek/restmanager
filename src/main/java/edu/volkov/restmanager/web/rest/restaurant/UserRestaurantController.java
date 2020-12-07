@@ -5,22 +5,19 @@ import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.util.model.MenuUtil;
-import edu.volkov.restmanager.util.model.RestaurantUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
-import static edu.volkov.restmanager.util.model.RestaurantUtil.addMenus;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.*;
 
 @RestController
 @RequestMapping(value = UserRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +68,30 @@ public class UserRestaurantController {
             );
             addMenus(allRests, filteredMenus);
 
-            return RestaurantUtil.filtrate(allRests, Restaurant::isEnabled);
+            return filtrate(allRests, Restaurant::isEnabled);
+        }
+    }
+
+    @Transactional
+    @GetMapping("/filter")
+    public List<Restaurant> getFilteredEnabledWithDayEnabledMenu(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String address
+    ) {
+        log.info("\n getFilteredEnabledWithDayEnabledMenu restaurants by name {} and address {}", name, address);
+        Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address).and(Restaurant::isEnabled);
+        List<Restaurant> filteredRests = filtrate(restRepo.findAll(SORT_NAME), filter);
+
+        if (filteredRests.isEmpty()) {
+            return filteredRests;
+        } else {
+            List<Menu> filteredMenus = MenuUtil.filtrate(
+                    menuRepo.getAllBetween(TEST_TODAY, TEST_TODAY),
+                    Menu::isEnabled
+            );
+            addMenus(filteredRests, filteredMenus);
+
+            return filtrate(filteredRests, Restaurant::isEnabled);
         }
     }
 }
