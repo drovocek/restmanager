@@ -29,9 +29,8 @@ public class RootController {
         return "users";
     }
 
-    @PostMapping("/users")
-    public String setUser(@RequestParam(required = false) Integer userId) {
-
+    @PostMapping("/")
+    public String setUser() {
         return "redirect:restaurants";
     }
 }

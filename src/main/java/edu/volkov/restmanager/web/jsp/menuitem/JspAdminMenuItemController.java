@@ -32,11 +32,10 @@ public class JspAdminMenuItemController {
             @RequestParam(required = false) Integer id,
             Integer menuId,
             String name,
-            Boolean enabled,
             Integer price,
             Model model
     ) {
-        MenuItem menuItm = new MenuItem(id, name, enabled, price);
+        MenuItem menuItm = new MenuItem(id, name, price);
 
         if (menuItm.isNew()) {
             log.info("\n create menuItm for menu:{}", menuId);
@@ -56,11 +55,10 @@ public class JspAdminMenuItemController {
             String name,
             Integer price,
             Integer menuId,
-            Boolean enabled,
             Model model
     ) {
         log.info("\n updateOrCreate menuItem:{} of menu:{}", id, menuId);
-        MenuItem menuItm = new MenuItem(id, name, enabled, price);
+        MenuItem menuItm = new MenuItem(id, name, price);
 
         if (menuItm.getId() == null) {
             log.info("\n create menuItem fo menu:{}", menuId);
@@ -83,7 +81,7 @@ public class JspAdminMenuItemController {
 
     @GetMapping("/create")
     public String create(Integer menuId, Model model) {
-        model.addAttribute("menuItmTo", new MenuItemTo(null, "def", 0, false, menuId));
+        model.addAttribute("menuItmTo", new MenuItemTo(null, "def", 0, menuId));
         return "menuItemForm";
     }
 

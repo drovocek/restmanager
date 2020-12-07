@@ -1,10 +1,9 @@
 package edu.volkov.restmanager.web.rest.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
+import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.testdata.RestaurantTestData;
 import edu.volkov.restmanager.to.RestaurantTo;
-import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.util.model.RestaurantUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import edu.volkov.restmanager.web.json.JsonUtil;
@@ -30,17 +29,34 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminRestaurantController.REST_URL + '/';
 
     @Autowired
-    protected RestaurantRepository repository;
-
+    protected CrudRestaurantRepository repository;
 
     @Test
-    public void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID)
-                .with(userHttpBasic(admin)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER.contentJson(rest1));
+    public void create() throws Exception {
+        Restaurant newRest = RestaurantTestData.getNew();
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(newRest)))
+                .andExpect(status().isCreated());
+
+        Restaurant created = readFromJson(action, Restaurant.class);
+        int newId = created.id();
+        newRest.setId(newId);
+        REST_MATCHER.assertMatch(created, newRest);
+        REST_MATCHER.assertMatch(repository.findById(newId).orElse(null), newRest);
+    }
+
+    @Test
+    public void update() throws Exception {
+        RestaurantTo updatedTo = new RestaurantTo(REST1_ID, "updatedName", "updatedAddress", "+7 (988) 888-8888");
+        perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andExpect(status().isNoContent());
+
+        REST_MATCHER.assertMatch(repository.findById(REST1_ID).orElse(null), RestaurantUtil.updateFromTo(new Restaurant(rest1), updatedTo));
     }
 
     @Test
@@ -50,7 +66,17 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertNull(repository.get(REST1_ID));
+        assertNull(repository.findById(REST1_ID).orElse(null));
+    }
+
+    @Test
+    public void getWithoutMenu() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID)
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(REST_MATCHER.contentJson(rest1));
     }
 
     @Test
@@ -67,40 +93,16 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void update() throws Exception {
-        RestaurantTo updatedTo = new RestaurantTo(REST1_ID, "updatedName", "updatedAddress", "+7 (988) 888-8888");
-        perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(userHttpBasic(admin))
-                .content(JsonUtil.writeValue(updatedTo)))
-                .andExpect(status().isNoContent());
-
-        REST_MATCHER.assertMatch(repository.get(REST1_ID), RestaurantUtil.updateFromTo(new Restaurant(rest1), updatedTo));
-    }
-
-    @Test
-    public void createWithLocation() throws Exception {
-        Restaurant newRest = RestaurantTestData.getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(userHttpBasic(admin))
-                .content(JsonUtil.writeValue(newRest)))
-                .andExpect(status().isCreated());
-
-        Restaurant created = readFromJson(action, Restaurant.class);
-        int newId = created.id();
-        newRest.setId(newId);
-        REST_MATCHER.assertMatch(created, newRest);
-        REST_MATCHER.assertMatch(repository.get(newId), newRest);
-    }
-
-    @Test
-    public void getAll() throws Exception {
+    public void getAllWithDayEnabledMenu() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(admin)))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER.contentJson(rest1, rest2));
+                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                        rest1WithDayEnabledMenusAndItems,
+                        rest2WithDayEnabledMenusAndItems)
+                );
     }
 
     @Test
@@ -111,6 +113,6 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(repository.get(REST1_ID).isEnabled());
+        assertFalse(repository.findById(REST1_ID).orElse(null).isEnabled());
     }
 }

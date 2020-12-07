@@ -17,25 +17,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "menu")
 public class Menu extends AbstractNamedEntity {
 
-    @Getter
-    @Setter
     @Column(name = "menu_date", nullable = false, columnDefinition = "data")
     @NotNull
     private LocalDate menuDate = LocalDate.now();
 
-    @Getter
-    @Setter
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     private boolean enabled = false;
 
-    @Getter
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
@@ -43,7 +38,6 @@ public class Menu extends AbstractNamedEntity {
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
-    //@Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
     private List<MenuItem> menuItems;
 

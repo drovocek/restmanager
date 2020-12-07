@@ -12,7 +12,6 @@ public class MenuItemUtil {
                 menuItm.id(),
                 menuItm.getName(),
                 menuItm.getPrice(),
-                menuItm.isEnabled(),
                 menuItm.getMenu().getId()
         );
     }
