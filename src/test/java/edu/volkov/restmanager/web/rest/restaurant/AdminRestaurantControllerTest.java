@@ -1,10 +1,9 @@
 package edu.volkov.restmanager.web.rest.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.restaurant.RestaurantRepository;
+import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.testdata.RestaurantTestData;
 import edu.volkov.restmanager.to.RestaurantTo;
-import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.util.model.RestaurantUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import edu.volkov.restmanager.web.json.JsonUtil;
@@ -30,8 +29,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminRestaurantController.REST_URL + '/';
 
     @Autowired
-    protected RestaurantRepository repository;
-
+    protected CrudRestaurantRepository repository;
 
     @Test
     public void get() throws Exception {
@@ -50,7 +48,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertNull(repository.get(REST1_ID));
+        assertNull(repository.findById(REST1_ID).orElse(null));
     }
 
     @Test
@@ -75,7 +73,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andExpect(status().isNoContent());
 
-        REST_MATCHER.assertMatch(repository.get(REST1_ID), RestaurantUtil.updateFromTo(new Restaurant(rest1), updatedTo));
+        REST_MATCHER.assertMatch(repository.findById(REST1_ID).get(), RestaurantUtil.updateFromTo(new Restaurant(rest1), updatedTo));
     }
 
     @Test
@@ -91,7 +89,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newRest.setId(newId);
         REST_MATCHER.assertMatch(created, newRest);
-        REST_MATCHER.assertMatch(repository.get(newId), newRest);
+        REST_MATCHER.assertMatch(repository.findById(newId).get(), newRest);
     }
 
     @Test
@@ -111,6 +109,6 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(repository.get(REST1_ID).isEnabled());
+        assertFalse(repository.findById(REST1_ID).get().isEnabled());
     }
 }
