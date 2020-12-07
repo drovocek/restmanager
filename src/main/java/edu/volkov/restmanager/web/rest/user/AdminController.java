@@ -11,8 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static edu.volkov.restmanager.web.SecurityUtil.authUserId;
-
 @RestController
 @RequestMapping(value = AdminController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController extends AbstractUserController {

@@ -27,7 +27,5 @@ public class MenuItemTo {
 
     private final Integer price;
 
-    private final boolean enabled;
-
     private final Integer menuId;
 }
