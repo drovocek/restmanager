@@ -19,7 +19,7 @@ import java.util.List;
 
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
-import static edu.volkov.restmanager.util.model.MenuUtil.createTo;
+import static edu.volkov.restmanager.util.model.MenuUtil.asTo;
 import static edu.volkov.restmanager.util.model.MenuUtil.getTos;
 
 @RequestMapping("/admin/menus")
@@ -59,7 +59,7 @@ public class JspAdminMenuController {
 
     @GetMapping("/update")
     public String update(Integer id, Integer restId, Model model) {
-        MenuTo to = createTo(checkNotFound(menuRepo.get(id, restId), "menu by id: " + id + "dos not exist for rest:" + restId));
+        MenuTo to = asTo(checkNotFound(menuRepo.get(id, restId), "menu by id: " + id + "dos not exist for rest:" + restId));
         model.addAttribute("menuTo", to);
         return "menuForm";
     }

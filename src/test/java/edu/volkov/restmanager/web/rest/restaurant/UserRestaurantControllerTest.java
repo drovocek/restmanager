@@ -1,9 +1,14 @@
 package edu.volkov.restmanager.web.rest.restaurant;
 
+import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
@@ -59,7 +64,8 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                 .param("name", "rest1").param("address", "address1"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(rest1WithDayEnabledMenusAndItems));
+                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                        Collections.singletonList(rest1WithDayEnabledMenusAndItems)));
     }
 
     @Test

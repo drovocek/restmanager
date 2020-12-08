@@ -49,6 +49,7 @@ public class MenuRepositoryTest extends AbstractTest {
     @Test
     public void get() {
         Menu menu = repository.get(MENU1_ID, REST1_ID);
+        System.out.println(menu.getMenuItems().get(0).getMenu());
         MENU_MATCHER.assertMatch(menu, menu1);
     }
 

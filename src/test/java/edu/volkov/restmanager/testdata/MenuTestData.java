@@ -14,6 +14,7 @@ import static edu.volkov.restmanager.testdata.MenuItemTestData.*;
 
 public class MenuTestData {
     public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant", "menuItems");
+    public static TestMatcher<Menu> MENU_WITH_ITEMS_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant");
 
     public static final int MENU1_ID = 0;
     public static final int MENU_NOT_FOUND_ID = 15;
