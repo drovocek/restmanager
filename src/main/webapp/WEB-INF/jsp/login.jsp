@@ -7,7 +7,7 @@
 <body>
 <nav class="navbar navbar-dark bg-dark py-0">
     <div class="container">
-        <div class="navbar-brand"><img src="resources/images/icon-meal.png"> <spring:message code="app.title"/></div>
+        <div class="navbar-brand"><img src="resources/images/icon-rest.png"> <spring:message code="app.title"/></div>
         <form class="form-inline my-2" id="login_form" action="spring_security_check" method="post">
             <input class="form-control mr-1" type="text" placeholder="Email" name="username">
             <input class="form-control mr-1" type="password" placeholder="Password" name="password">
@@ -28,7 +28,7 @@
         </c:if>
         <br/>
         <p>
-            <button type="submit" class="btn btn-lg btn-primary" onclick="login('user@yandex.ru', 'password')">
+            <button type="submit" class="btn btn-lg btn-primary" onclick="login('user1@yandex.ru', 'password1')">
                 <spring:message code="app.login"/> User
             </button>
             <button type="submit" class="btn btn-lg btn-primary" onclick="login('admin@gmail.com', 'admin')">
@@ -49,15 +49,8 @@
             <a href="http://ru.wikipedia.org/wiki/JSP">JSP</a>,
             <a href="http://en.wikipedia.org/wiki/JavaServer_Pages_Standard_Tag_Library">JSTL</a>,
             <a href="http://tomcat.apache.org/">Apache Tomcat</a>,
-            <a href="http://www.webjars.org/">WebJars</a>,
-            <a href="http://datatables.net/">DataTables plugin</a>,
             <a href="http://ehcache.org">EHCACHE</a>,
-            <a href="http://www.postgresql.org/">PostgreSQL</a>,
             <a href="http://junit.org/">JUnit</a>,
-            <a href="http://hamcrest.org/JavaHamcrest/">Hamcrest</a>,
-            <a href="http://jquery.com/">jQuery</a>,
-            <a href="http://ned.im/noty/">jQuery notification</a>,
-            <a href="http://getbootstrap.com/">Bootstrap</a>.
         </div>
     </div>
 </div>

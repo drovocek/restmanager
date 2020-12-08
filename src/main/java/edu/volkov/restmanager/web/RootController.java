@@ -1,13 +1,9 @@
 package edu.volkov.restmanager.web;
 
-import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.UserService;
-import edu.volkov.restmanager.to.RestaurantTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RootController {
@@ -20,7 +16,7 @@ public class RootController {
 
     @GetMapping("/")
     public String root() {
-        return "index";
+        return "redirect:/rest/any/restaurants";
     }
 
     @GetMapping("/users")
@@ -29,8 +25,8 @@ public class RootController {
         return "users";
     }
 
-    @PostMapping("/")
-    public String setUser() {
-        return "redirect:restaurants";
+    @GetMapping(value = "/login")
+    public String login() {
+        return "login";
     }
 }
