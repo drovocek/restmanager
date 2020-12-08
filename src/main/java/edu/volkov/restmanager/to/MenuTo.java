@@ -1,28 +1,44 @@
 package edu.volkov.restmanager.to;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class MenuTo {
+@Setter
+@NoArgsConstructor
+public class MenuTo extends BaseTo implements Serializable {
 
-    private final Integer id;
+    private String name;
 
-    private final String name;
+    private LocalDate menuDate;
 
-    private final LocalDate menuDate;
+    private boolean enabled;
 
-    private final boolean enabled;
+    private Integer restId;
 
-    private final Integer restId;
+    private List<MenuItemTo> menuItemTos;
 
-    private final List<MenuItemTo> menuItems;
+    public MenuTo(Integer id, String name, LocalDate menuDate, boolean enabled, Integer restId, List<MenuItemTo> menuItemTos) {
+        super(id);
+        this.name = name;
+        this.menuDate = menuDate;
+        this.enabled = enabled;
+        this.restId = restId;
+        this.menuItemTos = menuItemTos;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", menuDate=" + menuDate +
+                ", enabled=" + enabled +
+                ", restId=" + restId +
+                ", menuItems=" + menuItemTos +
+                '}';
+    }
 }

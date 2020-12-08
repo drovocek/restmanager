@@ -2,30 +2,42 @@ package edu.volkov.restmanager.to;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class MenuItemTo {
+@Setter
+@NoArgsConstructor
+public class MenuItemTo extends BaseTo implements Serializable {
 
-    private final Integer id;
+    private String name;
 
-    private final String name;
+    private Integer price;
 
-    private final Integer price;
+    private Integer menuId;
 
-    private final Integer menuId;
+    public MenuItemTo(Integer id, String name, Integer price, Integer menuId) {
+        super(id);
+        this.name = name;
+        this.price = price;
+        this.menuId = menuId;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuItemTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", menuId=" + menuId +
+                '}';
+    }
 }
