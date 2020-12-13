@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
@@ -33,7 +34,7 @@ public class RestaurantServiceTest extends AbstractTest {
     @Test
     public void duplicateNameCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new Restaurant(null, "rest1", "newAddress", "+7 (977) 777-7777", true, 0)));
+                service.create(duplicateNameRest));
     }
 
     @Test
@@ -113,5 +114,12 @@ public class RestaurantServiceTest extends AbstractTest {
         assertFalse(service.getWithoutMenu(REST1_ID).isEnabled());
         service.enable(REST1_ID, true);
         assertTrue(service.getWithoutMenu(REST1_ID).isEnabled());
+    }
+
+    @Test
+    public void createWithException() {
+        validateRootCause(() -> service.create(new Restaurant(" ", "address1", "+7 (911) 111-1111")), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant("rest1", " ", "+7 (911) 111-1111")), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Restaurant("rest1", "address1", "+10 (911) 111-1111")), ConstraintViolationException.class);
     }
 }
