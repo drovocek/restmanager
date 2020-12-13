@@ -43,7 +43,7 @@ public class AdminMenuController {
 
         Menu createdMenu = menuRepo.save(menu, id);
 
-        log.info("\n NEW menu - {}", createdMenu);
+        log.info("\n NEW menu - {} \n NEW menuItems - {}", createdMenu, createdMenu.getMenuItems());
 
         List<MenuItem> mis = menu.getMenuItems().stream()
                 .peek(mi -> mi.setMenu(createdMenu))
@@ -51,11 +51,9 @@ public class AdminMenuController {
 
         List<MenuItem> createdMenuItems = menuItmRepo.saveAll(mis);
 
-        log.info("\n NEW MenuItems - {}", createdMenuItems);
-
         createdMenu.setMenuItems(createdMenuItems);
 
-        System.out.println(createdMenu);
+        log.info("\n CREATED menu - {} \n CREATED menuItems - {}", createdMenu, createdMenu.getMenuItems());
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

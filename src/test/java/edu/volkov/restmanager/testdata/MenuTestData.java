@@ -11,10 +11,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static edu.volkov.restmanager.testdata.MenuItemTestData.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MenuTestData {
     public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant", "menuItems");
-    public static TestMatcher<Menu> MENU_WITH_ITEMS_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant");
+    public static TestMatcher<Menu> MENU_WITH_ITEMS_MATCHER = TestMatcher.usingAssertions(Menu.class,
+            (a, e) -> assertThat(a).usingRecursiveComparison()
+                    .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e),
+            (a, e) -> {
+                throw new UnsupportedOperationException();
+            });
+
 
     public static final int MENU1_ID = 0;
     public static final int MENU_NOT_FOUND_ID = 15;

@@ -2,6 +2,7 @@ package edu.volkov.restmanager.web.rest.menu;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
+import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
 import edu.volkov.restmanager.repository.menu.MenuRepository;
 import edu.volkov.restmanager.testdata.MenuItemTestData;
 import edu.volkov.restmanager.testdata.MenuTestData;
@@ -35,6 +36,10 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
     @Autowired
     private MenuRepository menuRepo;
 
+    @Autowired
+    private CrudMenuRepository crudMenuRepo;
+
+
     @Test
     public void create() throws Exception {
         Menu newMenu = MenuTestData.getNew();
@@ -53,11 +58,10 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
         int newMenuItmId = created.getMenuItems().get(0).getId();
         newMenu.setId(newMenuId);
         newMenuItm.setId(newMenuItmId);
-        newMenuItm.setMenu(created);
-        System.out.println("CREATED " + created);
 
         MENU_WITH_ITEMS_MATCHER.assertMatch(created, newMenu);
         MENU_WITH_ITEMS_MATCHER.assertMatch(menuRepo.get(newMenuId, REST1_ID), newMenu);
+
     }
 
     @Test

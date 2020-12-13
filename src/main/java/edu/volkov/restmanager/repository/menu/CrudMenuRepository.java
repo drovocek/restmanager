@@ -34,4 +34,5 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
             "m.menuDate<=:endDate" +
             " ORDER BY m.menuDate DESC")
     List<Menu> getAllBetween(LocalDate startDate, LocalDate endDate);
+
 }
