@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class RestaurantUtil {
 
-    public static RestaurantTo createTo(Restaurant rest) {
+    public static RestaurantTo asTo(Restaurant rest) {
         return new RestaurantTo(
                 rest.id(),
                 rest.getName(),

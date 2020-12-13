@@ -3,8 +3,6 @@ package edu.volkov.restmanager.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.FilterJoinTable;
-import org.hibernate.annotations.FilterJoinTables;
 import org.hibernate.annotations.Formula;
 import org.springframework.util.CollectionUtils;
 
@@ -17,23 +15,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Setter
+@Getter
 @NoArgsConstructor
 @Entity
-@FilterJoinTables(
-        @FilterJoinTable(name = "betweenDates", condition = ":menu_date <= startDate and :maxLength >= endDate")
-)
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(name = "restaurants_unique_name_idx", columnNames = "name")})
 public class Restaurant extends AbstractNamedEntity {
 
-    @Setter
-    @Getter
     @NotBlank
     @Size(min = 5, max = 200)
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Setter
-    @Getter
     @NotBlank
 //    https://www.baeldung.com/java-regex-validate-phone-numbers
     @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
@@ -41,13 +34,9 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Setter
-    @Getter
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     private boolean enabled = false;
 
-    @Setter
-    @Getter
     @Formula("(SELECT COUNT(*) FROM Vote v WHERE v.restaurant_id = id)")
     private int votesQuantity;
 

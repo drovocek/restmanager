@@ -1,7 +1,6 @@
 package edu.volkov.restmanager.web.rest.user;
 
 import edu.volkov.restmanager.model.User;
-import edu.volkov.restmanager.to.UserTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +46,8 @@ public class AdminController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo) {
-        super.update(userTo, userTo.id());
+    public void update(@RequestBody User user) {
+        super.update(user, user.id());
     }
 
     @Override

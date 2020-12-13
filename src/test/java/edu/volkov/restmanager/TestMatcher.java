@@ -20,6 +20,10 @@ public class TestMatcher<T> {
         this.iterableAssertion = iterableAssertion;
     }
 
+    public static <T> TestMatcher<T> usingAssertions(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
+        return new TestMatcher<>(clazz, assertion, iterableAssertion);
+    }
+
     public static <T> TestMatcher<T> usingEqualsComparator(Class<T> clazz) {
         return new TestMatcher<>(clazz,
                 (a, e) -> assertThat(a).isEqualTo(e),
