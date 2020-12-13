@@ -26,7 +26,7 @@ public class AdminControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminController.REST_URL + '/';
 
     @Autowired
-    private UserService userService;
+    private UserService service;
 
     @Test
     public void get() throws Exception {
@@ -61,7 +61,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> userService.get(USER1_ID));
+        assertThrows(NotFoundException.class, () -> service.get(USER1_ID));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(userService.get(USER1_ID), updated);
+        USER_MATCHER.assertMatch(service.get(USER1_ID), updated);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class AdminControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(userService.get(newId), newUser);
+        USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -130,6 +130,6 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(userService.get(USER1_ID).isEnabled());
+        assertFalse(service.get(USER1_ID).isEnabled());
     }
 }
