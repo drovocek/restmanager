@@ -18,11 +18,10 @@ public class MenuTestData {
     public static TestMatcher<Menu> MENU_WITH_ITEMS_MATCHER = TestMatcher.usingAssertions(Menu.class,
             (a, e) -> assertThat(a).usingRecursiveComparison()
                     .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e),
-            (a, e) -> {
-                assertThat(a).usingRecursiveComparison()
-                        .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e);
-            });
-
+            (a, e) ->
+                    assertThat(a).usingRecursiveComparison()
+                            .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e)
+    );
 
     public static final int MENU1_ID = 0;
     public static final int MENU_NOT_FOUND_ID = 15;
@@ -54,7 +53,7 @@ public class MenuTestData {
         menu6WithItems.setMenuItems(menu6MenuItems);
     }
 
-    public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems,menu1WithItems,menu2WithItems);
+    public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems, menu1WithItems, menu2WithItems);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));

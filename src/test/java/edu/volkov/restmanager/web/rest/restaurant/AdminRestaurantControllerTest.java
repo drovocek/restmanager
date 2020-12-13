@@ -99,7 +99,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(
                         rest1WithDayEnabledMenusAndItems,
                         rest2WithDayEnabledMenusAndItems)
                 );

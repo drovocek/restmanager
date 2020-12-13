@@ -35,7 +35,7 @@ public class Menu extends AbstractNamedEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<MenuItem> menuItems;
 
     public Menu(Menu menu) {

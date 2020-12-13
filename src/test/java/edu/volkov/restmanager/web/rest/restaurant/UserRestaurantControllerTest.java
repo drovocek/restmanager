@@ -28,7 +28,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
         ).andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(rest1WithDayEnabledMenusAndItems));
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(rest1WithDayEnabledMenusAndItems));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(
                         rest1WithDayEnabledMenusAndItems,
                         rest2WithDayEnabledMenusAndItems
                         )
@@ -50,7 +50,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(
                         rest1WithDayEnabledMenusAndItems,
                         rest2WithDayEnabledMenusAndItems
                         )
@@ -64,7 +64,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                 .param("name", "rest1").param("address", "address1"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(REST_MATCHER_WITH_MENU.contentJson(
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(
                         Collections.singletonList(rest1WithDayEnabledMenusAndItems)));
     }
 

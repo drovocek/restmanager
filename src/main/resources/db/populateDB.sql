@@ -25,7 +25,7 @@ VALUES ('USER', 0),
 
 INSERT INTO restaurant (id, name, address, phone, enabled)
 VALUES (0, 'rest1', 'address1', '+7 (911) 111-1111', true),
-       (1, 'rest2', 'address2', '+7 (922) 222-2222', true);
+       (1, 'rest2', 'address2', '+7 (922) 222-2222', false);
 
 INSERT INTO vote (id, user_id, restaurant_id, vote_date)
 VALUES (0, 0, 0, '2020-01-27'),
