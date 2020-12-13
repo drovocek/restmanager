@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 public class MenuUtil {
 
     public static Menu updateFromTo(Menu menu, MenuTo menuTo) {
-
+        menu.setName(menuTo.getName());
+        menu.setMenuDate(menuTo.getMenuDate());
+        menu.setEnabled(menuTo.isEnabled());
         return menu;
     }
 

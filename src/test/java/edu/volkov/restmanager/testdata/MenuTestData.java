@@ -19,7 +19,8 @@ public class MenuTestData {
             (a, e) -> assertThat(a).usingRecursiveComparison()
                     .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e),
             (a, e) -> {
-                throw new UnsupportedOperationException();
+                assertThat(a).usingRecursiveComparison()
+                        .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e);
             });
 
 
@@ -52,6 +53,8 @@ public class MenuTestData {
         menu5WithItems.setMenuItems(menu5MenuItems);
         menu6WithItems.setMenuItems(menu6MenuItems);
     }
+
+    public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems,menu1WithItems,menu2WithItems);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));

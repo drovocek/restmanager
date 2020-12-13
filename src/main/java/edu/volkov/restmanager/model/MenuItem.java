@@ -16,7 +16,7 @@ public class MenuItem extends AbstractNamedEntity {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @NotNull
     @JsonIgnore
