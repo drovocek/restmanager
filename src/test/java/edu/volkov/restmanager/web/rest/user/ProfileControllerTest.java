@@ -9,8 +9,10 @@ import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
 import static edu.volkov.restmanager.testdata.UserTestData.*;
 import static edu.volkov.restmanager.web.rest.user.ProfileController.REST_URL;
@@ -47,10 +49,26 @@ public class ProfileControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void register() throws Exception {
+        UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+        User newUser = UserUtil.createNewFromTo(newTo);
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newTo)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        User created = readFromJson(action, User.class);
+        int newId = created.getId();
+        newUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(userService.get(newId), newUser);
+    }
+
+    @Test
     public void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
-        perform(MockMvcRequestBuilders.put(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(user1))
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())

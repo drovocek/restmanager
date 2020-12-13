@@ -3,9 +3,7 @@ package edu.volkov.restmanager.web.rest.user;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
 import edu.volkov.restmanager.testdata.UserTestData;
-import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;
-import edu.volkov.restmanager.util.model.UserUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
@@ -41,6 +39,14 @@ public class AdminControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + 10)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void getByEmail() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "by?email=" + admin.getEmail())
                 .with(userHttpBasic(admin)))
@@ -59,6 +65,14 @@ public class AdminControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void deleteNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL + 10)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isUnauthorized());
@@ -73,14 +87,14 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     public void update() throws Exception {
-        UserTo updatedTo = new UserTo(USER1_ID, "newName", "newemail@ya.ru", "newPassword");
+        User updated = UserTestData.getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(userService.get(USER1_ID), UserUtil.updateFromTo(new User(user1), updatedTo));
+        USER_MATCHER.assertMatch(userService.get(USER1_ID), updated);
     }
 
     @Test
@@ -89,7 +103,7 @@ public class AdminControllerTest extends AbstractControllerTest {
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(JsonUtil.writeValue(newUser)))
+                .content(UserTestData.jsonWithPassword(newUser, "newPass")))
                 .andExpect(status().isCreated());
 
         User created = readFromJson(action, User.class);

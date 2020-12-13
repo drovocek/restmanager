@@ -1,12 +1,10 @@
 package edu.volkov.restmanager.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -16,7 +14,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -33,10 +30,12 @@ public class User extends AbstractNamedEntity {
 
     @Size(min = 5, max = 100)
     @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NotNull
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime registered = LocalDateTime.now();
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
@@ -81,5 +80,4 @@ public class User extends AbstractNamedEntity {
                 ", roles=" + roles +
                 '}';
     }
-
 }

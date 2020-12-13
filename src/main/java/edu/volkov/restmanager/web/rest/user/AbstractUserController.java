@@ -3,6 +3,7 @@ package edu.volkov.restmanager.web.rest.user;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
 import edu.volkov.restmanager.to.UserTo;
+import edu.volkov.restmanager.util.model.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public abstract class AbstractUserController {
     public User get(int id) {
         log.info("get {}", id);
         return service.get(id);
+    }
+
+    public User create(UserTo userTo) {
+        log.info("create from to {}", userTo);
+        return create(UserUtil.createNewFromTo(userTo));
     }
 
     public User create(User user) {

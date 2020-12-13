@@ -3,29 +3,10 @@ package edu.volkov.restmanager.util.model;
 import edu.volkov.restmanager.model.Role;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.to.UserTo;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 public class UserUtil {
-//    public static UserTo createTo(User user) {
-//        return new UserTo(
-//                user.id(),
-//                user.getName(),
-//                user.getEmail(),
-//                user.getPassword(),
-//                user.getRegistered(),
-//                user.isEnabled(),
-//                user.getRoles()
-//        );
-//    }
-//
-//    public static List<UserTo> getTos(List<User> users) {
-//        return users.stream()
-//                .map(UserUtil::createTo)
-//                .collect(Collectors.toList());
-//    }
-
 
     public static User createNewFromTo(UserTo userTo) {
         return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), Role.USER);
@@ -39,6 +20,13 @@ public class UserUtil {
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail().toLowerCase());
         user.setPassword(userTo.getPassword());
+        return user;
+    }
+
+    public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
+        String password = user.getPassword();
+        user.setPassword(StringUtils.hasText(password) ? passwordEncoder.encode(password) : password);
+        user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
 }
