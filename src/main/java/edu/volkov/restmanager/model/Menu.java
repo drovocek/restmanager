@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
@@ -26,7 +25,7 @@ public class Menu extends AbstractNamedEntity {
 
     @Column(name = "menu_date", nullable = false, columnDefinition = "data")
     @NotNull
-    private LocalDate menuDate = LocalDate.now();
+    private LocalDate menuDate;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     private boolean enabled = false;

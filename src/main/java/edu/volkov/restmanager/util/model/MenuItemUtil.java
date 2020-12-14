@@ -3,12 +3,8 @@ package edu.volkov.restmanager.util.model;
 import edu.volkov.restmanager.HasId;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
-import edu.volkov.restmanager.model.Role;
-import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.to.MenuItemTo;
-import edu.volkov.restmanager.to.UserTo;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,7 +12,7 @@ import java.util.stream.Collectors;
 public class MenuItemUtil {
 
     public static MenuItem createNewFromTo(MenuItemTo menuItemTo) {
-        return new MenuItem(null,menuItemTo.getName(),menuItemTo.getPrice());
+        return new MenuItem(null, menuItemTo.getName(), menuItemTo.getPrice());
     }
 
     public static List<MenuItem> createNewsFromTos(Menu menu, List<MenuItemTo> menuItemTos) {
@@ -40,22 +36,22 @@ public class MenuItemUtil {
                 .collect(Collectors.toList());
     }
 
-    public static void updateAllFromTo(List<MenuItem> updatedMenuItems, List<MenuItemTo> menuItemTos) {
-        Map<Integer, MenuItemTo> tosById = menuItemTos.stream()
-                .collect(Collectors.toMap(HasId::id, menuItemTo -> menuItemTo));
-        System.out.println("!!!menuItemTos!!!!! " + menuItemTos);
-        System.out.println("!!!updatedMenuItems!!!!! " + updatedMenuItems);
-        updatedMenuItems.forEach(
-                menuItem -> {
-                    MenuItemTo menuTo = tosById.get(menuItem.id());
-                    if (menuTo != null) {
-                        menuItem.setName(tosById.get(menuItem.id()).getName());
-                        menuItem.setPrice(tosById.get(menuItem.id()).getPrice());
-                    }
-                }
-        );
+    public static List<MenuItem> mergeAllFromTo(List<MenuItem> menuItems, List<MenuItemTo> menuItemTos) {
+        Map<Integer, MenuItem> menuById = menuItems.stream()
+                .collect(Collectors.toMap(HasId::id, menuItem -> menuItem));
 
-        System.out.println("!!!!!! " + updatedMenuItems);
+        List<MenuItem> res = menuItemTos.stream()
+                .map(menuItemTo -> {
+                    MenuItem menuItem = menuById.get(menuItemTo.getId());
+                    if (menuItem == null) {
+                        menuItem = new MenuItem();
+                    }
+                    menuItem.setName(menuItemTo.getName());
+                    menuItem.setPrice(menuItemTo.getPrice());
+                    return menuItem;
+                }).collect(Collectors.toList());
+
+        return res;
     }
 }
 

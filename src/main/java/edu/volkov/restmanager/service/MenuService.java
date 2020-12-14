@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.service;
 
+import com.sun.istack.Nullable;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
@@ -18,8 +19,10 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static edu.volkov.restmanager.util.DateTimeUtil.maxIfNull;
+import static edu.volkov.restmanager.util.DateTimeUtil.minIfNull;
 import static edu.volkov.restmanager.util.ValidationUtil.*;
-import static edu.volkov.restmanager.util.model.MenuItemUtil.*;
+import static edu.volkov.restmanager.util.model.MenuItemUtil.createNewsFromTos;
 
 @Service
 public class MenuService {
@@ -52,27 +55,29 @@ public class MenuService {
         menu.setRestaurant(restRepo.getOne(restId));
         Menu createdMenu = menuRepo.save(menu);
 
-        List<MenuItem> mis = menu.getMenuItems().stream()
-                .peek(mi -> mi.setMenu(createdMenu))
-                .collect(Collectors.toList());
-        List<MenuItem> createdMenuItems = menuItmRepo.saveAll(mis);
+        if (menu.getMenuItems() != null && !menu.getMenuItems().isEmpty()) {
+            List<MenuItem> mis = menu.getMenuItems().stream()
+                    .peek(mi -> mi.setMenu(createdMenu))
+                    .collect(Collectors.toList());
 
-        createdMenu.setMenuItems(createdMenuItems);
+            menuItmRepo.saveAll(mis);
+        }
 
         return createdMenu;
     }
 
     @Transactional
-    public void updateWithMenuItems(int restId, MenuTo menuTo) {
-        log.info("\n update menu: {} from to: {} for rest: {}", menuTo.id(), menuTo, restId);
-        Menu updatedMenu = menuRepo.getWithMenuItems(restId, menuTo.id());
+    public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
+        log.info("\n update menu: {} from to: {} for rest: {}", id, menuTo, restId);
+        assureIdConsistent(menuTo, id);
+        Menu updatedMenu = getWithMenuItems(restId, id);
         MenuUtil.updateFromTo(updatedMenu, menuTo);
 
-        checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
-        List<MenuItem> itms = createNewsFromTos(updatedMenu, menuTo.getMenuItemTos());
-        menuItmRepo.saveAll(itms);
-//        List<MenuItem> updatedMenuItems = menuItmRepo.getAllByMenuId(menuTo.id());
-//        MenuItemUtil.updateAllFromTo(updatedMenuItems, menuTo.getMenuItemTos());
+        if (!updatedMenu.getMenuItems().isEmpty()) {
+            checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
+        }
+
+        menuItmRepo.saveAll(createNewsFromTos(updatedMenu, menuTo.getMenuItemTos()));
     }
 
     public void delete(int restId, int id) {
@@ -95,14 +100,14 @@ public class MenuService {
 
     public List<Menu> getFilteredForRestWithMenuItems(
             int restId,
-            LocalDate startDate, LocalDate endDate,
+            @Nullable LocalDate startDate, @Nullable LocalDate endDate,
             Boolean enabled
     ) {
         log.info(
                 "\n getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {}, endDate: {},enabled: {}",
                 restId, startDate, endDate, enabled
         );
-        List<Menu> menus = menuRepo.getBetweenForRest(restId, startDate, endDate);
+        List<Menu> menus = menuRepo.getBetweenForRest(restId, minIfNull(startDate), maxIfNull(endDate));
         Predicate<Menu> filter = menu -> enabled == null || menu.isEnabled() == enabled;
         return menus.stream().filter(filter).collect(Collectors.toList());
     }

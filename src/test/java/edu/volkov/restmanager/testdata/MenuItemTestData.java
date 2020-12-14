@@ -31,9 +31,9 @@ public class MenuItemTestData {
     public static final MenuItem menuItem16 = new MenuItem(MENU_ITEM1_ID + 15, "menItm16", 1015);
     public static final MenuItem menuItem17 = new MenuItem(MENU_ITEM1_ID + 16, "menItm17", 1016);
     public static final MenuItem menuItem18 = new MenuItem(MENU_ITEM1_ID + 17, "menItm18", 1017);
-    public static final MenuItem updatedMenuItem1 = new MenuItem(MENU_ITEM1_ID, "updatedMenuItem1", 7777);
-    public static final MenuItem updatedMenuItem2 = new MenuItem(MENU_ITEM1_ID + 1, "updatedMenuItem2", 8888);
-
+    public static final MenuItem updatedMenuItem1 = new MenuItem(MENU_ITEM1_ID + 18, "updatedMenuItem1", 7777);
+    public static final MenuItem updatedMenuItem2 = new MenuItem(MENU_ITEM1_ID + 19, "updatedMenuItem2", 8888);
+    public static final MenuItem updatedMenuItem3 = new MenuItem(MENU_ITEM1_ID + 20, "updatedMenuItem3", 9999);
 
     public static final List<MenuItem> allMenuItems = Arrays.asList(
             menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6, menuItem7, menuItem8, menuItem9,
@@ -49,7 +49,7 @@ public class MenuItemTestData {
     public static final List<MenuItem> menu4MenuItems = Arrays.asList(menuItem10, menuItem11, menuItem12);
     public static final List<MenuItem> menu5MenuItems = Arrays.asList(menuItem13, menuItem14, menuItem15);
     public static final List<MenuItem> menu6MenuItems = Arrays.asList(menuItem16, menuItem17, menuItem18);
-    public static final List<MenuItem> updatedMenuItems = Arrays.asList(updatedMenuItem1, updatedMenuItem2);
+    public static final List<MenuItem> updatedMenuItems = Arrays.asList(updatedMenuItem1, updatedMenuItem2, updatedMenuItem3);
 
     public static MenuItem getNew() {
         return new MenuItem(null, "newItmName", 111);
