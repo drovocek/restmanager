@@ -70,7 +70,7 @@ public class RestaurantService {
         Restaurant rest = getWithoutMenu(id);
 
         List<Menu> dayEnabledMenu = filtrate(
-                menuRepo.getBetween(toDay, toDay, id),
+                menuRepo.getBetweenForRest(id, toDay, toDay),
                 Menu::isEnabled);
 
         rest.setMenus(dayEnabledMenu);
