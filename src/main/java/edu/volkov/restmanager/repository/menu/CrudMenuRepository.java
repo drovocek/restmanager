@@ -15,11 +15,16 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Menu m WHERE m.id=:menuId AND m.restaurant.id=:restId")
-    int delete(int menuId, int restId);
+    @Query("DELETE FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
+    int delete(int restId, int id);
 
+    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
+    Menu getWithMenuItems(int restId, int id);
+
+    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate DESC")
-    List<Menu> getAll(int restId);
+    List<Menu> getAllForRestWithMenuItems(int restId);
 
     @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m " +
@@ -27,7 +32,7 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
             "m.menuDate>=:startDate AND " +
             "m.menuDate<=:endDate" +
             " ORDER BY m.menuDate DESC")
-    List<Menu> getBetween(LocalDate startDate, LocalDate endDate, int restId);
+    List<Menu> getBetweenForRest(int restId, LocalDate startDate, LocalDate endDate);
 
     @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m " +
@@ -35,8 +40,4 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
             "m.menuDate<=:endDate" +
             " ORDER BY m.menuDate DESC")
     List<Menu> getAllBetween(LocalDate startDate, LocalDate endDate);
-
-    @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
-    Menu getWithMenuItems(int id, int restId);
 }

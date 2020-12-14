@@ -54,6 +54,8 @@ public class MenuTestData {
     }
 
     public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems, menu1WithItems, menu2WithItems);
+    public static final List<Menu> allMenusWithItems =
+            Arrays.asList(menu6WithItems, menu5WithItems, menu4WithItems, menu3WithItems, menu1WithItems, menu2WithItems);
 
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));
@@ -76,11 +78,23 @@ public class MenuTestData {
         return new Menu(null, "newMenu", TOMORROW, false);
     }
 
+    public static Menu getNewWithMenuItems() {
+        Menu newMenu = getNew();
+        newMenu.setMenuItems(menu1MenuItems);
+        return newMenu;
+    }
+
     public static Menu getUpdated() {
         Menu updated = new Menu(menu1);
         updated.setMenuDate(TOMORROW);
         updated.setName("updatedName");
         updated.setEnabled(false);
+        return updated;
+    }
+
+    public static Menu getUpdatedWithMenuItems() {
+        Menu updated = getUpdated();
+        updated.setMenuItems(updatedMenuItems);
         return updated;
     }
 

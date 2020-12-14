@@ -2,6 +2,7 @@ package edu.volkov.restmanager.web.rest.restaurant;
 
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
+import edu.volkov.restmanager.testdata.MenuTestData;
 import edu.volkov.restmanager.testdata.RestaurantTestData;
 import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Collections;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
@@ -32,24 +35,6 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
 
     @Autowired
     protected RestaurantService service;
-
-    @Test
-    public void getWithoutMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID)
-                .with(userHttpBasic(admin)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(REST_MATCHER.contentJson(rest1));
-    }
-
-    @Test
-    public void getWithoutMenuNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST_NOT_FOUND_ID)
-                .with(userHttpBasic(admin)))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-    }
 
     @Test
     public void delete() throws Exception {
@@ -113,7 +98,26 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void getWithoutMenu() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID)
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(REST_MATCHER.contentJson(rest1));
+    }
+
+    @Test
+    public void getWithoutMenuNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + REST_NOT_FOUND_ID)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void getAllWithDayEnabledMenu() throws Exception {
+        service.setTestDate(MenuTestData.TODAY);
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
@@ -123,6 +127,21 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                         rest1WithDayEnabledMenusAndItems,
                         rest2WithDayEnabledMenusAndItems)
                 );
+    }
+
+    @Test
+    public void getFilteredWithDayEnabledMenu() throws Exception {
+        service.setTestDate(MenuTestData.TODAY);
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter/")
+                .param("name", "rest1")
+                .param("address", "address1")
+                .param("enabled", "")
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(REST_WITH_MENU_MATCHER.contentJson(
+                        Collections.singletonList(rest1WithDayEnabledMenusAndItems)));
     }
 
     @Test
