@@ -56,11 +56,7 @@ public class AdminRestaurantController {
     }
 
     @GetMapping("/filter")
-    public List<Restaurant> getFilteredWithDayEnabledMenu(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String address,
-            @RequestParam(required = false) Boolean enabled
-    ) {
+    public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
         return service.getFilteredWithDayEnabledMenu(name, address, enabled);
     }
 
