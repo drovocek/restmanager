@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
@@ -141,7 +141,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(REST_WITH_MENU_MATCHER.contentJson(
-                        Arrays.asList(rest1WithDayEnabledMenusAndItems)));
+                        Collections.singletonList(rest1WithDayEnabledMenusAndItems)));
     }
 
     @Test
