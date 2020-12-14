@@ -6,28 +6,24 @@ import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
 import edu.volkov.restmanager.repository.menuItem.CrudMenuItemRepository;
 import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.MenuTo;
-import edu.volkov.restmanager.util.model.MenuItemUtil;
 import edu.volkov.restmanager.util.model.MenuUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static edu.volkov.restmanager.util.ValidationUtil.*;
+import static edu.volkov.restmanager.util.model.MenuItemUtil.*;
 
 @Service
 public class MenuService {
 
-    static final String REST_URL = "/rest/admin/menus";
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final CrudRestaurantRepository restRepo;
@@ -45,7 +41,7 @@ public class MenuService {
     }
 
     @Transactional
-    public ResponseEntity<Menu> create(Menu menu, int restId) {
+    public Menu createWithMenuItems(int restId, Menu menu) {
         log.info("\n create menu {} for restaurant: {}", menu, restId);
         checkNew(menu);
         Assert.notNull(menu, "menu must not be null");
@@ -63,20 +59,20 @@ public class MenuService {
 
         createdMenu.setMenuItems(createdMenuItems);
 
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(createdMenu.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(createdMenu);
+        return createdMenu;
     }
 
     @Transactional
-    public void update(MenuTo menuTo) {
-        log.info("\n update menu: {} from to {}", menuTo.id(), menuTo);
-        Menu updatedMenu = menuRepo.getWithMenuItems(menuTo.id(), menuTo.getRestId());
+    public void updateWithMenuItems(int restId, MenuTo menuTo) {
+        log.info("\n update menu: {} from to: {} for rest: {}", menuTo.id(), menuTo, restId);
+        Menu updatedMenu = menuRepo.getWithMenuItems(restId, menuTo.id());
         MenuUtil.updateFromTo(updatedMenu, menuTo);
-        List<MenuItem> updatedMenuItems = menuItmRepo.getAllByMenuId(menuTo.id());
-        MenuItemUtil.updateAllFromTo(updatedMenuItems, menuTo.getMenuItemTos());
+
+        checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
+        List<MenuItem> itms = createNewsFromTos(updatedMenu, menuTo.getMenuItemTos());
+        menuItmRepo.saveAll(itms);
+//        List<MenuItem> updatedMenuItems = menuItmRepo.getAllByMenuId(menuTo.id());
+//        MenuItemUtil.updateAllFromTo(updatedMenuItems, menuTo.getMenuItemTos());
     }
 
     public void delete(int restId, int id) {

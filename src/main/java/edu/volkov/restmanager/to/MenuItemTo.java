@@ -1,17 +1,10 @@
 package edu.volkov.restmanager.to;
 
-import edu.volkov.restmanager.model.Menu;
-import edu.volkov.restmanager.model.MenuItem;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,13 +15,10 @@ public class MenuItemTo extends BaseTo implements Serializable {
 
     private Integer price;
 
-    private Integer menuId;
-
-    public MenuItemTo(Integer id, String name, Integer price, Integer menuId) {
+    public MenuItemTo(Integer id, String name, Integer price) {
         super(id);
         this.name = name;
         this.price = price;
-        this.menuId = menuId;
     }
 
     @Override
@@ -37,7 +27,6 @@ public class MenuItemTo extends BaseTo implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", menuId=" + menuId +
                 '}';
     }
 }

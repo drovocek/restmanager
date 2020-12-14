@@ -15,7 +15,7 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Menu m WHERE m.id=:menuId AND m.restaurant.id=:restId")
+    @Query("DELETE FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
     int delete(int restId, int id);
 
     @EntityGraph(attributePaths = {"menuItems"}, type = EntityGraph.EntityGraphType.LOAD)

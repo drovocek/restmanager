@@ -22,7 +22,6 @@ public class MenuUtil {
                 menu.getName(),
                 menu.getMenuDate(),
                 menu.isEnabled(),
-                menu.getRestaurant().getId(),
                 MenuItemUtil.getTos(menu.getMenuItems())
         );
     }

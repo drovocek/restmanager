@@ -17,16 +17,13 @@ public class MenuTo extends BaseTo implements Serializable {
 
     private boolean enabled;
 
-    private Integer restId;
-
     private List<MenuItemTo> menuItemTos;
 
-    public MenuTo(Integer id, String name, LocalDate menuDate, boolean enabled, Integer restId, List<MenuItemTo> menuItemTos) {
+    public MenuTo(Integer id, String name, LocalDate menuDate, boolean enabled, List<MenuItemTo> menuItemTos) {
         super(id);
         this.name = name;
         this.menuDate = menuDate;
         this.enabled = enabled;
-        this.restId = restId;
         this.menuItemTos = menuItemTos;
     }
 
@@ -37,7 +34,6 @@ public class MenuTo extends BaseTo implements Serializable {
                 ", name='" + name + '\'' +
                 ", menuDate=" + menuDate +
                 ", enabled=" + enabled +
-                ", restId=" + restId +
                 ", menuItems=" + menuItemTos +
                 '}';
     }
