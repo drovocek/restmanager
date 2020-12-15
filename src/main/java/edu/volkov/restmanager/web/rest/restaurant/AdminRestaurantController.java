@@ -27,9 +27,11 @@ public class AdminRestaurantController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         Restaurant created = service.create(restaurant);
+
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
+
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 

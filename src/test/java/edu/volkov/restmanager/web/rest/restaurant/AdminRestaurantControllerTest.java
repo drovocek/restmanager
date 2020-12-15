@@ -42,6 +42,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+
         assertThrows(NotFoundException.class, () -> service.getWithoutMenu(REST1_ID));
     }
 
