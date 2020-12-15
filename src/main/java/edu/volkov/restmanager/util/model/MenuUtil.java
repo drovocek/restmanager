@@ -13,6 +13,9 @@ public class MenuUtil {
         menu.setName(menuTo.getName());
         menu.setMenuDate(menuTo.getMenuDate());
         menu.setEnabled(menuTo.isEnabled());
+        menu.setMenuItems(
+                MenuItemUtil.createNewsFromTos(menu,menuTo.getMenuItemTos())
+        );
         return menu;
     }
 

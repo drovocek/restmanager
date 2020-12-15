@@ -63,7 +63,7 @@ public class AdminMenuController {
     }
 
     @GetMapping("/filter/{restId}")
-    public List<Menu> getAllForRestWithMenuItems(
+    public List<Menu> getFilteredForRestWithMenuItems(
             @PathVariable int restId,
             LocalDate startDate,
             LocalDate endDate,
