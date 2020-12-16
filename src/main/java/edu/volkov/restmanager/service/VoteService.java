@@ -1,7 +1,9 @@
 package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Vote;
-import edu.volkov.restmanager.repository.vote.VoteRepository;
+import edu.volkov.restmanager.repository.CrudRestaurantRepository;
+import edu.volkov.restmanager.repository.CrudUserRepository;
+import edu.volkov.restmanager.repository.CrudVoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,47 +20,68 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 public class VoteService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final VoteRepository repository;
-    private static LocalTime changeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
+    private static LocalTime voteTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
-    public VoteService(VoteRepository repository) {
-        this.repository = repository;
+    private final CrudVoteRepository voteRepo;
+    private final CrudUserRepository userRepo;
+    private final CrudRestaurantRepository restRepo;
+
+    public VoteService(CrudVoteRepository voteRepo, CrudUserRepository userRepo, CrudRestaurantRepository restRepo) {
+        this.voteRepo = voteRepo;
+        this.userRepo = userRepo;
+        this.restRepo = restRepo;
     }
 
     public Vote get(int userId, LocalDate voteDate) {
-        return repository.get(userId, voteDate);
+        return voteRepo.findByUserIdAndVoteDate(userId, voteDate)
+                .filter(vote -> vote.getUser().getId().equals(userId))
+                .orElse(null);
     }
 
+    @Transactional
     public void vote(int userId, int restId) {
-        LocalDate votingDate = LocalDate.now();
-        boolean inLimit = LocalTime.now().isBefore(changeLimit);
-        Vote lastVote = get(userId, votingDate);
+        log.info("\n vote user:{} by restaurant:{}", userId, restId);
+        LocalDate voteDate = LocalDate.now();
+        boolean inLimit = LocalTime.now().isBefore(voteTimeLimit);
+        Vote lastVote = get(userId, voteDate);
 
         if (lastVote == null) {
-            log.info("\n create vote");
-            create(userId, restId, votingDate);
+            create(construct(userId, restId, voteDate));
         } else if (lastVote.getRestaurant().getId() != restId && inLimit) {
-            log.info("\n update vote {}", lastVote.getId());
-            update(lastVote.getId(), userId, restId, votingDate);
+            updateRestId(lastVote, restId);
         } else if (inLimit) {
-            log.info("\n delete vote {}", lastVote.getId());
             delete(lastVote.getId());
         }
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        log.info("\n delete vote {}", id);
+        checkNotFoundWithId(voteRepo.delete(id) != 0, id);
     }
 
-    public static void setTimeLimit(LocalTime time) {
-        changeLimit = time;
+    public static void setVoteTimeLimit(LocalTime time) {
+        voteTimeLimit = time;
     }
 
-    private void update(Integer voteId, Integer userId, Integer restId, LocalDate voteDate) {
-        checkNotFoundWithId(repository.save(voteId, userId, restId, voteDate), voteId);
+    private void create(Vote created) {
+        log.info("\n create vote");
+        checkNotFound(save(created), "vote don't save");
     }
 
-    private void create(Integer userId, Integer restId, LocalDate voteDate) {
-        checkNotFound(repository.save(null, userId, restId, voteDate), "vote don't save");
+    private void updateRestId(Vote updated, int restId) {
+        log.info("\n updateRestId vote {}", updated.getId());
+        updated.setRestaurant(restRepo.getOne(restId));
+    }
+
+    private Vote save(Vote vote) {
+        if (!vote.isNew() && get(vote.getUser().getId(), vote.getVoteDate()) == null) {
+            return null;
+        }
+
+        return voteRepo.save(vote);
+    }
+
+    private Vote construct(Integer userId, Integer restaurantId, LocalDate voteDate) {
+        return new Vote(null, userRepo.getOne(userId), restRepo.getOne(restaurantId), voteDate);
     }
 }

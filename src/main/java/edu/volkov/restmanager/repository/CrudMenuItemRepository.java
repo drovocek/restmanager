@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository.menuItem;
+package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.MenuItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface CrudMenuItemRepository extends JpaRepository<MenuItem, Integer> {
-    //ADMIN
+
     @Modifying
     @Transactional
     @Query("DELETE FROM MenuItem mi WHERE mi.menu.id=:menuId")

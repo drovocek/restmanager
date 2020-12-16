@@ -1,22 +1,12 @@
 package edu.volkov.restmanager.web.jsp.restaurant;
 
-import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
+import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.service.VoteService;
-import edu.volkov.restmanager.to.RestaurantTo;
-import edu.volkov.restmanager.web.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import static edu.volkov.restmanager.util.model.RestaurantUtil.*;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 @RequestMapping("/restaurants")

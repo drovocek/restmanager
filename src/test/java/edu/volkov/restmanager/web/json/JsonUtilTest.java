@@ -11,17 +11,15 @@ public class JsonUtilTest {
 
     @Test
     public void readWriteValue() throws Exception {
-        String json = JsonUtil.writeValue(menu1);
-        System.out.println(json);
+        String json = JsonUtil.writeValue(menu1WithItems);
         Menu menu = JsonUtil.readValue(json, Menu.class);
-        MENU_MATCHER.assertMatch(menu, menu1);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menu, menu1WithItems);
     }
 
     @Test
     public void readWriteValues() throws Exception {
-        String json = JsonUtil.writeValue(rest1Menus);
-        System.out.println(json);
+        String json = JsonUtil.writeValue(rest1AllMenusWithItems);
         List<Menu> menus = JsonUtil.readValues(json, Menu.class);
-        MENU_MATCHER.assertMatch(menus, rest1Menus);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, rest1AllMenusWithItems);
     }
 }

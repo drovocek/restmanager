@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 public class UserTestData {
+
     public static final TestMatcher<User> USER_MATCHER = TestMatcher.usingIgnoringFieldsComparator(User.class, "registered", "password");
 
     public static final int USER1_ID = 0;

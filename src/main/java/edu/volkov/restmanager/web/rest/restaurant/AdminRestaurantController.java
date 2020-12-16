@@ -18,51 +18,53 @@ public class AdminRestaurantController {
 
     static final String REST_URL = "/rest/admin/restaurants";
 
-    private final RestaurantService service;
+    private final RestaurantService restService;
 
-    public AdminRestaurantController(RestaurantService service) {
-        this.service = service;
+    public AdminRestaurantController(RestaurantService restService) {
+        this.restService = restService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
-        Restaurant created = service.create(restaurant);
+        Restaurant created = restService.create(restaurant);
+
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
+
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody RestaurantTo restTo, @PathVariable int id) {
-        service.update(restTo, id);
+        restService.update(restTo, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        service.delete(id);
+        restService.delete(id);
     }
 
     @GetMapping("/{id}")
     public Restaurant getWithoutMenu(@PathVariable int id) {
-        return service.getWithoutMenu(id);
+        return restService.getWithoutMenu(id);
     }
 
     @GetMapping
     public List<Restaurant> getAllWithDayEnabledMenu() {
-        return service.getAllWithDayEnabledMenu();
+        return restService.getAllWithDayEnabledMenu();
     }
 
     @GetMapping("/filter")
     public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
-        return service.getFilteredWithDayEnabledMenu(name, address, enabled);
+        return restService.getFilteredWithDayEnabledMenu(name, address, enabled);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        service.enable(id, enabled);
+        restService.enable(id, enabled);
     }
 }

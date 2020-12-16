@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository.user;
+package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

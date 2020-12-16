@@ -1,6 +1,5 @@
-package edu.volkov.restmanager.repository.vote;
+package edu.volkov.restmanager.repository;
 
-import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +11,7 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Vote v WHERE v.id=:id")

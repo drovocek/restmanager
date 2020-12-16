@@ -1,12 +1,10 @@
 package edu.volkov.restmanager.util.model;
 
-import edu.volkov.restmanager.HasId;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.to.MenuItemTo;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MenuItemUtil {
@@ -34,24 +32,6 @@ public class MenuItemUtil {
         return menuItems.stream()
                 .map(MenuItemUtil::asTo)
                 .collect(Collectors.toList());
-    }
-
-    public static List<MenuItem> mergeAllFromTo(List<MenuItem> menuItems, List<MenuItemTo> menuItemTos) {
-        Map<Integer, MenuItem> menuById = menuItems.stream()
-                .collect(Collectors.toMap(HasId::id, menuItem -> menuItem));
-
-        List<MenuItem> res = menuItemTos.stream()
-                .map(menuItemTo -> {
-                    MenuItem menuItem = menuById.get(menuItemTo.getId());
-                    if (menuItem == null) {
-                        menuItem = new MenuItem();
-                    }
-                    menuItem.setName(menuItemTo.getName());
-                    menuItem.setPrice(menuItemTo.getPrice());
-                    return menuItem;
-                }).collect(Collectors.toList());
-
-        return res;
     }
 }
 

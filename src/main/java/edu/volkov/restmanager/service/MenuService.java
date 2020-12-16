@@ -3,9 +3,9 @@ package edu.volkov.restmanager.service;
 import com.sun.istack.Nullable;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
-import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
-import edu.volkov.restmanager.repository.menuItem.CrudMenuItemRepository;
-import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
+import edu.volkov.restmanager.repository.CrudMenuRepository;
+import edu.volkov.restmanager.repository.CrudMenuItemRepository;
+import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.model.MenuUtil;
 import org.slf4j.Logger;
@@ -70,14 +70,14 @@ public class MenuService {
     public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
         log.info("\n update menu: {} from to: {} for rest: {}", id, menuTo, restId);
         assureIdConsistent(menuTo, id);
-        Menu updatedMenu = getWithMenuItems(restId, id);
-        MenuUtil.updateFromTo(updatedMenu, menuTo);
 
-        if (!updatedMenu.getMenuItems().isEmpty()) {
+        Menu updated = getWithMenuItems(restId, id);
+        if (!updated.getMenuItems().isEmpty()) {
             checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
         }
+        MenuUtil.updateFromTo(updated, menuTo);
 
-        menuItmRepo.saveAll(createNewsFromTos(updatedMenu, menuTo.getMenuItemTos()));
+        menuItmRepo.saveAll(createNewsFromTos(updated, menuTo.getMenuItemTos()));
     }
 
     public void delete(int restId, int id) {

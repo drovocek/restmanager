@@ -5,6 +5,7 @@ import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.model.UserUtil;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
+
     private static final long serialVersionUID = 1L;
 
     private UserTo userTo;

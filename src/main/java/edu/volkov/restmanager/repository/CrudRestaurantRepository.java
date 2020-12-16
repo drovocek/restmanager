@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository.restaurant;
+package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,8 +2,8 @@ package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.Restaurant;
-import edu.volkov.restmanager.repository.menu.CrudMenuRepository;
-import edu.volkov.restmanager.repository.restaurant.CrudRestaurantRepository;
+import edu.volkov.restmanager.repository.CrudMenuRepository;
+import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.util.model.RestaurantUtil;
 import org.slf4j.Logger;

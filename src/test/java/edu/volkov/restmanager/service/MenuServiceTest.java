@@ -32,6 +32,26 @@ public class MenuServiceTest extends AbstractTest {
         MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, newId), newMenu);
     }
 
+
+    @Test
+    public void updateWithMenuItems() {
+        MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
+        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedMenuTo);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), getUpdatedWithMenuItems());
+    }
+
+    @Test
+    public void updateEmptyMenuItems() {
+        Menu updated = getUpdatedWithMenuItems();
+        updated.setMenuItems(Collections.emptyList());
+        MenuTo updatedTo = asTo(updated);
+        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedTo);
+
+        Menu updatedTest = getUpdatedWithMenuItems();
+        updatedTest.setMenuItems(Collections.emptyList());
+        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), updatedTest);
+    }
+
     @Test
     public void delete() {
         service.delete(REST1_ID, MENU1_ID);
@@ -79,34 +99,17 @@ public class MenuServiceTest extends AbstractTest {
     }
 
     @Test
-    public void updateWithMenuItems() {
-        MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
-        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedMenuTo);
-        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), getUpdatedWithMenuItems());
-    }
-
-    @Test
-    public void updateEmptyMenuItems() {
-        MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
-        updatedMenuTo.setMenuItemTos(Collections.emptyList());
-        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedMenuTo);
-
-        Menu updatedMenu = getUpdatedWithMenuItems();
-        updatedMenu.setMenuItems(Collections.emptyList());
-        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), updatedMenu);
-    }
-
-    @Test
     public void enable() {
         service.enable(REST1_ID, MENU1_ID, false);
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
+
         service.enable(REST1_ID, MENU1_ID, true);
         assertTrue(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
     }
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.createWithMenuItems(REST1_ID,new Menu(null,"", LocalDate.now(),true)), ConstraintViolationException.class);
-        validateRootCause(() -> service.createWithMenuItems(REST1_ID,new Menu(null," ", LocalDate.now(),true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createWithMenuItems(REST1_ID, new Menu(null, "", LocalDate.now(), true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createWithMenuItems(REST1_ID, new Menu(null, " ", LocalDate.now(), true)), ConstraintViolationException.class);
     }
 }
