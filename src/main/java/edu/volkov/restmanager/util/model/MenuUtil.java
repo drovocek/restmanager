@@ -14,7 +14,7 @@ public class MenuUtil {
         menu.setMenuDate(menuTo.getMenuDate());
         menu.setEnabled(menuTo.isEnabled());
         menu.setMenuItems(
-                MenuItemUtil.createNewsFromTos(menu,menuTo.getMenuItemTos())
+                MenuItemUtil.createNewsFromTos(menu, menuTo.getMenuItemTos())
         );
         return menu;
     }

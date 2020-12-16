@@ -1,4 +1,4 @@
-package edu.volkov.restmanager.repository.menu;
+package edu.volkov.restmanager.repository;
 
 import edu.volkov.restmanager.model.Menu;
 import org.springframework.data.jpa.repository.EntityGraph;

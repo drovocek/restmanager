@@ -2,7 +2,7 @@ package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.AuthorizedUser;
 import edu.volkov.restmanager.model.User;
-import edu.volkov.restmanager.repository.user.CrudUserRepository;
+import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.model.UserUtil;
 import org.springframework.context.annotation.Scope;

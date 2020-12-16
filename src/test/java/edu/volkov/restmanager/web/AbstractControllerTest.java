@@ -1,5 +1,10 @@
 package edu.volkov.restmanager.web;
 
+import edu.volkov.restmanager.TimingRules;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -39,6 +44,12 @@ public abstract class AbstractControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @ClassRule
+    public static ExternalResource summary = TimingRules.SUMMARY;
+
+    @Rule
+    public Stopwatch stopwatch = TimingRules.STOPWATCH;
 
     @PostConstruct
     private void postConstruct() {

@@ -7,6 +7,7 @@ import static edu.volkov.restmanager.testdata.MenuTestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTestData {
+
     public static TestMatcher<Restaurant> REST_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Restaurant.class, "menus");
     public static TestMatcher<Restaurant> REST_WITH_MENU_MATCHER = TestMatcher.usingAssertions(Restaurant.class,
             (a, e) -> assertThat(a).usingRecursiveComparison()

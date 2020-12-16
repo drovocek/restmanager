@@ -14,7 +14,7 @@ import static edu.volkov.restmanager.testdata.MenuItemTestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MenuTestData {
-    public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Menu.class, "restaurant", "menuItems");
+
     public static TestMatcher<Menu> MENU_WITH_ITEMS_MATCHER = TestMatcher.usingAssertions(Menu.class,
             (a, e) -> assertThat(a).usingRecursiveComparison()
                     .ignoringFields("restaurant", "menuItems.menu").isEqualTo(e),
@@ -27,8 +27,6 @@ public class MenuTestData {
     public static final int MENU_NOT_FOUND_ID = 15;
     public static final LocalDate TODAY = LocalDate.of(2020, 1, 27);
     public static final LocalDate TOMORROW = TODAY.plus(1, ChronoUnit.DAYS);
-    public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
-    public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
     public static final Menu menu1 = new Menu(MENU1_ID, "menu1", TODAY, false);
     public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", TODAY, true);
@@ -56,20 +54,15 @@ public class MenuTestData {
     public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems, menu1WithItems, menu2WithItems);
     public static final List<Menu> allMenusWithItems =
             Arrays.asList(menu6WithItems, menu5WithItems, menu4WithItems, menu3WithItems, menu1WithItems, menu2WithItems);
-
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
     public static final List<Menu> allDayEnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu4));
-
     public static final List<Menu> rest1Menus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3));
     public static final List<Menu> rest1EnabledMenus = orderByDateDesc(Arrays.asList(menu2, menu3));
     public static final List<Menu> rest1DayEnabledMenus = orderByDateDesc(Arrays.asList(menu2));
-
     public static final List<Menu> rest2Menus = orderByDateDesc(Arrays.asList(menu4, menu5, menu6));
     public static final List<Menu> rest2EnabledMenus = orderByDateDesc(Arrays.asList(menu4, menu6));
-
     public static final List<Menu> rest1MenusWithItems = orderByDateDesc(Arrays.asList(menu1WithItems, menu2WithItems, menu3WithItems));
     public static final List<Menu> rest2MenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems, menu5WithItems, menu6WithItems));
-
     public static final List<Menu> rest1DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu2WithItems));
     public static final List<Menu> rest2DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems));
 

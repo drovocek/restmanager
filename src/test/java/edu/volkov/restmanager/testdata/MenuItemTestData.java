@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuItemTestData {
+
     public static final TestMatcher<MenuItem> MENU_ITEM_MATCHER = TestMatcher.usingIgnoringFieldsComparator(MenuItem.class, "menu", "enabled");
 
     public final static Integer MENU_ITEM1_ID = 0;
@@ -39,10 +40,8 @@ public class MenuItemTestData {
             menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6, menuItem7, menuItem8, menuItem9,
             menuItem10, menuItem11, menuItem12, menuItem13, menuItem14, menuItem15, menuItem16, menuItem17, menuItem18
     );
-
     public static final List<MenuItem> rest1AllMenuItems = Arrays.asList(menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6, menuItem7, menuItem8, menuItem9);
     public static final List<MenuItem> rest1TodayMenuItems = Arrays.asList(menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6);
-
     public static final List<MenuItem> menu1MenuItems = Arrays.asList(menuItem1, menuItem2, menuItem3);
     public static final List<MenuItem> menu2MenuItems = Arrays.asList(menuItem4, menuItem5, menuItem6);
     public static final List<MenuItem> menu3MenuItems = Arrays.asList(menuItem7, menuItem8, menuItem9);
@@ -50,15 +49,4 @@ public class MenuItemTestData {
     public static final List<MenuItem> menu5MenuItems = Arrays.asList(menuItem13, menuItem14, menuItem15);
     public static final List<MenuItem> menu6MenuItems = Arrays.asList(menuItem16, menuItem17, menuItem18);
     public static final List<MenuItem> updatedMenuItems = Arrays.asList(updatedMenuItem1, updatedMenuItem2, updatedMenuItem3);
-
-    public static MenuItem getNew() {
-        return new MenuItem(null, "newItmName", 111);
-    }
-
-    public static MenuItem getUpdated() {
-        MenuItem updated = new MenuItem(menuItem1);
-        updated.setName("updatedMenuItm");
-        updated.setPrice(999);
-        return updated;
-    }
 }
