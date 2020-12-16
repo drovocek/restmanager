@@ -1,0 +1,25 @@
+== Rest convention
+include::rest_conv.adoc[]
+== Endpoints
+=== Menu
+==== Get menu with menu items by restaurant id and menu id
+===== Curl example
+include::{snippets}/admin-menu-controller-test/get-with-menu-items/curl-request.adoc[]
+===== HTTP Request
+include::{snippets}/admin-menu-controller-test/get-with-menu-items/http-request.adoc[]
+===== Path variables
+include::{snippets}/admin-menu-controller-test/get-with-menu-items/path-parameters.adoc[]
+===== HTTP Responses
+====== Success HTTP response
+include::{snippets}/admin-menu-controller-test/get-with-menu-items/http-response.adoc[]
+====== Error HTTP responses
+====== Get not found
+include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/http-response.adoc[]
+====== Response body
+include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/response-body.adoc[]
+====== Get by unauthorized user
+include::{snippets}/admin-menu-controller-test/get-un-auth/http-response.adoc[]
+====== Get by forbidden user
+include::{snippets}/admin-menu-controller-test/get-forbidden/http-response.adoc[]
+:icons: font
+WARNING: sdfdfdf
