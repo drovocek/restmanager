@@ -70,14 +70,14 @@ public class MenuService {
     public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
         log.info("\n update menu: {} from to: {} for rest: {}", id, menuTo, restId);
         assureIdConsistent(menuTo, id);
-        Menu updatedMenu = getWithMenuItems(restId, id);
-        MenuUtil.updateFromTo(updatedMenu, menuTo);
 
-        if (!updatedMenu.getMenuItems().isEmpty()) {
+        Menu updated = getWithMenuItems(restId, id);
+        if (!updated.getMenuItems().isEmpty()) {
             checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
         }
+        MenuUtil.updateFromTo(updated, menuTo);
 
-        menuItmRepo.saveAll(createNewsFromTos(updatedMenu, menuTo.getMenuItemTos()));
+        menuItmRepo.saveAll(createNewsFromTos(updated, menuTo.getMenuItemTos()));
     }
 
     public void delete(int restId, int id) {

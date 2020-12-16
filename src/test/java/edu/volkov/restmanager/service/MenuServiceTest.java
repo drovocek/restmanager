@@ -42,13 +42,14 @@ public class MenuServiceTest extends AbstractTest {
 
     @Test
     public void updateEmptyMenuItems() {
-        MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
-        updatedMenuTo.setMenuItemTos(Collections.emptyList());
-        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedMenuTo);
+        Menu updated = getUpdatedWithMenuItems();
+        updated.setMenuItems(Collections.emptyList());
+        MenuTo updatedTo = asTo(updated);
+        service.updateWithMenuItems(REST1_ID, MENU1_ID, updatedTo);
 
-        Menu updatedMenu = getUpdatedWithMenuItems();
-        updatedMenu.setMenuItems(Collections.emptyList());
-        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), updatedMenu);
+        Menu updatedTest = getUpdatedWithMenuItems();
+        updatedTest.setMenuItems(Collections.emptyList());
+        MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, MENU1_ID), updatedTest);
     }
 
     @Test
@@ -108,7 +109,7 @@ public class MenuServiceTest extends AbstractTest {
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.createWithMenuItems(REST1_ID,new Menu(null,"", LocalDate.now(),true)), ConstraintViolationException.class);
-        validateRootCause(() -> service.createWithMenuItems(REST1_ID,new Menu(null," ", LocalDate.now(),true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createWithMenuItems(REST1_ID, new Menu(null, "", LocalDate.now(), true)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createWithMenuItems(REST1_ID, new Menu(null, " ", LocalDate.now(), true)), ConstraintViolationException.class);
     }
 }

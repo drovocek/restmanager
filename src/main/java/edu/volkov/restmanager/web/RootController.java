@@ -1,28 +1,21 @@
 package edu.volkov.restmanager.web;
 
-import edu.volkov.restmanager.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class RootController {
 
-    private final UserService userService;
-
-    public RootController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/")
     public String root() {
-        return "redirect:/rest/any/restaurants";
+        return "forward:/rest/any/restaurants";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
-    public String getUsers(Model model) {
-        model.addAttribute("users", userService.getAll());
-        return "users";
+    public String getUsers() {
+        return "forward:/rest/admin/users";
     }
 
     @GetMapping(value = "/login")
