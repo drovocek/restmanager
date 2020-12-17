@@ -1,5 +1,5 @@
 === HTTP verbs
-Speakers Service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+Restaurant Manager tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP verbs.
 |===
 | Verb | Usage
@@ -16,7 +16,7 @@ use of HTTP verbs.
 |===
 
 === HTTP status codes
-Speakers Service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+Restaurant Manager tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP status codes.
 
 |===

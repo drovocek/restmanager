@@ -1,0 +1,4 @@
+== Rest convention
+include::rest_conv.adoc[]
+== Endpoints
+include::menu_doc.adoc[]
