@@ -1,0 +1,35 @@
+.{cl-get} [big]*`/rest/admin/restaurants*` Get all with day enabled menu
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/restaurants/{id}*` Get one without menu
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/restaurants/filter*` Get filtered with day enabled menu
+[%collapsible]
+====
+
+====
+.{cl-post} [big]*`/rest/admin/restaurants*` Create
+[%collapsible]
+====
+
+====
+.{cl-put} [big]*`/rest/admin/restaurants/{id}*` Update
+[%collapsible]
+====
+
+====
+.{cl-patch} [big]*`/rest/admin/restaurants/{id}*` Set enable
+[%collapsible]
+====
+
+====
+.{cl-delete} [big]*`/rest/admin/restaurants/{id}*` Delete
+[%collapsible]
+====
+
+====

@@ -89,7 +89,7 @@ public class MenuService {
         log.info("\n getWithMenuItems menu: {} for rest: {}", id, restId);
         return checkNotFound(
                 menuRepo.getWithMenuItems(restId, id),
-                "menu by id: " + id + "for restId:" + restId + "dos not exist"
+                "menu by id: " + id + " for restId: " + restId + " dos not exist"
         );
     }
 
@@ -104,7 +104,7 @@ public class MenuService {
             Boolean enabled
     ) {
         log.info(
-                "\n getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {}, endDate: {},enabled: {}",
+                "\n getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {},endDate: {},enabled: {}",
                 restId, startDate, endDate, enabled
         );
         List<Menu> menus = menuRepo.getBetweenForRest(restId, minIfNull(startDate), maxIfNull(endDate));

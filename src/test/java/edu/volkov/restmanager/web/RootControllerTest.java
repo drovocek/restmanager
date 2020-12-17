@@ -38,6 +38,6 @@ public class RootControllerTest extends AbstractControllerTest {
         perform(get("/users"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
+                .andExpect(redirectedUrl("http://localhost:8080/login"));
     }
 }
