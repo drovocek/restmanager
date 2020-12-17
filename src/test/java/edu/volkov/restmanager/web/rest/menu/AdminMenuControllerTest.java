@@ -10,9 +10,12 @@ import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +32,8 @@ import static org.junit.Assert.assertThrows;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,6 +59,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                                 parameterWithName("restId").description("Restaurant id"))
                         )
                 )
+                .andDo(getRequestParamDocForOneMenu())
                 .andDo(getResponseParamDocForOneMenu());
 
         Menu created = readFromJson(action, Menu.class);
@@ -266,10 +270,16 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id"))
+                        )
+                )
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("enabled").description("Menu activity marker"))
+                        ));
 
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
     }
@@ -285,6 +295,29 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                         fieldWithPath("menuItems[].id").description("Dish id"),
                         fieldWithPath("menuItems[].name").description("Dish name"),
                         fieldWithPath("menuItems[].price").description("Dish price")
+                ));
+    }
+
+    private RestDocumentationResultHandler getRequestParamDocForOneMenu() {
+
+        ConstraintDescriptions constraintDescriptions = new ConstraintDescriptions(Menu.class);
+
+        return document("{class-name}/{method-name}",
+                requestFields(
+                        fieldWithPath("name").description("Menu name").optional()
+                                .attributes(key(".").value(constraintDescriptions.descriptionsForProperty("name"))),
+                        fieldWithPath("menuDate").description("Menu date").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuDate"))),
+                        fieldWithPath("enabled").description("Menu activity marker").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("enabled"))),
+                        subsectionWithPath("menuItems").description("Menu dishes").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems"))),
+                        fieldWithPath("menuItems[].id").description("Dish id").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].id"))),
+                        fieldWithPath("menuItems[].name").description("Dish name").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].name"))),
+                        fieldWithPath("menuItems[].price").description("Dish price").optional()
+                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].price")))
                 ));
     }
 
@@ -310,5 +343,20 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                         fieldWithPath("type").description("Error type"),
                         fieldWithPath("detail").description("Error details")
                 ));
+    }
+
+    private static class ConstrainedFields {
+
+        private final ConstraintDescriptions constraintDescriptions;
+
+        ConstrainedFields(Class<?> input) {
+            this.constraintDescriptions = new ConstraintDescriptions(input);
+        }
+
+        private FieldDescriptor withPath(String path) {
+            return fieldWithPath(path).attributes(key("constraints").value(StringUtils
+                    .collectionToDelimitedString(this.constraintDescriptions
+                            .descriptionsForProperty(path), ". ")));
+        }
     }
 }
