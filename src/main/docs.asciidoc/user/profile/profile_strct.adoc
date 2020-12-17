@@ -1,0 +1,26 @@
+.{cl-get} [big]*`/rest/profile*` Get
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/profile/test*` Test UTF
+[%collapsible]
+====
+
+====
+.{cl-post} [big]*`/rest/profile/register*` Register
+[%collapsible]
+====
+
+====
+.{cl-put} [big]*`/rest/profile*` Update
+[%collapsible]
+====
+
+====
+.{cl-delete} [big]*`/rest/profile*` Delete
+[%collapsible]
+====
+
+====
+

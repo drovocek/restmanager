@@ -17,10 +17,10 @@ public class UserVoteController {
         this.voteService = voteService;
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{restId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void vote(@PathVariable int id) {
+    public void vote(@PathVariable int restId) {
         int userId = SecurityUtil.authUserId();
-        voteService.vote(userId, id);
+        voteService.vote(userId, restId);
     }
 }

@@ -10,6 +10,7 @@ import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -49,9 +51,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(newMenu)))
                 .andExpect(status().isCreated())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                        )
+                )
+                .andDo(getResponseParamDocForOneMenu());
 
         Menu created = readFromJson(action, Menu.class);
         int newMenuId = created.id();
@@ -70,10 +75,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updatedMenuTo)))
                 .andExpect(status().isNoContent())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id")
+                        )
+                ));
 
         MENU_WITH_ITEMS_MATCHER.assertMatch(
                 service.getWithMenuItems(REST1_ID, MENU1_ID),
@@ -150,10 +157,13 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(menu1WithItems))
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id"))
+                        )
+                )
+                .andDo(getResponseParamDocForOneMenu());
     }
 
     @Test
@@ -162,10 +172,13 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id"))
+                        )
+                )
+                .andDo(getErrorResponseParamDoc());
     }
 
     @Test
@@ -176,9 +189,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(rest1AllMenusWithItems))
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                        )
+                )
+                .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
@@ -192,9 +208,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(rest1AllMenusWithItems))
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                        )
+                )
+                .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
@@ -210,9 +229,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
                         Arrays.asList(menu3WithItems, menu2WithItems)
                 ))
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                        )
+                )
+                .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
@@ -228,9 +250,12 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
                         Arrays.asList(menu1WithItems, menu2WithItems)
                 ))
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                        )
+                )
+                .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
@@ -247,5 +272,43 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 )));
 
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
+    }
+
+    private RestDocumentationResultHandler getResponseParamDocForOneMenu() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("id").description("Menu id"),
+                        fieldWithPath("name").description("Menu name"),
+                        fieldWithPath("menuDate").description("Menu date"),
+                        fieldWithPath("enabled").description("Menu activity marker"),
+                        subsectionWithPath("menuItems").description("Menu dishes"),
+                        fieldWithPath("menuItems[].id").description("Dish id"),
+                        fieldWithPath("menuItems[].name").description("Dish name"),
+                        fieldWithPath("menuItems[].price").description("Dish price")
+                ));
+    }
+
+    private RestDocumentationResultHandler getResponseParamDocForManyMenu() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("[]").description("Menus"),
+                        fieldWithPath("[].id").description("Menu id"),
+                        fieldWithPath("[].name").description("Menu name"),
+                        fieldWithPath("[].menuDate").description("Menu date"),
+                        fieldWithPath("[].enabled").description("Menu activity marker"),
+                        subsectionWithPath("[].menuItems").description("Menu dishes"),
+                        fieldWithPath("[].menuItems[].id").description("Dish id"),
+                        fieldWithPath("[].menuItems[].name").description("Dish name"),
+                        fieldWithPath("[].menuItems[].price").description("Dish price")
+                ));
+    }
+
+    private RestDocumentationResultHandler getErrorResponseParamDoc() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("url").description("Request url"),
+                        fieldWithPath("type").description("Error type"),
+                        fieldWithPath("detail").description("Error details")
+                ));
     }
 }

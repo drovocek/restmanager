@@ -1,0 +1,35 @@
+.{cl-get} [big]*`/rest/admin/menus/{restId}*` Get all for one restaurant
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/menus/filter/{restId}*` Get filtered for one restaurant
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/menus/{restId}/{id}*` Get one
+[%collapsible]
+====
+include::methods/get_menu.adoc[]
+====
+.{cl-post} [big]*`/rest/admin/menus/{restId}*` Create
+[%collapsible]
+====
+
+====
+.{cl-put} [big]*`/rest/admin/menus/{restId}*` Update
+[%collapsible]
+====
+
+====
+.{cl-patch} [big]*`/rest/admin/menus/{restId}/{id}*` Set enable
+[%collapsible]
+====
+
+====
+.{cl-delete} [big]*`/rest/admin/menus/{restId}/{id}*` Delete
+[%collapsible]
+====
+
+====

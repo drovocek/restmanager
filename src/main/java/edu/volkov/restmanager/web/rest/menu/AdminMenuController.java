@@ -25,6 +25,36 @@ public class AdminMenuController {
         this.service = service;
     }
 
+    @GetMapping("/{restId}")
+    public List<Menu> getAllForRestWithMenuItems(@PathVariable int restId) {
+        return service.getAllForRestWithMenuItems(restId);
+    }
+
+    @GetMapping("/filter/{restId}")
+    public List<Menu> getFilteredForRestWithMenuItems(
+            @PathVariable int restId,
+            LocalDate startDate,
+            LocalDate endDate,
+            Boolean enabled
+    ) {
+        return service.getFilteredForRestWithMenuItems(restId, startDate, endDate, enabled);
+    }
+
+    @GetMapping("/{restId}/{id}")
+    public Menu getWithMenuItems(@PathVariable int restId, @PathVariable int id) {
+        return service.getWithMenuItems(restId, id);
+    }
+
+    @PatchMapping("/{restId}/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(
+            @PathVariable int restId,
+            @PathVariable int id,
+            @RequestParam boolean enabled
+    ) {
+        service.enable(restId, id, enabled);
+    }
+
     @PostMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithMenuItems(@PathVariable int restId, @RequestBody Menu menu) {
         Menu created = service.createWithMenuItems(restId, menu);
@@ -50,35 +80,5 @@ public class AdminMenuController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restId, @PathVariable int id) {
         service.delete(restId, id);
-    }
-
-    @GetMapping("/{restId}/{id}")
-    public Menu getWithMenuItems(@PathVariable int restId, @PathVariable int id) {
-        return service.getWithMenuItems(restId, id);
-    }
-
-    @GetMapping("/{restId}")
-    public List<Menu> getAllForRestWithMenuItems(@PathVariable int restId) {
-        return service.getAllForRestWithMenuItems(restId);
-    }
-
-    @GetMapping("/filter/{restId}")
-    public List<Menu> getFilteredForRestWithMenuItems(
-            @PathVariable int restId,
-            LocalDate startDate,
-            LocalDate endDate,
-            Boolean enabled
-    ) {
-        return service.getFilteredForRestWithMenuItems(restId, startDate, endDate, enabled);
-    }
-
-    @PatchMapping("/{restId}/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enable(
-            @PathVariable int restId,
-            @PathVariable int id,
-            @RequestParam boolean enabled
-    ) {
-        service.enable(restId, id, enabled);
     }
 }

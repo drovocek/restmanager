@@ -1,0 +1,35 @@
+.{cl-get} [big]*`/rest/admin/users*` Get all
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/users/{id}*` Get one
+[%collapsible]
+====
+
+====
+.{cl-get} [big]*`/rest/admin/users/by*` Get by email
+[%collapsible]
+====
+
+====
+.{cl-post} [big]*`/rest/admin/users*` Create
+[%collapsible]
+====
+
+====
+.{cl-put} [big]*`/rest/admin/users*` Update
+[%collapsible]
+====
+
+====
+.{cl-patch} [big]*`/rest/admin/users/{id}*` Set enable
+[%collapsible]
+====
+
+====
+.{cl-delete} [big]*`/rest/admin/users/{id}*` Delete
+[%collapsible]
+====
+
+====
