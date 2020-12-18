@@ -46,8 +46,11 @@ include::user/admin/admin_strct.adoc[]
 include::restaurant/admin/restaurant_admin_strct.adoc[]
 ==== Menu
 include::menu/menu_strct.adoc[]
+
 == Convention
 include::util/rest_conv.adoc[]
+
 == Error processing
+'''
 .Error response body parameters
 include::{snippets}/admin-menu-controller-test/delete-not-found/response-fields.adoc[]

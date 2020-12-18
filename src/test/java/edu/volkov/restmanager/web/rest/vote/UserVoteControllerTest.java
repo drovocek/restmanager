@@ -11,8 +11,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
+import static edu.volkov.restmanager.testdata.MenuTestData.MENU_NOT_FOUND_ID;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
 import static edu.volkov.restmanager.testdata.UserTestData.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,17 +30,24 @@ public class UserVoteControllerTest extends AbstractControllerTest {
 
     @Test
     public void vote() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + REST1_ID)
+        perform(patch(REST_URL + "{restId}", REST1_ID)
                 .with(userHttpBasic(user1)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id")
+                        )
+                ))
+                .andDo(document("{class-name}/{method-name}"));
 
         Assert.assertNotNull(voteService.get(USER1_ID, LocalDate.now()));
     }
 
     @Test
     public void voteUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID))
-                .andExpect(status().isUnauthorized());
+        perform(patch(REST_URL + "{restId}", REST1_ID))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("{class-name}/{method-name}"));
     }
 }
