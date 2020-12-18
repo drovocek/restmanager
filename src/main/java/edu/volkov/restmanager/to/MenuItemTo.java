@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter
@@ -11,8 +15,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class MenuItemTo extends BaseTo implements Serializable {
 
+    @NotBlank
+    @Size(min = 2, max = 100)
     private String name;
 
+    @NotNull
+    @Min(value = 0)
     private Integer price;
 
     public MenuItemTo(Integer id, String name, Integer price) {

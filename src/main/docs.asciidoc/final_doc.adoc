@@ -5,6 +5,7 @@
 :cl-post: pass:q[[.label.post]#POST#]
 :cl-patch: pass:q[[.label.patch]#PATCH#]
 :cl-delete: pass:q[[.label.delete]#DELETE#]
+:cl-examples: pass:q[[.label.examples]#examples#]
 
 :icons: font
 
@@ -15,10 +16,13 @@ Version 1.0, 17.12.2020
 :author: Volkov Andrey
 :email: progervolkov@gmail.com
 :sectnums:
+:sectnumlevels: 5
 :toc: left
 :toclevels: 4
+:page-layout: docs
 :toc-title: Content
 :description: Restaurant Manager API documentation
+:stylesheet: asciidoctor-skins-gh-pages/css/gazette.css
 
 == Endpoints
 '''
@@ -42,5 +46,11 @@ include::user/admin/admin_strct.adoc[]
 include::restaurant/admin/restaurant_admin_strct.adoc[]
 ==== Menu
 include::menu/menu_strct.adoc[]
+
 == Convention
 include::util/rest_conv.adoc[]
+
+== Error processing
+'''
+.Error response body parameters
+include::{snippets}/admin-menu-controller-test/delete-not-found/response-fields.adoc[]

@@ -1,0 +1,21 @@
+
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/request-parameters.adoc[]
+
+.Success response body parameters
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/http-request.adoc[]
+.HTTP Response
+include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/http-response.adoc[]
+
+

@@ -1,4 +1,6 @@
+'''
 === HTTP verbs
+'''
 Restaurant Manager tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP verbs.
 |===
@@ -14,8 +16,9 @@ use of HTTP verbs.
 | `DELETE`
 | Used to delete an existing resource
 |===
-
+'''
 === HTTP status codes
+'''
 Restaurant Manager tries to adhere as closely as possible to standard HTTP and REST conventions in its
 use of HTTP status codes.
 

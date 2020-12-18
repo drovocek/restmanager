@@ -1,35 +1,49 @@
+
 .{cl-get} [big]*`/rest/admin/menus/{restId}*` Get all for one restaurant
 [%collapsible]
 ====
-
+include::methods/get_all_menu.adoc[]
 ====
+
 .{cl-get} [big]*`/rest/admin/menus/filter/{restId}*` Get filtered for one restaurant
 [%collapsible]
 ====
+[NOTE]
+=====
+Keep in mind:
 
+* Filtering by dates includes left and right borders.
+* Empty request parameters = getAll.
+=====
+include::methods/get_filtered_menu.adoc[]
 ====
+
 .{cl-get} [big]*`/rest/admin/menus/{restId}/{id}*` Get one
 [%collapsible]
 ====
 include::methods/get_menu.adoc[]
 ====
+
 .{cl-post} [big]*`/rest/admin/menus/{restId}*` Create
 [%collapsible]
 ====
-
+include::methods/create_menu.adoc[]
 ====
+
 .{cl-put} [big]*`/rest/admin/menus/{restId}*` Update
 [%collapsible]
 ====
-
+include::methods/update_menu.adoc[]
 ====
+
 .{cl-patch} [big]*`/rest/admin/menus/{restId}/{id}*` Set enable
 [%collapsible]
 ====
-
+include::methods/enable_menu.adoc[]
 ====
+
 .{cl-delete} [big]*`/rest/admin/menus/{restId}/{id}*` Delete
 [%collapsible]
 ====
-
+include::methods/delete_menu.adoc[]
 ====
