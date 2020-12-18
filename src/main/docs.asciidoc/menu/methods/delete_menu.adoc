@@ -1,0 +1,19 @@
+
+include::{snippets}/admin-menu-controller-test/delete-good/path-parameters.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-menu-controller-test/delete-good/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-menu-controller-test/delete-good/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/admin-menu-controller-test/delete-good/http-response.adoc[]
+Error HTTP Responses
+
+.Delete not found
+include::{snippets}/admin-menu-controller-test/delete-not-found/http-response.adoc[]
+
+

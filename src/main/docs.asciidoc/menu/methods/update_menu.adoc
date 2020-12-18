@@ -1,0 +1,18 @@
+
+include::{snippets}/admin-menu-controller-test/update-with-menu-items/path-parameters.adoc[]
+
+.Request fields
+include::{snippets}/admin-menu-controller-test/update-with-menu-items/request-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-menu-controller-test/update-with-menu-items/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-menu-controller-test/update-with-menu-items/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/admin-menu-controller-test/update-with-menu-items/http-response.adoc[]
+
+

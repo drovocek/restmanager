@@ -8,6 +8,19 @@
 :pygments-style: xcode
 :highlightjs-theme: xcode
 
+
+
+==== TESTS
+:icons: font
+WARNING: sdfdfdf
+
+[source,ruby]
+System.out.println (" Hello ");
+
+
+[source,ruby]
+include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/response-body.adoc[]
+
 === Menu
 
 .{cl-get} [big]*`/rest/admin/menus/{restId}*` Get all for one restaurant
@@ -81,21 +94,6 @@ include::{snippets}/admin-menu-controller-test/get-un-auth/http-response.adoc[]
 ====== Get by forbidden user
 include::{snippets}/admin-menu-controller-test/get-forbidden/http-response.adoc[]
 
-
-==== TESTS
-:icons: font
-WARNING: sdfdfdf
-
-
-
-
-include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/response-body.adoc[]
-`System.out.println (" Hello ");`
-
-[,js]
-----
-include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/response-body.adoc[]
-----
 
 [source,xml]
 ----

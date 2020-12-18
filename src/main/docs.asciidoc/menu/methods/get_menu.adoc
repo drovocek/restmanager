@@ -4,10 +4,7 @@ include::{snippets}/admin-menu-controller-test/get-with-menu-items/path-paramete
 .Success response body parameters
 include::{snippets}/admin-menu-controller-test/get-with-menu-items/response-fields.adoc[]
 
-.Error response body parameters
-include::{snippets}/admin-menu-controller-test/get-with-menu-items-not-found/response-fields.adoc[]
-
-.*Examples*
+.{cl-examples}
 [%collapsible]
 =====
 .Curl

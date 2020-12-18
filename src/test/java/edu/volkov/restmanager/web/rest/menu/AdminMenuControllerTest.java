@@ -35,7 +35,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.snippet.Attributes.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -135,10 +135,13 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id")
+                        )
+                ))
+                .andDo(getErrorResponseParamDoc());
     }
 
     @Test
@@ -220,6 +223,14 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                                 parameterWithName("restId").description("Restaurant id"))
                         )
                 )
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("startDate").description("Start date"),
+                                parameterWithName("endDate").description("End date"),
+                                parameterWithName("enabled").description("Menu activity marker")
+                        )
+                        )
+                )
                 .andDo(getResponseParamDocForManyMenu());
     }
 
@@ -282,9 +293,29 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(document("{class-name}/{method-name}",
                         requestParameters(
                                 parameterWithName("enabled").description("Menu activity marker"))
-                        ));
+                ));
 
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
+    }
+
+    @Test
+    public void enableNotFound() throws Exception {
+        perform(patch(REST_URL + "{restId}/{id}", REST1_ID, MENU_NOT_FOUND_ID)
+                .param("enabled", "false")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id")
+                        )
+                ))
+                .andDo(getErrorResponseParamDoc()).andDo(document("{class-name}/{method-name}",
+                requestParameters(
+                        parameterWithName("enabled").description("Menu activity marker"))
+        ));
     }
 
     private RestDocumentationResultHandler getResponseParamDocForOneMenu() {
@@ -303,7 +334,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     private RestDocumentationResultHandler getRequestParamDocForOneMenu() {
 
-        ConstraintDescriptions constraintDescMenu= new ConstraintDescriptions(Menu.class);
+        ConstraintDescriptions constraintDescMenu = new ConstraintDescriptions(Menu.class);
         ConstraintDescriptions constraintDescMenuItem = new ConstraintDescriptions(MenuItem.class);
 
         return document("{class-name}/{method-name}",
@@ -316,18 +347,18 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                                 .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("enabled"))),
                         subsectionWithPath("menuItems").description("Menu dishes")
                                 .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("menuItems"))),
-                        fieldWithPath("menuItems[].id").description("Dish id")
+                        fieldWithPath("menuItems[].id").description("Dish id").optional()
                                 .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("id"))),
-                        fieldWithPath("menuItems[].name").description("Dish name")
+                        fieldWithPath("menuItems[].name").description("Dish name").optional()
                                 .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("name"))),
-                        fieldWithPath("menuItems[].price").description("Dish price")
+                        fieldWithPath("menuItems[].price").description("Dish price").optional()
                                 .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("price")))
                 ));
     }
 
     private RestDocumentationResultHandler getRequestParamDocForOneMenuTo() {
 
-        ConstraintDescriptions constraintDescMenuTo= new ConstraintDescriptions(MenuTo.class);
+        ConstraintDescriptions constraintDescMenuTo = new ConstraintDescriptions(MenuTo.class);
         ConstraintDescriptions constraintDescMenuItemTo = new ConstraintDescriptions(MenuItemTo.class);
 
         return document("{class-name}/{method-name}",
@@ -350,7 +381,6 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                                 .attributes(key("constraints").value(constraintDescMenuItemTo.descriptionsForProperty("price")))
                 ));
     }
-
 
 
     private RestDocumentationResultHandler getResponseParamDocForManyMenu() {

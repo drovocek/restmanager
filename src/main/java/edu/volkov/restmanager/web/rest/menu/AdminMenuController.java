@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.web.rest.menu;
 
+import com.sun.istack.Nullable;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.service.MenuService;
 import edu.volkov.restmanager.to.MenuTo;
@@ -33,9 +34,9 @@ public class AdminMenuController {
     @GetMapping("/filter/{restId}")
     public List<Menu> getFilteredForRestWithMenuItems(
             @PathVariable int restId,
-            LocalDate startDate,
-            LocalDate endDate,
-            Boolean enabled
+            @Nullable LocalDate startDate,
+            @Nullable LocalDate endDate,
+            @Nullable Boolean enabled
     ) {
         return service.getFilteredForRestWithMenuItems(restId, startDate, endDate, enabled);
     }
