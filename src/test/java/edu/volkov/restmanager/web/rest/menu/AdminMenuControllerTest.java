@@ -1,7 +1,9 @@
 package edu.volkov.restmanager.web.rest.menu;
 
 import edu.volkov.restmanager.model.Menu;
+import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.service.MenuService;
+import edu.volkov.restmanager.to.MenuItemTo;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.util.model.MenuUtil;
@@ -84,7 +86,8 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                                 parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id")
                         )
-                ));
+                ))
+                .andDo(getRequestParamDocForOneMenuTo());
 
         MENU_WITH_ITEMS_MATCHER.assertMatch(
                 service.getWithMenuItems(REST1_ID, MENU1_ID),
@@ -103,8 +106,8 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(document("{class-name}/{method-name}", pathParameters(
                         parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                        parameterWithName("id").description("Menu id"))
+                ));
 
         Menu updatedMenu = getUpdatedWithMenuItems();
         updatedMenu.setMenuItems(Collections.emptyList());
@@ -300,26 +303,55 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     private RestDocumentationResultHandler getRequestParamDocForOneMenu() {
 
-        ConstraintDescriptions constraintDescriptions = new ConstraintDescriptions(Menu.class);
+        ConstraintDescriptions constraintDescMenu= new ConstraintDescriptions(Menu.class);
+        ConstraintDescriptions constraintDescMenuItem = new ConstraintDescriptions(MenuItem.class);
 
         return document("{class-name}/{method-name}",
                 requestFields(
-                        fieldWithPath("name").description("Menu name").optional()
-                                .attributes(key(".").value(constraintDescriptions.descriptionsForProperty("name"))),
-                        fieldWithPath("menuDate").description("Menu date").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuDate"))),
-                        fieldWithPath("enabled").description("Menu activity marker").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("enabled"))),
-                        subsectionWithPath("menuItems").description("Menu dishes").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems"))),
-                        fieldWithPath("menuItems[].id").description("Dish id").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].id"))),
-                        fieldWithPath("menuItems[].name").description("Dish name").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].name"))),
-                        fieldWithPath("menuItems[].price").description("Dish price").optional()
-                                .attributes(key("constraints").value(constraintDescriptions.descriptionsForProperty("menuItems[].price")))
+                        fieldWithPath("name").description("Menu name")
+                                .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("name"))),
+                        fieldWithPath("menuDate").description("Menu date")
+                                .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("menuDate"))),
+                        fieldWithPath("enabled").description("Menu activity marker")
+                                .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("enabled"))),
+                        subsectionWithPath("menuItems").description("Menu dishes")
+                                .attributes(key("constraints").value(constraintDescMenu.descriptionsForProperty("menuItems"))),
+                        fieldWithPath("menuItems[].id").description("Dish id")
+                                .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("id"))),
+                        fieldWithPath("menuItems[].name").description("Dish name")
+                                .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("name"))),
+                        fieldWithPath("menuItems[].price").description("Dish price")
+                                .attributes(key("constraints").value(constraintDescMenuItem.descriptionsForProperty("price")))
                 ));
     }
+
+    private RestDocumentationResultHandler getRequestParamDocForOneMenuTo() {
+
+        ConstraintDescriptions constraintDescMenuTo= new ConstraintDescriptions(MenuTo.class);
+        ConstraintDescriptions constraintDescMenuItemTo = new ConstraintDescriptions(MenuItemTo.class);
+
+        return document("{class-name}/{method-name}",
+                requestFields(
+                        fieldWithPath("id").description("Menu id")
+                                .attributes(key("constraints").value(constraintDescMenuTo.descriptionsForProperty("name"))),
+                        fieldWithPath("name").description("Menu name")
+                                .attributes(key("constraints").value(constraintDescMenuTo.descriptionsForProperty("name"))),
+                        fieldWithPath("menuDate").description("Menu date")
+                                .attributes(key("constraints").value(constraintDescMenuTo.descriptionsForProperty("menuDate"))),
+                        fieldWithPath("enabled").description("Menu activity marker")
+                                .attributes(key("constraints").value(constraintDescMenuTo.descriptionsForProperty("enabled"))),
+                        subsectionWithPath("menuItemTos").description("Menu dishes")
+                                .attributes(key("constraints").value(constraintDescMenuTo.descriptionsForProperty("menuItemTos"))),
+                        fieldWithPath("menuItemTos[].id").description("Dish id").optional()
+                                .attributes(key("constraints").value(constraintDescMenuItemTo.descriptionsForProperty("id"))),
+                        fieldWithPath("menuItemTos[].name").description("Dish name").optional()
+                                .attributes(key("constraints").value(constraintDescMenuItemTo.descriptionsForProperty("name"))),
+                        fieldWithPath("menuItemTos[].price").description("Dish price").optional()
+                                .attributes(key("constraints").value(constraintDescMenuItemTo.descriptionsForProperty("price")))
+                ));
+    }
+
+
 
     private RestDocumentationResultHandler getResponseParamDocForManyMenu() {
         return document("{class-name}/{method-name}",

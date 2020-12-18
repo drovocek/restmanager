@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotNull;
 public class MenuItem extends AbstractNamedEntity {
 
     @Column(name = "price", nullable = false)
+    @NotNull
+    @Min(value = 0)
     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)

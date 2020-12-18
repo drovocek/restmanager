@@ -1,3 +1,4 @@
+
 .{cl-get} [big]*`/rest/admin/menus/{restId}*` Get all for one restaurant
 [%collapsible]
 ====

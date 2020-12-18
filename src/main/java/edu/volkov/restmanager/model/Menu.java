@@ -27,6 +27,7 @@ public class Menu extends AbstractNamedEntity {
     @NotNull
     private LocalDate menuDate;
 
+    @NotNull
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     private boolean enabled = false;
 
@@ -37,6 +38,7 @@ public class Menu extends AbstractNamedEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
+    @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     private List<MenuItem> menuItems;
 

@@ -15,8 +15,10 @@ Version 1.0, 17.12.2020
 :author: Volkov Andrey
 :email: progervolkov@gmail.com
 :sectnums:
+:sectnumlevels: 5
 :toc: left
 :toclevels: 4
+:page-layout: docs
 :toc-title: Content
 :description: Restaurant Manager API documentation
 
