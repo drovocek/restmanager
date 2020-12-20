@@ -6,6 +6,12 @@ include::methods/get_all_rest.adoc[]
 .{cl-get} [big]*`/rest/any/restaurants/filter*` Get filtered enabled with day enabled menu
 [%collapsible]
 ====
+[NOTE]
+=====
+Keep in mind:
+
+* Empty request parameters = getAll.
+=====
 include::methods/get_filtered_rest.adoc[]
 ====
 .{cl-get} [big]*`/rest/any/restaurants/{id}*` Get one with day enabled menu
