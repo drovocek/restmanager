@@ -9,14 +9,23 @@ import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.constraints.ConstraintDescriptions;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
+import static edu.volkov.restmanager.testdata.MenuTestData.MENU_NOT_FOUND_ID;
+import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
 import static edu.volkov.restmanager.testdata.UserTestData.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,13 +38,19 @@ public class AdminControllerTest extends AbstractControllerTest {
     private UserService service;
 
     @Test
-    public void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID)
+    public void getGood() throws Exception {
+        perform(get(REST_URL + "{id}", ADMIN_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER.contentJson(admin));
+                .andExpect(USER_MATCHER.contentJson(admin))
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("User id")
+                        )
+                ))
+                .andDo(getResponseParamDocForOneUser());
     }
 
     @Test
@@ -43,7 +58,8 @@ public class AdminControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL + 10)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(getErrorResponseParamDoc());
     }
 
     @Test
@@ -52,47 +68,67 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER.contentJson(admin));
+                .andExpect(USER_MATCHER.contentJson(admin))
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("email").description("User email"))
+                        )
+                )
+                .andDo(getResponseParamDocForOneUser());
     }
 
     @Test
-    public void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + USER1_ID)
+    public void deleteGood() throws Exception {
+        perform(delete(REST_URL + "{id}", USER1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("{class-name}/{method-name}", pathParameters(
+                        parameterWithName("id").description("User id")
+                )));
+
         assertThrows(NotFoundException.class, () -> service.get(USER1_ID));
     }
 
     @Test
     public void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + 10)
+        perform(delete(REST_URL + "{id}", USER_NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("User id")
+                        )
+                ))
+                .andDo(getErrorResponseParamDoc());
     }
 
     @Test
     public void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized())
+                .andDo(document("{class-name}/{method-name}"));
     }
 
     @Test
     public void getForbidden() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(user1)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden())
+                .andDo(document("{class-name}/{method-name}"));
     }
 
     @Test
     public void update() throws Exception {
         User updated = UserTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL)
+
+        perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(getRequestParamDocForOneUpdatedUser());
 
         USER_MATCHER.assertMatch(service.get(USER1_ID), updated);
     }
@@ -100,15 +136,19 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     public void createWithLocation() throws Exception {
         User newUser = UserTestData.getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+
+        ResultActions action = perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(UserTestData.jsonWithPassword(newUser, "newPass")))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(getRequestParamDocForOneNewUser())
+                .andDo(getResponseParamDocForOneUser());
 
         User created = readFromJson(action, User.class);
         int newId = created.id();
         newUser.setId(newId);
+
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
@@ -119,17 +159,124 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER.contentJson(admin, user1, user2));
+                .andExpect(USER_MATCHER.contentJson(admin, user1, user2))
+                .andDo(getResponseParamDocForManyUsers());
     }
 
     @Test
     public void enable() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + USER1_ID)
+        perform(patch(REST_URL + "{id}", USER1_ID)
                 .param("enabled", "false")
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("User id"))
+                        )
+                )
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("enabled").description("User activity marker"))
+                ));
+
+
         assertFalse(service.get(USER1_ID).isEnabled());
+    }
+
+    @Test
+    public void enableNotFound() throws Exception {
+        perform(patch(REST_URL + "{id}", USER_NOT_FOUND)
+                .param("enabled", "false")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("User id")
+                        )
+                ))
+                .andDo(getErrorResponseParamDoc()).andDo(document("{class-name}/{method-name}",
+                requestParameters(
+                        parameterWithName("enabled").description("User activity marker"))
+        ));
+    }
+
+    private RestDocumentationResultHandler getResponseParamDocForOneUser() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("id").description("User id"),
+                        fieldWithPath("name").description("User name"),
+                        fieldWithPath("email").description("User email"),
+                        fieldWithPath("registered").description("User registration date/time"),
+                        fieldWithPath("enabled").description("User activity marker"),
+                        fieldWithPath("roles.[]").description("User roles")
+                ));
+    }
+
+    private RestDocumentationResultHandler getErrorResponseParamDoc() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("url").description("Request url"),
+                        fieldWithPath("type").description("Error type"),
+                        fieldWithPath("detail").description("Error details")
+                ));
+    }
+
+    private RestDocumentationResultHandler getRequestParamDocForOneUpdatedUser() {
+
+        ConstraintDescriptions constraintDescUserTo = new ConstraintDescriptions(User.class);
+
+        return document("{class-name}/{method-name}",
+                requestFields(
+                        fieldWithPath("id").description("User id")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("name"))),
+                        fieldWithPath("name").description("User name")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("name"))),
+                        fieldWithPath("email").description("User email")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("email"))),
+                        fieldWithPath("registered").description("User registration date/time")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("registered"))),
+                        fieldWithPath("enabled").description("User activity marker")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("enabled"))),
+                        fieldWithPath("roles.[]").description("User roles")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("roles")))
+                ));
+    }
+
+    private RestDocumentationResultHandler getRequestParamDocForOneNewUser() {
+
+        ConstraintDescriptions constraintDescUserTo = new ConstraintDescriptions(User.class);
+
+        return document("{class-name}/{method-name}",
+                requestFields(
+                        fieldWithPath("name").description("User name")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("name"))),
+                        fieldWithPath("email").description("User email")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("email"))),
+                        fieldWithPath("registered").description("User registration date/time")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("registered"))),
+                        fieldWithPath("password").description("User registration date/time")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("password"))),
+                        fieldWithPath("enabled").description("User activity marker")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("enabled"))),
+                        fieldWithPath("roles.[]").description("User roles")
+                                .attributes(key("constraints").value(constraintDescUserTo.descriptionsForProperty("roles")))
+                ));
+    }
+
+    private RestDocumentationResultHandler getResponseParamDocForManyUsers() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("[]").description("Users"),
+                        fieldWithPath("[].id").description("User id"),
+                        fieldWithPath("[].name").description("User name"),
+                        fieldWithPath("[].email").description("User email"),
+                        fieldWithPath("[].registered").description("User registration date/time"),
+                        fieldWithPath("[].enabled").description("User activity marker"),
+                        fieldWithPath("[].roles.[]").description("User roles")
+                ));
     }
 }

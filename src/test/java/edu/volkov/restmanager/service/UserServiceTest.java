@@ -44,7 +44,7 @@ public class UserServiceTest extends AbstractTest {
 
     @Test
     public void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.delete(USER_NOT_FOUND));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class UserServiceTest extends AbstractTest {
 
     @Test
     public void getNotFound() {
-        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.get(USER_NOT_FOUND));
     }
 
     @Test

@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -405,20 +403,5 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                         fieldWithPath("type").description("Error type"),
                         fieldWithPath("detail").description("Error details")
                 ));
-    }
-
-    private static class ConstrainedFields {
-
-        private final ConstraintDescriptions constraintDescriptions;
-
-        ConstrainedFields(Class<?> input) {
-            this.constraintDescriptions = new ConstraintDescriptions(input);
-        }
-
-        private FieldDescriptor withPath(String path) {
-            return fieldWithPath(path).attributes(key("constraints").value(StringUtils
-                    .collectionToDelimitedString(this.constraintDescriptions
-                            .descriptionsForProperty(path), ". ")));
-        }
     }
 }
