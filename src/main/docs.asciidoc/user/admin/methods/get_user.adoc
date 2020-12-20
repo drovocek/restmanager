@@ -1,0 +1,25 @@
+
+include::{snippets}/admin-controller-test/get-good/path-parameters.adoc[]
+
+.Success response body parameters
+include::{snippets}/admin-controller-test/get-good/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-controller-test/get-good/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-controller-test/get-good/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/admin-controller-test/get-good/http-response.adoc[]
+Error HTTP Responses
+
+.Get not found
+include::{snippets}/admin-controller-test/get-not-found/http-response.adoc[]
+.Get by unauthorized user
+include::{snippets}/admin-controller-test/get-un-auth/http-response.adoc[]
+.Get by forbidden user
+include::{snippets}/admin-controller-test/get-forbidden/http-response.adoc[]
+=====
