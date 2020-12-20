@@ -1,0 +1,16 @@
+
+.Request fields
+include::{snippets}/profile-controller-test/update/request-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/profile-controller-test/update/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/profile-controller-test/update/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/profile-controller-test/update/http-response.adoc[]
+
+
