@@ -5,7 +5,15 @@ ____
 December 2020
 
 ## Theme 
-Implementing a restaurant voting application from scratch with REST API on stack Spring(Security, MVC, Data, REST doc), Hibernate.
+REST API
+
+## Technology stack
+- Java 8
+- Spring(Security, MVC, Data, REST doc), Hibernate
+- HSQLDB
+- slf4j, junit4, Assertj, Hamcrest
+- Jackson, Lombok
+- Maven
 
 ## Documentation
 [html in progress](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
