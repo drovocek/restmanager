@@ -9,6 +9,7 @@ Implementing a restaurant voting application from scratch with REST API on stack
 
 ## Documentation
 [html in progress](https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
+
 [pdf in progress](https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.pdf)
 
 ## Task
