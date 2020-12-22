@@ -5,7 +5,7 @@
 ____
 
 ## Completion date 
-December 2020
+31 December 2020
 
 ## Theme 
 REST API
