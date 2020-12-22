@@ -1,5 +1,4 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0050bd17f07a4f988344e36131af43fe)](https://app.codacy.com/gh/drovocek/restmanager?utm_source=github.com&utm_medium=referral&utm_content=drovocek/restmanager&utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ada67f2528df4a049303dcaa57e08769)](https://www.codacy.com/gh/drovocek/restmanager/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=drovocek/restmanager&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/drovocek/restmanager.svg?branch=Cleaned)](https://travis-ci.org/github/drovocek/restmanager)
 
 # My diplom project
