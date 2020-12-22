@@ -8,7 +8,7 @@ December 2020
 Implementing a restaurant voting application from scratch with REST API on stack Spring(Security, MVC, Data, REST doc), Hibernate.
 
 ## Documentation
-[html in progress](https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
+[html in progress](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
 
 [pdf in progress](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/docs.asciidoc/final_doc.pdf)
 
