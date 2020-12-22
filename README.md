@@ -8,7 +8,8 @@ December 2020
 Implementing a restaurant voting application from scratch with REST API on stack Spring(Security, MVC, Data, REST doc), Hibernate.
 
 ## Documentation
-in progress
+[html in progress](https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
+[pdf in progress](https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.pdf)
 
 ## Task
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
