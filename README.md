@@ -19,7 +19,7 @@ REST API
 - Maven
 
 ## Documentation
-[html (in progress)](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/main/src/main/docs.asciidoc/final_doc.html)
+[html (in progress)](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/Cleaned/src/main/docs.asciidoc/final_doc.html)
 
 [pdf (in progress)](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/docs.asciidoc/final_doc.pdf)
 
