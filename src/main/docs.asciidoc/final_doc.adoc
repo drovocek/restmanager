@@ -54,3 +54,13 @@ include::util/rest_conv.adoc[]
 '''
 .Error response body parameters
 include::{snippets}/admin-menu-controller-test/delete-not-found/response-fields.adoc[]
+
+== Technology stack
+'''
+* Java 8
+* Spring(Security, MVC, Data, REST doc)
+* Hibernate
+* HSQLDB
+* slf4j, junit4, Assertj, Hamcrest
+* Jackson, Lombok
+* Maven
