@@ -63,7 +63,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
     @Test
     public void getAllEnabledWithDayEnabledMenu() throws Exception {
         service.setTestDate(MenuTestData.TODAY);
-        perform(get(REST_URL ))
+        perform(get(REST_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

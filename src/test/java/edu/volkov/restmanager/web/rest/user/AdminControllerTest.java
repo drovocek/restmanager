@@ -2,7 +2,6 @@ package edu.volkov.restmanager.web.rest.user;
 
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
-import edu.volkov.restmanager.testdata.UserTestData;
 import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.web.AbstractControllerTest;
 import edu.volkov.restmanager.web.json.JsonUtil;
@@ -16,8 +15,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
-import static edu.volkov.restmanager.testdata.MenuTestData.MENU_NOT_FOUND_ID;
-import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
 import static edu.volkov.restmanager.testdata.UserTestData.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -121,7 +118,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     public void update() throws Exception {
-        User updated = UserTestData.getUpdated();
+        User updated = getUpdated();
 
         perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,12 +132,12 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     public void createWithLocation() throws Exception {
-        User newUser = UserTestData.getNew();
+        User newUser = getNew();
 
         ResultActions action = perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(UserTestData.jsonWithPassword(newUser, "newPass")))
+                .content(jsonWithPassword(newUser, "newPass")))
                 .andExpect(status().isCreated())
                 .andDo(getRequestParamDocForOneNewUser())
                 .andDo(getResponseParamDocForOneUser());

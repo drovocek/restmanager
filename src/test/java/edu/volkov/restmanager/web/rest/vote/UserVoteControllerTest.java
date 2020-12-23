@@ -5,15 +5,13 @@ import edu.volkov.restmanager.web.AbstractControllerTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
-import static edu.volkov.restmanager.testdata.MenuTestData.MENU_NOT_FOUND_ID;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
-import static edu.volkov.restmanager.testdata.UserTestData.*;
+import static edu.volkov.restmanager.testdata.UserTestData.USER1_ID;
+import static edu.volkov.restmanager.testdata.UserTestData.user1;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;

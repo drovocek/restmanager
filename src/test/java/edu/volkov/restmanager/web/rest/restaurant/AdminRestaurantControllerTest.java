@@ -1,7 +1,5 @@
 package edu.volkov.restmanager.web.rest.restaurant;
 
-import edu.volkov.restmanager.model.Menu;
-import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.testdata.MenuTestData;
@@ -23,7 +21,6 @@ import java.util.Collections;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
-import static edu.volkov.restmanager.testdata.MenuTestData.MENU1_ID;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.*;
 import static edu.volkov.restmanager.testdata.UserTestData.admin;
 import static edu.volkov.restmanager.testdata.UserTestData.user1;
@@ -166,7 +163,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     public void getAllWithDayEnabledMenu() throws Exception {
         service.setTestDate(MenuTestData.TODAY);
 
-        perform(get(REST_URL )
+        perform(get(REST_URL)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isOk())
