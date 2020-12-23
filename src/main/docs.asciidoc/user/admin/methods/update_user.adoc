@@ -1,4 +1,6 @@
 
+include::{snippets}/admin-controller-test/update/path-parameters.adoc[]
+
 .Request fields
 include::{snippets}/admin-controller-test/update/request-fields.adoc[]
 
@@ -10,7 +12,7 @@ include::{snippets}/admin-controller-test/update/curl-request.adoc[]
 
 .HTTP Request
 include::{snippets}/admin-controller-test/update/http-request.adoc[]
-.HTTP Response
+.HTTP [.line-through]#Response#
 include::{snippets}/admin-controller-test/update/http-response.adoc[]
 =====
 

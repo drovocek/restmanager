@@ -48,4 +48,7 @@
         <property name="basenames" value="file:///#{systemEnvironment['DIPLOM_ROOT']}/config/messages/app"/>
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
+
+    <!--    https://stackoverflow.com/a/23615478/548473-->
+    <bean id="defaultValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 </beans>

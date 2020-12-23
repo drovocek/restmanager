@@ -5,6 +5,7 @@ import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.service.MenuService;
 import edu.volkov.restmanager.to.MenuItemTo;
 import edu.volkov.restmanager.to.MenuTo;
+import edu.volkov.restmanager.util.exception.ErrorType;
 import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.util.model.MenuUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
@@ -402,7 +403,8 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 responseFields(
                         fieldWithPath("url").description("Request url"),
                         fieldWithPath("type").description("Error type"),
-                        fieldWithPath("detail").description("Error details")
+                        fieldWithPath("typeMessage").description("Error type"),
+                        fieldWithPath("details").description("Error details")
                 ));
     }
 }

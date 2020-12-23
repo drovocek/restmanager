@@ -1,5 +1,7 @@
 package edu.volkov.restmanager.web.rest.user;
 
+import edu.volkov.restmanager.HasId;
+import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
 import edu.volkov.restmanager.to.UserTo;
@@ -7,6 +9,12 @@ import edu.volkov.restmanager.util.model.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.BindException;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.List;
 
@@ -19,6 +27,18 @@ public abstract class AbstractUserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private UniqueMailValidator emailValidator;
+
+    @Autowired
+    @Qualifier("defaultValidator")
+    private Validator validator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(emailValidator);
+    }
 
     public List<User> getAll() {
         log.info("\n getAll");
@@ -46,7 +66,7 @@ public abstract class AbstractUserController {
         service.delete(id);
     }
 
-    public void update(User user, int id) {
+    public void update(User user, int id) throws BindException {
         log.info("\n update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
@@ -66,5 +86,15 @@ public abstract class AbstractUserController {
     public void enable(int id, boolean enabled) {
         log.info(enabled ? "\n enable {}" : "disable {}", id);
         service.enable(id, enabled);
+    }
+
+    protected void validateBeforeUpdate(HasId user, int id) throws BindException {
+        assureIdConsistent(user, id);
+        DataBinder binder = new DataBinder(user);
+        binder.addValidators(emailValidator, validator);
+        binder.validate(View.Web.class);
+        if (binder.getBindingResult().hasErrors()) {
+            throw new BindException(binder.getBindingResult());
+        }
     }
 }

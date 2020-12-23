@@ -1,6 +1,7 @@
 package edu.volkov.restmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.volkov.restmanager.HasIdAndEmail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "users_unique_email_idx", columnNames = "email")})
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements HasIdAndEmail {
 
     @Email
     @Size(max = 100)

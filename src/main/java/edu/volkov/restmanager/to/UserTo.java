@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.to;
 
+import edu.volkov.restmanager.HasIdAndEmail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserTo extends BaseTo implements Serializable {
+public class UserTo extends BaseTo implements Serializable, HasIdAndEmail {
 
     private static final long serialVersionUID = 1L;
 

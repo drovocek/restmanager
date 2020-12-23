@@ -120,11 +120,16 @@ public class AdminControllerTest extends AbstractControllerTest {
     public void update() throws Exception {
         User updated = getUpdated();
 
-        perform(put(REST_URL)
+        perform(put(REST_URL + "{id}", USER1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("User id")
+                        )
+                ))
                 .andDo(getRequestParamDocForOneUpdatedUser());
 
         USER_MATCHER.assertMatch(service.get(USER1_ID), updated);
