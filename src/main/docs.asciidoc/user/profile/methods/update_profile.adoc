@@ -12,5 +12,5 @@ include::{snippets}/profile-controller-test/update/curl-request.adoc[]
 include::{snippets}/profile-controller-test/update/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/profile-controller-test/update/http-response.adoc[]
-
+=====
 

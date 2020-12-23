@@ -2,7 +2,7 @@
 .Request fields
 include::{snippets}/admin-controller-test/create-with-location/request-fields.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-controller-test/create-with-location/response-fields.adoc[]
 
 .{cl-examples}
@@ -13,7 +13,8 @@ include::{snippets}/admin-controller-test/create-with-location/curl-request.adoc
 
 .HTTP Request
 include::{snippets}/admin-controller-test/create-with-location/http-request.adoc[]
-.Success HTTP Response
+
+.HTTP Response
 include::{snippets}/admin-controller-test/create-with-location/http-response.adoc[]
 =====
 

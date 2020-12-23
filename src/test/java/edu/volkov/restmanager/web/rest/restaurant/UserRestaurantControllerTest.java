@@ -33,17 +33,31 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
     @Test
     public void getWithEnabledMenu() throws Exception {
         service.setTestDate(MenuTestData.TODAY);
-        perform(get(REST_URL + "{restId}", REST1_ID)
+        perform(get(REST_URL + "{id}", REST1_ID)
         ).andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(REST_WITH_MENU_MATCHER.contentJson(rest1WithDayEnabledMenusAndItems))
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id")
+                                parameterWithName("id").description("Restaurant id")
                         )
                 ))
                 .andDo(getResponseParamDocForOneRest());
+    }
+
+    @Test
+    public void getNotFound() throws Exception {
+        perform(get(REST_URL + "{id}", REST_NOT_FOUND_ID)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("id").description("Restaurant id")
+                        )
+                ))
+                .andDo(getErrorResponseParamDoc());
     }
 
     @Test
@@ -113,7 +127,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                         fieldWithPath("name").description("Restaurant name"),
                         fieldWithPath("address").description("Restaurant address"),
                         fieldWithPath("phone").description("Restaurant phone"),
-                        fieldWithPath("votesQuantity").description("Restaurant votes"),
+                        fieldWithPath("votesQuantity").description("Restaurant votes quantity"),
                         fieldWithPath("enabled").description("Restaurant activity marker"),
                         subsectionWithPath("menus").description("Restaurant menus"),
                         fieldWithPath("menus[].id").description("Menu id"),
@@ -135,7 +149,7 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                         fieldWithPath("[].name").description("Restaurant name"),
                         fieldWithPath("[].address").description("Restaurant address"),
                         fieldWithPath("[].phone").description("Restaurant phone"),
-                        fieldWithPath("[].votesQuantity").description("Restaurant votes"),
+                        fieldWithPath("[].votesQuantity").description("Restaurant votes quantity"),
                         fieldWithPath("[].enabled").description("Restaurant activity marker"),
                         subsectionWithPath("[].menus").description("Restaurant menus"),
                         fieldWithPath("[].menus[].id").description("Menu id"),
@@ -146,6 +160,16 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                         fieldWithPath("[].menus[].menuItems[].id").description("Dish id"),
                         fieldWithPath("[].menus[].menuItems[].name").description("Dish name"),
                         fieldWithPath("[].menus[].menuItems[].price").description("Dish price")
+                ));
+    }
+
+
+    private RestDocumentationResultHandler getErrorResponseParamDoc() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("url").description("Request url"),
+                        fieldWithPath("type").description("Error type"),
+                        fieldWithPath("detail").description("Error details")
                 ));
     }
 }

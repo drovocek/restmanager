@@ -4,7 +4,7 @@ include::{snippets}/admin-menu-controller-test/create/path-parameters.adoc[]
 .Request fields
 include::{snippets}/admin-menu-controller-test/create/request-fields.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-menu-controller-test/create/response-fields.adoc[]
 
 .{cl-examples}
@@ -15,7 +15,7 @@ include::{snippets}/admin-menu-controller-test/create/curl-request.adoc[]
 
 .HTTP Request
 include::{snippets}/admin-menu-controller-test/create/http-request.adoc[]
-.Success HTTP Response
+.HTTP Response
 include::{snippets}/admin-menu-controller-test/create/http-response.adoc[]
-
+=====
 

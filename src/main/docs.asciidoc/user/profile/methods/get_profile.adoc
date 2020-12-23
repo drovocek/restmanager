@@ -1,5 +1,5 @@
 
-.Success response body parameters
+.Response fields
 include::{snippets}/profile-controller-test/get-good/response-fields.adoc[]
 
 .{cl-examples}
@@ -16,5 +16,5 @@ Error HTTP Responses
 
 .Get by unauthorized user
 include::{snippets}/admin-menu-controller-test/get-un-auth/http-response.adoc[]
-
+=====
 

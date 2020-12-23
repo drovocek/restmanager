@@ -1,10 +1,8 @@
 
-include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/path-parameters.adoc[]
-
 .Request parameters
 include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/request-parameters.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/response-fields.adoc[]
 
 .{cl-examples}
@@ -17,5 +15,5 @@ include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-w
 include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/http-request.adoc[]
 .HTTP Response
 include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/http-response.adoc[]
-
+=====
 

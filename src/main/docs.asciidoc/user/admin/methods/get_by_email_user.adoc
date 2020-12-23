@@ -2,7 +2,7 @@
 .Request parameters
 include::{snippets}/admin-controller-test/get-by-email/request-parameters.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-controller-test/get-by-email/response-fields.adoc[]
 
 .{cl-examples}
@@ -13,7 +13,6 @@ include::{snippets}/admin-controller-test/get-by-email/curl-request.adoc[]
 
 .HTTP Request
 include::{snippets}/admin-controller-test/get-by-email/http-request.adoc[]
-.Success HTTP Response
+.HTTP Response
 include::{snippets}/admin-controller-test/get-by-email/http-response.adoc[]
-Error HTTP Responses
 =====

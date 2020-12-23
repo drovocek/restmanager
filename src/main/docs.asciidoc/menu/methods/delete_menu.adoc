@@ -15,5 +15,5 @@ Error HTTP Responses
 
 .Delete not found
 include::{snippets}/admin-menu-controller-test/delete-not-found/http-response.adoc[]
-
+=====
 

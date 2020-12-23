@@ -1,0 +1,19 @@
+
+include::{snippets}/admin-restaurant-controller-test/enable/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/admin-restaurant-controller-test/enable/request-parameters.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-restaurant-controller-test/enable/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-restaurant-controller-test/enable/http-request.adoc[]
+.HTTP Response
+include::{snippets}/admin-restaurant-controller-test/enable/http-response.adoc[]
+=====
+
+

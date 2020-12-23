@@ -1,25 +1,28 @@
 
-include::{snippets}/admin-menu-controller-test/get-with-menu-items/path-parameters.adoc[]
+include::{snippets}/admin-restaurant-controller-test/get-without-menu/path-parameters.adoc[]
 
 .Response fields
-include::{snippets}/admin-menu-controller-test/get-with-menu-items/response-fields.adoc[]
+include::{snippets}/admin-restaurant-controller-test/get-without-menu/response-fields.adoc[]
 
 .{cl-examples}
 [%collapsible]
 =====
 .Curl
-include::{snippets}/admin-menu-controller-test/get-with-menu-items/curl-request.adoc[]
+include::{snippets}/admin-restaurant-controller-test/get-without-menu/curl-request.adoc[]
 
 .HTTP Request
 include::{snippets}/admin-restaurant-controller-test/get-without-menu/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/admin-restaurant-controller-test/get-without-menu/http-response.adoc[]
+
 Error HTTP Responses
 
 .Get not found
 include::{snippets}/admin-restaurant-controller-test/get-without-menu-not-found/http-response.adoc[]
+
 .Get by unauthorized user
 include::{snippets}/admin-restaurant-controller-test/get-un-auth/http-response.adoc[]
+
 .Get by forbidden user
 include::{snippets}/admin-restaurant-controller-test/get-forbidden/http-response.adoc[]
 =====

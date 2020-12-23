@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +30,8 @@ public class Restaurant extends AbstractNamedEntity {
 
     @NotBlank
 //    https://www.baeldung.com/java-regex-validate-phone-numbers
-    @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
+    @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
+            message = "must be in format: +7 (777) 777-7777")
     @Size(max = 20)
     @Column(name = "phone", nullable = false)
     private String phone;
@@ -42,7 +44,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     @OrderBy("menuDate DESC")
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private List<Menu> menus;
+    private List<Menu> menus = new ArrayList<>();
 
     public Restaurant(String name, String address, String phone) {
         this.name = name;

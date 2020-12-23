@@ -4,7 +4,7 @@ include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-m
 .Request parameters
 include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/request-parameters.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/response-fields.adoc[]
 
 .{cl-examples}
@@ -17,5 +17,5 @@ include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-m
 include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/http-request.adoc[]
 .HTTP Response
 include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/http-response.adoc[]
-
+=====
 

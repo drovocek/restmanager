@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,9 +101,10 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updatedMenuTo)))
                 .andExpect(status().isNoContent())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id"))
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id"))
                 ));
 
         Menu updatedMenu = getUpdatedWithMenuItems();
@@ -119,10 +119,11 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andDo(document("{class-name}/{method-name}", pathParameters(
-                        parameterWithName("restId").description("Restaurant id"),
-                        parameterWithName("id").description("Menu id")
-                )));
+                .andDo(document("{class-name}/{method-name}",
+                        pathParameters(
+                                parameterWithName("restId").description("Restaurant id"),
+                                parameterWithName("id").description("Menu id")
+                        )));
 
         assertThrows(NotFoundException.class, () -> service.getWithMenuItems(REST1_ID, MENU1_ID));
     }
@@ -151,7 +152,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     @Test
     public void getForbidden() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL)
+        perform(get(REST_URL)
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isForbidden())
                 .andDo(document("{class-name}/{method-name}"));

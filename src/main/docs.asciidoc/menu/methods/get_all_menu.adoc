@@ -1,7 +1,7 @@
 
 include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/path-parameters.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/response-fields.adoc[]
 
 .{cl-examples}
@@ -15,5 +15,5 @@ include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/
 
 .HTTP Response
 include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/http-response.adoc[]
-
+=====
 

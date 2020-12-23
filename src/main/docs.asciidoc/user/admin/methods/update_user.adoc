@@ -10,7 +10,7 @@ include::{snippets}/admin-controller-test/update/curl-request.adoc[]
 
 .HTTP Request
 include::{snippets}/admin-controller-test/update/http-request.adoc[]
-.Success HTTP Response
+.HTTP Response
 include::{snippets}/admin-controller-test/update/http-response.adoc[]
 =====
 

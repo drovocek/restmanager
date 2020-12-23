@@ -18,7 +18,8 @@ public class RestaurantUtil {
                 rest.id(),
                 rest.getName(),
                 rest.getAddress(),
-                rest.getPhone()
+                rest.getPhone(),
+                rest.isEnabled()
         );
     }
 

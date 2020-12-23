@@ -14,5 +14,5 @@ include::{snippets}/admin-menu-controller-test/update-with-menu-items/curl-reque
 include::{snippets}/admin-menu-controller-test/update-with-menu-items/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/admin-menu-controller-test/update-with-menu-items/http-response.adoc[]
-
+=====
 

@@ -1,5 +1,5 @@
 
-.Success response body parameters
+.Response fields
 include::{snippets}/admin-controller-test/get-all/response-fields.adoc[]
 
 .{cl-examples}

@@ -9,6 +9,6 @@ include::{snippets}/profile-controller-test/delete-good/curl-request.adoc[]
 include::{snippets}/profile-controller-test/delete-good/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/profile-controller-test/delete-good/http-response.adoc[]
-
+=====
 
 

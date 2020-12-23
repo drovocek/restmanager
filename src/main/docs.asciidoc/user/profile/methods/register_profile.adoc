@@ -2,7 +2,7 @@
 .Request fields
 include::{snippets}/profile-controller-test/register/request-fields.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/profile-controller-test/register/response-fields.adoc[]
 
 .{cl-examples}
@@ -15,5 +15,5 @@ include::{snippets}/profile-controller-test/register/curl-request.adoc[]
 include::{snippets}/profile-controller-test/register/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/profile-controller-test/register/http-response.adoc[]
-
+=====
 

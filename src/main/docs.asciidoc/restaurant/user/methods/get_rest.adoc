@@ -1,7 +1,7 @@
 
 include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/path-parameters.adoc[]
 
-.Success response body parameters
+.Response fields
 include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/response-fields.adoc[]
 
 .{cl-examples}
@@ -14,5 +14,10 @@ include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/curl-r
 include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/http-response.adoc[]
+Error HTTP Responses
+
+.Get not found
+include::{snippets}/user-restaurant-controller-test/get-not-found/http-response.adoc[]
+=====
 
 

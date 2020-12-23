@@ -14,6 +14,7 @@ include::{snippets}/admin-controller-test/enable/curl-request.adoc[]
 include::{snippets}/admin-controller-test/enable/http-request.adoc[]
 .Success HTTP Response
 include::{snippets}/admin-controller-test/enable/http-response.adoc[]
+
 Error HTTP Responses
 
 .Enable not found

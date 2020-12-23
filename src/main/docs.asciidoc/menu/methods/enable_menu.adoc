@@ -18,5 +18,5 @@ Error HTTP Responses
 
 .Enable not found
 include::{snippets}/admin-menu-controller-test/enable-not-found/http-response.adoc[]
-
+=====
 

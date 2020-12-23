@@ -1,7 +1,5 @@
 
-include::{snippets}/user-restaurant-controller-test/get-all-enabled-with-day-enabled-menu/path-parameters.adoc[]
-
-.Success response body parameters
+.Response fields
 include::{snippets}/user-restaurant-controller-test/get-all-enabled-with-day-enabled-menu/response-fields.adoc[]
 
 .{cl-examples}
@@ -15,5 +13,5 @@ include::{snippets}/user-restaurant-controller-test/get-all-enabled-with-day-ena
 
 .HTTP Response
 include::{snippets}/user-restaurant-controller-test/get-all-enabled-with-day-enabled-menu/http-response.adoc[]
-
+=====
 
