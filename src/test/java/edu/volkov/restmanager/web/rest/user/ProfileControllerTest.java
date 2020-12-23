@@ -3,8 +3,10 @@ package edu.volkov.restmanager.web.rest.user;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
 import edu.volkov.restmanager.to.UserTo;
+import edu.volkov.restmanager.util.exception.ErrorType;
 import edu.volkov.restmanager.util.model.UserUtil;
 import edu.volkov.restmanager.web.AbstractControllerTest;
+import edu.volkov.restmanager.web.ExceptionInfoHandler;
 import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
@@ -79,6 +84,17 @@ public class ProfileControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void registerInvalid() throws Exception {
+        UserTo newTo = new UserTo(null, null, null, null);
+        perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
     public void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
 
@@ -91,6 +107,32 @@ public class ProfileControllerTest extends AbstractControllerTest {
                 .andDo(getRequestParamDocForOneUser());
 
         USER_MATCHER.assertMatch(userService.get(USER1_ID), UserUtil.updateFromTo(new User(user1), updatedTo));
+    }
+
+    @Test
+    public void updateInvalid() throws Exception {
+        UserTo updatedTo = new UserTo(null, null, "password", null);
+        perform(MockMvcRequestBuilders.put(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user1))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    public void updateDuplicate() throws Exception {
+        UserTo updatedTo = new UserTo(null, "newName", "admin@gmail.com", "newPassword");
+
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user1))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
     }
 
     private RestDocumentationResultHandler getResponseParamDocForOneUser() {

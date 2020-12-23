@@ -49,6 +49,10 @@
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
 
+    <bean class="org.springframework.context.support.MessageSourceAccessor">
+        <constructor-arg ref="messageSource"/>
+    </bean>
+
     <!--    https://stackoverflow.com/a/23615478/548473-->
     <bean id="defaultValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 </beans>

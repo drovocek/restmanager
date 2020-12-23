@@ -218,15 +218,6 @@ public class AdminControllerTest extends AbstractControllerTest {
                 ));
     }
 
-    private RestDocumentationResultHandler getErrorResponseParamDoc() {
-        return document("{class-name}/{method-name}",
-                responseFields(
-                        fieldWithPath("url").description("Request url"),
-                        fieldWithPath("type").description("Error type"),
-                        fieldWithPath("detail").description("Error details")
-                ));
-    }
-
     private RestDocumentationResultHandler getRequestParamDocForOneUpdatedUser() {
 
         ConstraintDescriptions constraintDescUserTo = new ConstraintDescriptions(User.class);
@@ -279,6 +270,16 @@ public class AdminControllerTest extends AbstractControllerTest {
                         fieldWithPath("[].registered").description("User registration date/time"),
                         fieldWithPath("[].enabled").description("User activity marker"),
                         fieldWithPath("[].roles.[]").description("User roles")
+                ));
+    }
+
+    private RestDocumentationResultHandler getErrorResponseParamDoc() {
+        return document("{class-name}/{method-name}",
+                responseFields(
+                        fieldWithPath("url").description("Request url"),
+                        fieldWithPath("type").description("Error type"),
+                        fieldWithPath("typeMessage").description("Error type"),
+                        fieldWithPath("details").description("Error details")
                 ));
     }
 }
