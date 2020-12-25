@@ -22,6 +22,7 @@ REST API
 
 [pdf](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.pdf)
 
+
 ## Task
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
 
