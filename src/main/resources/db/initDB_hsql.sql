@@ -42,7 +42,7 @@ CREATE TABLE vote
     user_id       INTEGER            NOT NULL,
     restaurant_id INTEGER            NOT NULL,
     vote_date     DATE DEFAULT now() NOT NULL,
-    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)  ON DELETE CASCADE
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX votes_unique_idx ON vote (user_id, vote_date);
 
@@ -55,12 +55,13 @@ CREATE TABLE menu
     enabled       BOOLEAN DEFAULT FALSE NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX menu_unique_idx ON menu (restaurant_id, name, menu_date);
 
 CREATE TABLE menu_item
 (
-    id      INT IDENTITY          NOT NULL,
-    name    VARCHAR(255)          NOT NULL,
-    menu_id INTEGER               NOT NULL,
-    price   INTEGER               NOT NULL,
+    id      INT IDENTITY NOT NULL,
+    name    VARCHAR(255) NOT NULL,
+    menu_id INTEGER      NOT NULL,
+    price   INTEGER      NOT NULL,
     FOREIGN KEY (menu_id) REFERENCES menu (id) ON DELETE CASCADE
 );
