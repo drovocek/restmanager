@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Vote;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

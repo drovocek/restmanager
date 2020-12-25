@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Role;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.util.exception.NotFoundException;

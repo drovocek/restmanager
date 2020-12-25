@@ -5,6 +5,8 @@ import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.model.UserUtil;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
@@ -35,11 +37,13 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return prepareAndSave(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id) != 0, id);
     }
@@ -53,22 +57,26 @@ public class UserService implements UserDetailsService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
+    @Cacheable("users")
     public List<User> getAll() {
         return repository.findAll(SORT_NAME_EMAIL);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         repository.save(user);
     }
 
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public void update(UserTo userTo) {
         User user = get(userTo.id());
         UserUtil.updateFromTo(user, userTo);
     }
 
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public void enable(int id, boolean enabled) {
         User user = get(id);
         user.setEnabled(enabled);

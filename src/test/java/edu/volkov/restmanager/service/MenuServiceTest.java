@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;

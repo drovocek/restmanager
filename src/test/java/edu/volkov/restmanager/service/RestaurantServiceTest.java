@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.testdata.MenuTestData;
 import edu.volkov.restmanager.to.RestaurantTo;

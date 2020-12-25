@@ -1,4 +1,4 @@
-package edu.volkov.restmanager;
+package edu.volkov.restmanager.service;
 
 import edu.volkov.restmanager.TimingRules;
 import org.junit.ClassRule;
