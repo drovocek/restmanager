@@ -13,9 +13,9 @@ FROM restaurant;
 
 
 INSERT INTO users (id, name, email, password)
-VALUES (0, 'User1', 'user1@yandex.ru', 'password1'),
-       (1, 'User2', 'user2@yandex.ru', 'password2'),
-       (2, 'Admin', 'admin@gmail.com', 'admin');
+VALUES (0, 'User1', 'user1@yandex.ru', '{noop}password1'),
+       (1, 'User2', 'user2@yandex.ru', '{noop}password2'),
+       (2, 'Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('USER', 0),
