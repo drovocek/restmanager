@@ -1,6 +1,6 @@
 # https://docs.travis-ci.com/user/languages/java/
 language: java
-jdk: 1.8
+jdk: 1.8.0_231
 
 #https://dzone.com/articles/travis-ci-tutorial-java-projects
 cache:
@@ -9,17 +9,17 @@ cache:
 
 # https://docs.travis-ci.com/user/database-setup/#PostgreSQL
 before_script:
-  - psql -c 'create database restmanager' -U hsqldb
-  - psql -c 'create user "user"; grant all privileges on database restmanager to "user"' -U hsqldb
+  - psql -c 'create database restmanager' -U postgres
+  - psql -c 'create user "user"; grant all privileges on database restmanager to "user"' -U postgres
 
 # https://docs.travis-ci.com/user/customizing-the-build#Building-Specific-Branches
 branches:
   only:
-    - Cleaned
+    - master
 
 # https://stackoverflow.com/a/49852690/548473:
 services:
-  - hsqldb
+  - postgresql
 
 #https://docs.travis-ci.com/user/environment-variables#Default-Environment-Variables
 env:

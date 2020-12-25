@@ -304,7 +304,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 responseFields(
                         fieldWithPath("url").description("Request url"),
                         fieldWithPath("type").description("Error type"),
-                        fieldWithPath("typeMessage").description("Error type"),
+                        fieldWithPath("typeMessage").description("Error type message"),
                         fieldWithPath("details").description("Error details")
                 ));
     }

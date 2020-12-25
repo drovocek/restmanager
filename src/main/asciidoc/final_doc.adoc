@@ -11,7 +11,7 @@
 
 = Restaurant Manager API documentation
 Volkov Andrey(c) 2020
-Version 1.0, 17.12.2020
+Version 1.0, 25.12.2020
 :revnumber: v1.0
 :author: Volkov Andrey
 :email: progervolkov@gmail.com
@@ -22,7 +22,7 @@ Version 1.0, 17.12.2020
 :page-layout: docs
 :toc-title: Content
 :description: Restaurant Manager API documentation
-:stylesheet: asciidoctor-skins-gh-pages/css/gazette.css
+:stylesheet: gazette.css
 
 == Endpoints
 '''
