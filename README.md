@@ -18,9 +18,9 @@ REST API
 - Maven
 
 ## Documentation
-[html (in progress)](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/Cleaned/src/main/docs.asciidoc/final_doc.html)
+[html (in progress)](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.html)
 
-[pdf (in progress)](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/docs.asciidoc/final_doc.pdf)
+[pdf (in progress)](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.pdf)
 
 ## Task
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
