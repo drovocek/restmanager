@@ -8,6 +8,8 @@ import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.util.model.RestaurantUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,7 @@ public class RestaurantService {
         this.menuRepo = menuRepo;
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         log.info("\n create restaurant");
         checkNew(restaurant);
@@ -45,6 +48,7 @@ public class RestaurantService {
     }
 
     @Transactional
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(RestaurantTo restTo, int id) {
         assureIdConsistent(restTo, id);
         log.info("\n update restaurant: {}", restTo.id());
@@ -53,6 +57,7 @@ public class RestaurantService {
         RestaurantUtil.updateFromTo(updated, restTo);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         log.info("\n delete restaurant: {}", id);
         checkNotFoundWithId(restRepo.delete(id) != 0, id);
@@ -78,6 +83,7 @@ public class RestaurantService {
         return rest;
     }
 
+    @Cacheable("restaurants")
     @Transactional
     public List<Restaurant> getAllWithDayEnabledMenu() {
         log.info("\n getAllWithDayEnabledMenu restaurants");
@@ -96,6 +102,7 @@ public class RestaurantService {
     }
 
     @Transactional
+    @Cacheable("restaurants")
     public List<Restaurant> getAllEnabledWithDayEnabledMenu() {
         log.info("\n getAllEnabledWithDayEnabledMenu restaurants");
         return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), Restaurant::isEnabled);
@@ -110,6 +117,7 @@ public class RestaurantService {
     }
 
     @Transactional
+    @Cacheable("restaurants")
     public void enable(int id, boolean enabled) {
         Restaurant rest = getWithoutMenu(id);
         rest.setEnabled(enabled);

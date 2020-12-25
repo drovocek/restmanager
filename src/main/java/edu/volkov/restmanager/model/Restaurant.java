@@ -4,6 +4,8 @@ import edu.volkov.restmanager.View;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.util.CollectionUtils;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Setter
 @Getter
 @NoArgsConstructor
