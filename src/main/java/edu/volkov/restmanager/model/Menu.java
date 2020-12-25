@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(name = "menu_unique_idx", columnNames = {"restaurant_id", "name", "menu_date"})})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(name = "menu_unique_idx", columnNames = {"restaurant_id", "menu_date", "name"})})
 public class Menu extends AbstractNamedEntity {
 
     @Column(name = "menu_date", nullable = false, columnDefinition = "data")

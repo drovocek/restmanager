@@ -1,6 +1,7 @@
 package edu.volkov.restmanager.service;
 
 import com.sun.istack.Nullable;
+import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.repository.CrudMenuItemRepository;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -56,6 +58,7 @@ public class MenuService {
             return null;
         }
         menu.setRestaurant(restRepo.getOne(restId));
+        validate(menu);
         Menu createdMenu = menuRepo.save(menu);
 
         if (menu.getMenuItems() != null && !menu.getMenuItems().isEmpty()) {
@@ -73,7 +76,6 @@ public class MenuService {
     @CacheEvict(value = "menus", allEntries = true)
     public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
         log.info("\n update menu: {} from to: {} for rest: {}", id, menuTo, restId);
-        assureIdConsistent(menuTo, id);
 
         Menu updated = getWithMenuItems(restId, id);
         if (!updated.getMenuItems().isEmpty()) {
@@ -123,5 +125,9 @@ public class MenuService {
     public void enable(int restId, int id, boolean enabled) {
         Menu enabledMenu = getWithMenuItems(restId, id);
         enabledMenu.setEnabled(enabled);
+    }
+
+    private void validate(@Validated(View.Web.class) Menu menu){
+
     }
 }

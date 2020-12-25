@@ -50,7 +50,6 @@ public class RestaurantService {
     @Transactional
     @CacheEvict(value = "restaurants", allEntries = true)
     public void update(RestaurantTo restTo, int id) {
-        assureIdConsistent(restTo, id);
         log.info("\n update restaurant: {}", restTo.id());
         Assert.notNull(restTo, "restTo must not be null");
         Restaurant updated = getWithoutMenu(id);

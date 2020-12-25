@@ -15,7 +15,4 @@ public interface CrudMenuItemRepository extends JpaRepository<MenuItem, Integer>
     @Transactional
     @Query("DELETE FROM MenuItem mi WHERE mi.menu.id=:menuId")
     int deleteAllByMenuId(int menuId);
-
-    @Query("SELECT mi FROM MenuItem mi WHERE mi.menu.id=:menuId")
-    List<MenuItem> getAllByMenuId(int menuId);
 }

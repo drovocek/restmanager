@@ -55,7 +55,7 @@ CREATE TABLE menu
     enabled       BOOLEAN DEFAULT FALSE NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX menu_unique_idx ON menu (restaurant_id, name, menu_date);
+CREATE UNIQUE INDEX menu_unique_idx ON menu (restaurant_id, menu_date, name);
 
 CREATE TABLE menu_item
 (
