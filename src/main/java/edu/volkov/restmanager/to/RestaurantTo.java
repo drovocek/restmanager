@@ -3,12 +3,15 @@ package edu.volkov.restmanager.to;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+
+import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 
 @Getter
 @Setter
@@ -19,15 +22,18 @@ public class RestaurantTo extends BaseTo implements Serializable {
 
     @NotBlank
     @Size(min = 2, max = 100)
+    @SafeHtml(whitelistType = NONE)
     private String name;
 
     @NotBlank
     @Size(min = 5, max = 200)
+    @SafeHtml(whitelistType = NONE)
     private String address;
 
     @Pattern(regexp = "^(\\+\\d{1}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
             message = "Must be in format: +7 (777) 777-7777")
     @Size(max = 20)
+    @SafeHtml(whitelistType = NONE)
     private String phone;
 
     @NotNull
