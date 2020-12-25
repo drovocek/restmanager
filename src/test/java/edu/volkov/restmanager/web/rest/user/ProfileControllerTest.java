@@ -49,8 +49,7 @@ public class ProfileControllerTest extends AbstractControllerTest {
     public void getUnAuth() throws Exception {
         perform(get(REST_URL))
                 .andExpect(status().isUnauthorized())
-                .andDo(document("{class-name}/{method-name}"))
-                .andDo(getErrorResponseParamDoc());
+                .andDo(document("{class-name}/{method-name}"));
     }
 
     @Test

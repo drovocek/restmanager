@@ -1,9 +1,12 @@
 package edu.volkov.restmanager.web.rest.user;
 
+import edu.volkov.restmanager.model.Role;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.service.UserService;
+import edu.volkov.restmanager.util.exception.ErrorType;
 import edu.volkov.restmanager.util.exception.NotFoundException;
 import edu.volkov.restmanager.web.AbstractControllerTest;
+import edu.volkov.restmanager.web.ExceptionInfoHandler;
 import edu.volkov.restmanager.web.json.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static edu.volkov.restmanager.TestUtil.readFromJson;
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
@@ -204,6 +209,78 @@ public class AdminControllerTest extends AbstractControllerTest {
                 requestParameters(
                         parameterWithName("enabled").description("User activity marker"))
         ));
+    }
+
+    @Test
+    public void createInvalid() throws Exception {
+        User invalid = new User(null, null, "", "newPass", Role.USER, Role.ADMIN);
+
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalid, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    public void updateInvalid() throws Exception {
+        User invalid = new User(user1);
+        invalid.setName("");
+
+        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalid, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    public void updateHtmlUnsafe() throws Exception {
+        User updated = new User(user1);
+        updated.setName("<script>alert(123)</script>");
+
+        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(updated, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    public void updateDuplicate() throws Exception {
+        User updated = new User(user1);
+        updated.setEmail("admin@gmail.com");
+
+        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(updated, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    public void createDuplicate() throws Exception {
+        User expected = new User(null, "New", "user1@yandex.ru", "newPass", Role.USER, Role.ADMIN);
+
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(expected, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
     }
 
     private RestDocumentationResultHandler getResponseParamDocForOneUser() {

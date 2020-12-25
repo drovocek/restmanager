@@ -1,9 +1,11 @@
 package edu.volkov.restmanager.model;
 
+import edu.volkov.restmanager.View;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -16,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -26,6 +30,7 @@ public class Restaurant extends AbstractNamedEntity {
     @NotBlank
     @Size(min = 5, max = 200)
     @Column(name = "address", nullable = false)
+    @SafeHtml(groups = {View.Web.class}, whitelistType = NONE)
     private String address;
 
     @NotBlank
@@ -34,6 +39,7 @@ public class Restaurant extends AbstractNamedEntity {
             message = "must be in format: +7 (777) 777-7777")
     @Size(max = 20)
     @Column(name = "phone", nullable = false)
+    @SafeHtml(groups = {View.Web.class}, whitelistType = NONE)
     private String phone;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
