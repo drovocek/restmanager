@@ -1,6 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0050bd17f07a4f988344e36131af43fe)](https://app.codacy.com/gh/drovocek/restmanager?utm_source=github.com&utm_medium=referral&utm_content=drovocek/restmanager&utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/drovocek/restmanager.svg?branch=Cleaned)](https://travis-ci.org/github/drovocek/restmanager)
-
+[![Build Status](https://travis-ci.com/drovocek/restmanager.svg?branch=Cleaned)](https://travis-ci.com/drovocek/restmanager)
 # My diploma project
 
 ## Completion date 
