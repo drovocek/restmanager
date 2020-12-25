@@ -64,3 +64,12 @@ include::{snippets}/admin-menu-controller-test/delete-not-found/response-fields.
 * slf4j, junit4, Assertj, Hamcrest
 * Jackson, Lombok
 * Maven
+
+== Other
+
+=== Application provides
+* data caching
+* protection from cross-site scripting (XSS) attacks
+* validation for all incoming data fields
+* coding passwords
+* confidence in the future (deprecated)
