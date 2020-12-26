@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>edu.volkov</groupId>
-    <artifactId>restaurant</artifactId>
+    <artifactId>restmanager</artifactId>
     <packaging>war</packaging>
 
     <version>1.0-SNAPSHOT</version>
