@@ -88,13 +88,6 @@
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>1.5.8</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jruby</groupId>
-                        <artifactId>jruby-complete</artifactId>
-                        <version>1.7.21</version>
-                    </dependency>
-                </dependencies>
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/asciidoc/</sourceDirectory>
                     <sourceDocumentName>index.adoc</sourceDocumentName>
