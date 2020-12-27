@@ -30,6 +30,7 @@
 
         <!--DB-->
         <postgresql.version>42.2.17</postgresql.version>
+
         <!--    Tests  -->
         <junit.version>4.13.1</junit.version>
         <assertj.version>3.17.2</assertj.version>
