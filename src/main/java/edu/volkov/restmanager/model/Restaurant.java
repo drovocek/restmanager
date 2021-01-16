@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 
@@ -74,13 +73,13 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public List<Menu> getMenus() {
-        return menus.stream().collect(Collectors.toList());
+        return menus;
     }
 
     public void setMenus(Collection<Menu> menus) {
         this.menus = CollectionUtils.isEmpty(menus) ?
                 Collections.emptyList() :
-                menus.stream().collect(Collectors.toList());
+                new ArrayList<>(menus);
     }
 
     @Override

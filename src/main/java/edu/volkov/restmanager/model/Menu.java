@@ -13,10 +13,10 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Getter
@@ -67,12 +67,12 @@ public class Menu extends AbstractNamedEntity {
     }
 
     public List<MenuItem> getMenuItems() {
-        return menuItems.stream().collect(Collectors.toList());
+        return menuItems;
     }
 
     public void setMenus(Collection<MenuItem> menuItems) {
         this.menuItems = CollectionUtils.isEmpty(menuItems) ?
                 Collections.emptyList() :
-                menuItems.stream().collect(Collectors.toList());
+                new ArrayList<>(menuItems);
     }
 }

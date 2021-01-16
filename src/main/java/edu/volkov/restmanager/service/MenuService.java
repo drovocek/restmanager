@@ -35,7 +35,7 @@ public class MenuService {
 
     private final CrudRestaurantRepository restRepo;
     private final CrudMenuRepository menuRepo;
-    private final CrudMenuItemRepository menuItmRepo;
+    private final CrudMenuItemRepository menuItemRepo;
 
     public MenuService(
             CrudRestaurantRepository restRepo,
@@ -44,7 +44,7 @@ public class MenuService {
     ) {
         this.restRepo = restRepo;
         this.menuRepo = menuRepo;
-        this.menuItmRepo = menuItmRepo;
+        this.menuItemRepo = menuItmRepo;
     }
 
     @Transactional
@@ -66,7 +66,7 @@ public class MenuService {
                     .peek(mi -> mi.setMenu(createdMenu))
                     .collect(Collectors.toList());
 
-            menuItmRepo.saveAll(mis);
+            menuItemRepo.saveAll(mis);
         }
 
         return createdMenu;
@@ -79,11 +79,11 @@ public class MenuService {
 
         Menu updated = getWithMenuItems(restId, id);
         if (!updated.getMenuItems().isEmpty()) {
-            checkNotFoundWithId(menuItmRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
+            checkNotFoundWithId(menuItemRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
         }
         MenuUtil.updateFromTo(updated, menuTo);
 
-        menuItmRepo.saveAll(createNewsFromTos(updated, menuTo.getMenuItemTos()));
+        menuItemRepo.saveAll(createNewsFromTos(updated, menuTo.getMenuItemTos()));
     }
 
     @CacheEvict(value = "menus", allEntries = true)
