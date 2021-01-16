@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 import static edu.volkov.restmanager.util.ValidationUtil.assureIdConsistent;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,6 +40,7 @@ public class AdminRestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Validated(View.Web.class) @RequestBody Restaurant restaurant) {
+        checkNew(restaurant);
         Restaurant created = restService.create(restaurant);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

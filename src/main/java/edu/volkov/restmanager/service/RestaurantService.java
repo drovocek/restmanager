@@ -42,7 +42,6 @@ public class RestaurantService {
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         log.info("create restaurant");
-        checkNew(restaurant);
         Assert.notNull(restaurant, "restaurant must not be null");
         return restRepo.save(restaurant);
     }

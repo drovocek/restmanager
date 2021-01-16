@@ -52,6 +52,7 @@ public abstract class AbstractUserController {
 
     public User create(UserTo userTo) {
         log.info("create from to {}", userTo);
+        checkNew(userTo);
         return create(UserUtil.createNewFromTo(userTo));
     }
 

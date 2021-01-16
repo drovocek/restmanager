@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static edu.volkov.restmanager.util.ValidationUtil.assureIdConsistent;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +71,7 @@ public class AdminMenuController {
 
     @PostMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithMenuItems(@PathVariable int restId,  @RequestBody Menu menu) {
+        checkNew(menu);
         Menu created = service.createWithMenuItems(restId, menu);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

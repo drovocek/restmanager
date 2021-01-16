@@ -51,7 +51,6 @@ public class MenuService {
     @CacheEvict(value = "menus", allEntries = true)
     public Menu createWithMenuItems(int restId, Menu menu) {
         log.info("create menu {} for restaurant: {}", menu, restId);
-        checkNew(menu);
         Assert.notNull(menu, "menu must not be null");
 
         if (!menu.isNew() && getWithMenuItems(menu.getId(), restId) == null) {
