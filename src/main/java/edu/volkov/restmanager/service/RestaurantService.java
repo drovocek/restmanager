@@ -101,7 +101,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    @Cacheable("restaurants")
+    @Cacheable("restaurantsEnabled")
     public List<Restaurant> getAllEnabledWithDayEnabledMenu() {
         log.info("getAllEnabledWithDayEnabledMenu restaurants");
         return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), Restaurant::isEnabled);
