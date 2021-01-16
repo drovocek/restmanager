@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.model;
 
+import edu.volkov.restmanager.HasIdAndName;
 import edu.volkov.restmanager.View;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 @NoArgsConstructor
 @Entity
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(name = "restaurants_unique_name_idx", columnNames = "name")})
-public class Restaurant extends AbstractNamedEntity {
+public class Restaurant extends AbstractNamedEntity implements HasIdAndName {
 
     @NotBlank
     @Size(min = 5, max = 200)

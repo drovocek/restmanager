@@ -5,7 +5,6 @@ import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.to.RestaurantTo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,11 +30,14 @@ public class AdminRestaurantController {
 
     private final RestaurantService restService;
 
+    private final UniqueRestNameValidator nameValidator;
+
     @Qualifier("defaultValidator")
     private Validator validator;
 
-    public AdminRestaurantController(RestaurantService restService) {
+    public AdminRestaurantController(RestaurantService restService, UniqueRestNameValidator nameValidator) {
         this.restService = restService;
+        this.nameValidator = nameValidator;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +89,7 @@ public class AdminRestaurantController {
     protected void validateBeforeUpdate(HasId rest, int id) throws BindException {
         assureIdConsistent(rest, id);
         DataBinder binder = new DataBinder(rest);
-        binder.addValidators(validator);
+        binder.addValidators(validator, nameValidator);
         binder.validate(View.Web.class);
         if (binder.getBindingResult().hasErrors()) {
             throw new BindException(binder.getBindingResult());

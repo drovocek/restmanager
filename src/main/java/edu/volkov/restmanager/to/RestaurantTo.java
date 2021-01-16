@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.to;
 
+import edu.volkov.restmanager.HasIdAndName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RestaurantTo extends BaseTo implements Serializable {
+public class RestaurantTo extends BaseTo implements Serializable, HasIdAndName {
 
     private static final long serialVersionUID = 1L;
 
