@@ -40,7 +40,7 @@ public class VoteService {
 
     @Transactional
     public void vote(int userId, int restId) {
-        log.info("\n vote user:{} by restaurant:{}", userId, restId);
+        log.info("vote user:{} by restaurant:{}", userId, restId);
         LocalDate voteDate = LocalDate.now();
         boolean inLimit = LocalTime.now().isBefore(voteTimeLimit);
         Vote lastVote = get(userId, voteDate);
@@ -55,7 +55,7 @@ public class VoteService {
     }
 
     public void delete(int id) {
-        log.info("\n delete vote {}", id);
+        log.info("delete vote {}", id);
         checkNotFoundWithId(voteRepo.delete(id) != 0, id);
     }
 
@@ -64,12 +64,12 @@ public class VoteService {
     }
 
     private void create(Vote created) {
-        log.info("\n create vote");
+        log.info("create vote");
         checkNotFound(save(created), "vote don't save");
     }
 
     private void updateRestId(Vote updated, int restId) {
-        log.info("\n updateRestId vote {}", updated.getId());
+        log.info("updateRestId vote {}", updated.getId());
         updated.setRestaurant(restRepo.getOne(restId));
     }
 

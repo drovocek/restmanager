@@ -41,7 +41,7 @@ public class RestaurantService {
 
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
-        log.info("\n create restaurant");
+        log.info("create restaurant");
         checkNew(restaurant);
         Assert.notNull(restaurant, "restaurant must not be null");
         return restRepo.save(restaurant);
@@ -50,7 +50,7 @@ public class RestaurantService {
     @Transactional
     @CacheEvict(value = "restaurants", allEntries = true)
     public void update(RestaurantTo restTo, int id) {
-        log.info("\n update restaurant: {}", restTo.id());
+        log.info("update restaurant: {}", restTo.id());
         Assert.notNull(restTo, "restTo must not be null");
         Restaurant updated = getWithoutMenu(id);
         RestaurantUtil.updateFromTo(updated, restTo);
@@ -58,18 +58,18 @@ public class RestaurantService {
 
     @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
-        log.info("\n delete restaurant: {}", id);
+        log.info("delete restaurant: {}", id);
         checkNotFoundWithId(restRepo.delete(id) != 0, id);
     }
 
     public Restaurant getWithoutMenu(int id) {
-        log.info("\n getWithoutMenu restaurant: {}", id);
+        log.info("getWithoutMenu restaurant: {}", id);
         return checkNotFound(restRepo.findById(id).orElse(null), "restaurant by id: " + id + "dos not exist");
     }
 
     @Transactional
     public Restaurant getWithEnabledMenu(int id) {
-        log.info("\n getWithEnabledMenu restaurant: {}", id);
+        log.info("getWithEnabledMenu restaurant: {}", id);
         LocalDate toDay = (testDate == null) ? LocalDate.now() : testDate;
         Restaurant rest = getWithoutMenu(id);
 
@@ -85,7 +85,7 @@ public class RestaurantService {
     @Cacheable("restaurants")
     @Transactional
     public List<Restaurant> getAllWithDayEnabledMenu() {
-        log.info("\n getAllWithDayEnabledMenu restaurants");
+        log.info("getAllWithDayEnabledMenu restaurants");
         LocalDate toDay = (testDate == null) ? LocalDate.now() : testDate;
         List<Restaurant> allRests = restRepo.findAll(sortByName);
 
@@ -103,13 +103,13 @@ public class RestaurantService {
     @Transactional
     @Cacheable("restaurants")
     public List<Restaurant> getAllEnabledWithDayEnabledMenu() {
-        log.info("\n getAllEnabledWithDayEnabledMenu restaurants");
+        log.info("getAllEnabledWithDayEnabledMenu restaurants");
         return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), Restaurant::isEnabled);
     }
 
     @Transactional
     public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
-        log.info("\n getFilteredEnabledWithDayEnabledMenu restaurants by name {} and address {}", name, address);
+        log.info("getFilteredEnabledWithDayEnabledMenu restaurants by name {} and address {}", name, address);
         Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address)
                 .and(restaurant -> enabled == null || enabled == restaurant.isEnabled());
         return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), filter);

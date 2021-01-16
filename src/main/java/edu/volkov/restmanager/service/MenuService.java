@@ -50,7 +50,7 @@ public class MenuService {
     @Transactional
     @CacheEvict(value = "menus", allEntries = true)
     public Menu createWithMenuItems(int restId, Menu menu) {
-        log.info("\n create menu {} for restaurant: {}", menu, restId);
+        log.info("create menu {} for restaurant: {}", menu, restId);
         checkNew(menu);
         Assert.notNull(menu, "menu must not be null");
 
@@ -75,7 +75,7 @@ public class MenuService {
     @Transactional
     @CacheEvict(value = "menus", allEntries = true)
     public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
-        log.info("\n update menu: {} from to: {} for rest: {}", id, menuTo, restId);
+        log.info("update menu: {} from to: {} for rest: {}", id, menuTo, restId);
 
         Menu updated = getWithMenuItems(restId, id);
         if (!updated.getMenuItems().isEmpty()) {
@@ -88,12 +88,12 @@ public class MenuService {
 
     @CacheEvict(value = "menus", allEntries = true)
     public void delete(int restId, int id) {
-        log.info("\n delete menu: {} for rest: {}", id, restId);
+        log.info("delete menu: {} for rest: {}", id, restId);
         checkNotFoundWithId(menuRepo.delete(id, restId) != 0, restId);
     }
 
     public Menu getWithMenuItems(int restId, int id) {
-        log.info("\n getWithMenuItems menu: {} for rest: {}", id, restId);
+        log.info("getWithMenuItems menu: {} for rest: {}", id, restId);
         return checkNotFound(
                 menuRepo.getWithMenuItems(restId, id),
                 "menu by id: " + id + " for restId: " + restId + " dos not exist"
@@ -102,7 +102,7 @@ public class MenuService {
 
     @Cacheable("menus")
     public List<Menu> getAllForRestWithMenuItems(int restId) {
-        log.info("\n getAllForRestWithMenuItems menus");
+        log.info("getAllForRestWithMenuItems menus");
         return menuRepo.getAllForRestWithMenuItems(restId);
     }
 
@@ -112,7 +112,7 @@ public class MenuService {
             Boolean enabled
     ) {
         log.info(
-                "\n getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {},endDate: {},enabled: {}",
+                "getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {},endDate: {},enabled: {}",
                 restId, startDate, endDate, enabled
         );
         List<Menu> menus = menuRepo.getBetweenForRest(restId, minIfNull(startDate), maxIfNull(endDate));

@@ -41,50 +41,50 @@ public abstract class AbstractUserController {
     }
 
     public List<User> getAll() {
-        log.info("\n getAll");
+        log.info("getAll");
         return service.getAll();
     }
 
     public User get(int id) {
-        log.info("\n get {}", id);
+        log.info("get {}", id);
         return service.get(id);
     }
 
     public User create(UserTo userTo) {
-        log.info("\n create from to {}", userTo);
+        log.info("create from to {}", userTo);
         return create(UserUtil.createNewFromTo(userTo));
     }
 
     public User create(User user) {
-        log.info("\n create {}", user);
+        log.info("create {}", user);
         checkNew(user);
         return service.create(user);
     }
 
     public void delete(int id) {
-        log.info("\n delete {}", id);
+        log.info("delete {}", id);
         service.delete(id);
     }
 
     public void update(User user, int id) throws BindException {
-        log.info("\n update {} with id={}", user, id);
+        log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
     }
 
     public void update(UserTo userTo, int id) {
-        log.info("\n update {} with id={}", userTo, id);
+        log.info("update {} with id={}", userTo, id);
         assureIdConsistent(userTo, id);
         service.update(userTo);
     }
 
     public User getByMail(String email) {
-        log.info("\n getByEmail {}", email);
+        log.info("getByEmail {}", email);
         return service.getByEmail(email);
     }
 
     public void enable(int id, boolean enabled) {
-        log.info(enabled ? "\n enable {}" : "disable {}", id);
+        log.info(enabled ? "enable {}" : "disable {}", id);
         service.enable(id, enabled);
     }
 
