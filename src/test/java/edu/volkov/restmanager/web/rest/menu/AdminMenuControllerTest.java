@@ -245,7 +245,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
-                        Arrays.asList(menu3WithItems, menu2WithItems)
+                        Arrays.asList(menu3WithItems, menu1WithItems)
                 ))
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
@@ -266,7 +266,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
-                        Arrays.asList(menu1WithItems, menu2WithItems)
+                        Collections.singletonList(menu1WithItems)
                 ))
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(

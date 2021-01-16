@@ -38,12 +38,12 @@ VALUES (0, 0, 0, '2020-01-27'),
        (7, 1, 1, '2020-01-29');
 
 INSERT INTO menu (id, name, restaurant_id, menu_date, enabled)
-VALUES (0, 'menu1', 0, '2020-01-27', false),
-       (1, 'menu2', 0, '2020-01-27', true),
-       (2, 'menu3', 0, '2020-01-28', true),
+VALUES (0, 'menu1', 0, '2020-01-27', true),
+       (1, 'menu2', 0, '2020-01-28', false),
+       (2, 'menu3', 0, '2020-01-29', true),
        (3, 'menu4', 1, '2020-01-27', true),
        (4, 'menu5', 1, '2020-01-28', false),
-       (5, 'menu6', 1, '2020-01-28', true);
+       (5, 'menu6', 1, '2020-01-29', true);
 
 INSERT INTO menu_item (id, name, menu_id, price)
 VALUES (0, 'menItm1', 0, 100),

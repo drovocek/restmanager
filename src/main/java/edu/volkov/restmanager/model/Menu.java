@@ -23,7 +23,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(name = "menu_unique_idx", columnNames = {"restaurant_id", "menu_date", "name"})})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(name = "menu_unique_idx", columnNames = {"restaurant_id", "menu_date"})})
 public class Menu extends AbstractNamedEntity {
 
     @Column(name = "menu_date", nullable = false, columnDefinition = "data")

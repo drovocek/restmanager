@@ -27,13 +27,14 @@ public class MenuTestData {
     public static final int MENU_NOT_FOUND_ID = 15;
     public static final LocalDate TODAY = LocalDate.of(2020, 1, 27);
     public static final LocalDate TOMORROW = TODAY.plus(1, ChronoUnit.DAYS);
+    public static final LocalDate DAY_ABOUT = TOMORROW.plus(1, ChronoUnit.DAYS);
 
-    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", TODAY, false);
-    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", TODAY, true);
-    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", TOMORROW, true);
+    public static final Menu menu1 = new Menu(MENU1_ID, "menu1", TODAY, true);
+    public static final Menu menu2 = new Menu(MENU1_ID + 1, "menu2", TOMORROW, false);
+    public static final Menu menu3 = new Menu(MENU1_ID + 2, "menu3", DAY_ABOUT, true);
     public static final Menu menu4 = new Menu(MENU1_ID + 3, "menu4", TODAY, true);
     public static final Menu menu5 = new Menu(MENU1_ID + 4, "menu5", TOMORROW, false);
-    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", TOMORROW, true);
+    public static final Menu menu6 = new Menu(MENU1_ID + 5, "menu6", DAY_ABOUT, true);
 
     public static final Menu menu1WithItems = new Menu(menu1);
     public static final Menu menu2WithItems = new Menu(menu2);
@@ -51,7 +52,11 @@ public class MenuTestData {
         menu6WithItems.setMenuItems(menu6MenuItems);
     }
 
-    public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems, menu1WithItems, menu2WithItems);
+    public static final List<Menu> rest1AllMenusWithItems = Arrays.asList(menu3WithItems, menu2WithItems, menu1WithItems);
+    public static final List<Menu> rest1MenusWithItems = orderByDateDesc(Arrays.asList(menu1WithItems, menu2WithItems, menu3WithItems));
+    public static final List<Menu> rest2MenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems, menu5WithItems, menu6WithItems));
+    public static final List<Menu> rest1DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu1WithItems));
+    public static final List<Menu> rest2DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems));
     public static final List<Menu> allMenusWithItems =
             Arrays.asList(menu6WithItems, menu5WithItems, menu4WithItems, menu3WithItems, menu1WithItems, menu2WithItems);
     public static final List<Menu> allMenus = orderByDateDesc(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6));
@@ -61,14 +66,11 @@ public class MenuTestData {
     public static final List<Menu> rest1DayEnabledMenus = orderByDateDesc(Arrays.asList(menu2));
     public static final List<Menu> rest2Menus = orderByDateDesc(Arrays.asList(menu4, menu5, menu6));
     public static final List<Menu> rest2EnabledMenus = orderByDateDesc(Arrays.asList(menu4, menu6));
-    public static final List<Menu> rest1MenusWithItems = orderByDateDesc(Arrays.asList(menu1WithItems, menu2WithItems, menu3WithItems));
-    public static final List<Menu> rest2MenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems, menu5WithItems, menu6WithItems));
-    public static final List<Menu> rest1DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu2WithItems));
-    public static final List<Menu> rest2DayEnabledMenusWithItems = orderByDateDesc(Arrays.asList(menu4WithItems));
+
 
 
     public static Menu getNew() {
-        return new Menu(null, "newMenu", TOMORROW, false);
+        return new Menu(null, "newMenu", DAY_ABOUT.plus(1, ChronoUnit.DAYS), false);
     }
 
     public static Menu getNewWithMenuItems() {
@@ -79,7 +81,6 @@ public class MenuTestData {
 
     public static Menu getUpdated() {
         Menu updated = new Menu(menu1);
-        updated.setMenuDate(TOMORROW);
         updated.setName("updatedName");
         updated.setEnabled(false);
         return updated;

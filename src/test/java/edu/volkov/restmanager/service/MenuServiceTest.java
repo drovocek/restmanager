@@ -88,13 +88,13 @@ public class MenuServiceTest extends AbstractTest {
     @Test
     public void getFilteredByDateForRestWithMenuItems() {
         List<Menu> menus = service.getFilteredForRestWithMenuItems(REST1_ID, TODAY, TODAY, null);
-        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu1WithItems, menu2WithItems);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu1WithItems);
     }
 
     @Test
     public void getFilteredByEnabledForRestWithMenuItems() {
         List<Menu> menus = service.getFilteredForRestWithMenuItems(REST1_ID, null, null, true);
-        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu3WithItems, menu2WithItems);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu3WithItems, menu1WithItems);
     }
 
     @Test
