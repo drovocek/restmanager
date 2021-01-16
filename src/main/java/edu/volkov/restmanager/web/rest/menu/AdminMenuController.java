@@ -1,7 +1,6 @@
 package edu.volkov.restmanager.web.rest.menu;
 
 import com.sun.istack.Nullable;
-import edu.volkov.restmanager.HasId;
 import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.service.MenuService;
@@ -32,11 +31,14 @@ public class AdminMenuController {
 
     private final MenuService service;
 
+    private final UniqueMenuInOneDateForRestValidator menuInOneDateForRestValidator;
+
     @Qualifier("defaultValidator")
     private Validator validator;
 
-    public AdminMenuController(MenuService service) {
+    public AdminMenuController(MenuService service, UniqueMenuInOneDateForRestValidator menuInOneDateForRestValidator) {
         this.service = service;
+        this.menuInOneDateForRestValidator = menuInOneDateForRestValidator;
     }
 
     @GetMapping("/{restId}")
@@ -70,7 +72,7 @@ public class AdminMenuController {
     }
 
     @PostMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithMenuItems(@PathVariable int restId,  @RequestBody Menu menu) {
+    public ResponseEntity<Menu> createWithMenuItems(@PathVariable int restId, @Validated(View.Web.class) @RequestBody Menu menu) {
         checkNew(menu);
         Menu created = service.createWithMenuItems(restId, menu);
 
@@ -88,6 +90,7 @@ public class AdminMenuController {
             @PathVariable int id,
             @RequestBody MenuTo menuTo
     ) throws BindException {
+        menuTo.setRestId(restId);
         validateBeforeUpdate(menuTo, id);
         service.updateWithMenuItems(restId, id, menuTo);
     }
@@ -98,10 +101,10 @@ public class AdminMenuController {
         service.delete(restId, id);
     }
 
-    protected void validateBeforeUpdate(HasId menu, int id) throws BindException {
-        assureIdConsistent(menu, id);
-        DataBinder binder = new DataBinder(menu);
-        binder.addValidators(validator);
+    protected void validateBeforeUpdate(MenuTo menuTo, int id) throws BindException {
+        assureIdConsistent(menuTo, id);
+        DataBinder binder = new DataBinder(menuTo);
+        binder.addValidators(validator, menuInOneDateForRestValidator);
         binder.validate(View.Web.class);
         if (binder.getBindingResult().hasErrors()) {
             throw new BindException(binder.getBindingResult());

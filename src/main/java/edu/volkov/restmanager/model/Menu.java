@@ -1,6 +1,7 @@
 package edu.volkov.restmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.volkov.restmanager.View;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +37,7 @@ public class Menu extends AbstractNamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Restaurant restaurant;

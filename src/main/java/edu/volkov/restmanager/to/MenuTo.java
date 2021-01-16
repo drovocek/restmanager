@@ -1,6 +1,8 @@
 package edu.volkov.restmanager.to;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.NotBlank;
@@ -30,6 +32,8 @@ public class MenuTo extends BaseTo implements Serializable {
 
     @NotNull
     private List<MenuItemTo> menuItemTos;
+
+    private Integer restId;
 
     public MenuTo(Integer id, String name, LocalDate menuDate, boolean enabled, List<MenuItemTo> menuItemTos) {
         super(id);
