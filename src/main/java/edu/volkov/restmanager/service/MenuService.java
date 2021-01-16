@@ -9,6 +9,7 @@ import edu.volkov.restmanager.repository.CrudMenuRepository;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.model.MenuUtil;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,6 +29,7 @@ import static edu.volkov.restmanager.util.DateTimeUtil.minIfNull;
 import static edu.volkov.restmanager.util.ValidationUtil.*;
 import static edu.volkov.restmanager.util.model.MenuItemUtil.createNewsFromTos;
 
+@RequiredArgsConstructor
 @Service
 public class MenuService {
 
@@ -36,16 +38,6 @@ public class MenuService {
     private final CrudRestaurantRepository restRepo;
     private final CrudMenuRepository menuRepo;
     private final CrudMenuItemRepository menuItemRepo;
-
-    public MenuService(
-            CrudRestaurantRepository restRepo,
-            CrudMenuRepository menuRepo,
-            CrudMenuItemRepository menuItmRepo
-    ) {
-        this.restRepo = restRepo;
-        this.menuRepo = menuRepo;
-        this.menuItemRepo = menuItmRepo;
-    }
 
     @Transactional
     @CacheEvict(value = "menus", allEntries = true)
@@ -124,9 +116,5 @@ public class MenuService {
     public void enable(int restId, int id, boolean enabled) {
         Menu enabledMenu = getWithMenuItems(restId, id);
         enabledMenu.setEnabled(enabled);
-    }
-
-    private void validate(@Validated(View.Web.class) Menu menu){
-
     }
 }

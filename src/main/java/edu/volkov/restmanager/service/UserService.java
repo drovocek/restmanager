@@ -5,6 +5,7 @@ import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.to.UserTo;
 import edu.volkov.restmanager.util.model.UserUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -23,6 +24,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 import static edu.volkov.restmanager.util.model.UserUtil.prepareToSave;
 
+@RequiredArgsConstructor
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
@@ -31,11 +33,6 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private static final Sort SORT_NAME_EMAIL = Sort.by(Sort.Direction.ASC, "name", "email");
-
-    public UserService(CrudUserRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {

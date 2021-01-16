@@ -5,6 +5,7 @@ import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.service.MenuService;
 import edu.volkov.restmanager.to.MenuTo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.assureIdConsistent;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNew;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuController {
 
@@ -35,11 +37,6 @@ public class AdminMenuController {
 
     @Qualifier("defaultValidator")
     private Validator validator;
-
-    public AdminMenuController(MenuService service, UniqueMenuInOneDateForRestValidator menuInOneDateForRestValidator) {
-        this.service = service;
-        this.menuInOneDateForRestValidator = menuInOneDateForRestValidator;
-    }
 
     @GetMapping("/{restId}")
     public List<Menu> getAllForRestWithMenuItems(@PathVariable int restId) {

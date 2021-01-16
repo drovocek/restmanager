@@ -6,6 +6,7 @@ import edu.volkov.restmanager.repository.CrudMenuRepository;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.RestaurantTo;
 import edu.volkov.restmanager.util.model.RestaurantUtil;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -24,6 +25,7 @@ import static edu.volkov.restmanager.util.model.MenuUtil.filtrate;
 import static edu.volkov.restmanager.util.model.RestaurantUtil.addMenus;
 import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilterByNameAndAddress;
 
+@RequiredArgsConstructor
 @Service
 public class RestaurantService {
 
@@ -33,11 +35,6 @@ public class RestaurantService {
 
     private final CrudRestaurantRepository restRepo;
     private final CrudMenuRepository menuRepo;
-
-    public RestaurantService(CrudRestaurantRepository restRepo, CrudMenuRepository menuRepo) {
-        this.restRepo = restRepo;
-        this.menuRepo = menuRepo;
-    }
 
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {

@@ -4,19 +4,16 @@ package edu.volkov.restmanager.web.rest.restaurant;
 import edu.volkov.restmanager.HasIdAndName;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
-
+@RequiredArgsConstructor
 @Component
 public class UniqueRestNameValidator implements org.springframework.validation.Validator {
 
     private final CrudRestaurantRepository repository;
-
-    public UniqueRestNameValidator(CrudRestaurantRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {

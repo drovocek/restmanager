@@ -5,6 +5,7 @@ import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.service.RestaurantService;
 import edu.volkov.restmanager.to.RestaurantTo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import static edu.volkov.restmanager.util.ValidationUtil.assureIdConsistent;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNew;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController {
 
@@ -34,11 +36,6 @@ public class AdminRestaurantController {
 
     @Qualifier("defaultValidator")
     private Validator validator;
-
-    public AdminRestaurantController(RestaurantService restService, UniqueRestNameValidator nameValidator) {
-        this.restService = restService;
-        this.nameValidator = nameValidator;
-    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Validated(View.Web.class) @RequestBody Restaurant restaurant) {

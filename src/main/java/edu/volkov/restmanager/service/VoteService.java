@@ -4,6 +4,7 @@ import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.repository.CrudVoteRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
+@RequiredArgsConstructor
 @Service
 public class VoteService {
 
@@ -25,12 +27,6 @@ public class VoteService {
     private final CrudVoteRepository voteRepo;
     private final CrudUserRepository userRepo;
     private final CrudRestaurantRepository restRepo;
-
-    public VoteService(CrudVoteRepository voteRepo, CrudUserRepository userRepo, CrudRestaurantRepository restRepo) {
-        this.voteRepo = voteRepo;
-        this.userRepo = userRepo;
-        this.restRepo = restRepo;
-    }
 
     public Vote get(int userId, LocalDate voteDate) {
         return voteRepo.findByUserIdAndVoteDate(userId, voteDate)

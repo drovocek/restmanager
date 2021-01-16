@@ -4,18 +4,15 @@ package edu.volkov.restmanager.web.rest.menu;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.repository.CrudMenuRepository;
 import edu.volkov.restmanager.to.MenuTo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
-
+@RequiredArgsConstructor
 @Component
 public class UniqueMenuInOneDateForRestValidator implements org.springframework.validation.Validator {
 
     private final CrudMenuRepository menuRepo;
-
-    public UniqueMenuInOneDateForRestValidator(CrudMenuRepository menuRepo) {
-        this.menuRepo = menuRepo;
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {

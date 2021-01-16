@@ -4,19 +4,16 @@ package edu.volkov.restmanager.web.rest.user;
 import edu.volkov.restmanager.HasIdAndEmail;
 import edu.volkov.restmanager.model.User;
 import edu.volkov.restmanager.repository.CrudUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
-
+@RequiredArgsConstructor
 @Component
 public class UniqueMailValidator implements org.springframework.validation.Validator {
 
     private final CrudUserRepository repository;
-
-    public UniqueMailValidator(CrudUserRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public boolean supports(Class<?> clazz) {

@@ -2,6 +2,7 @@ package edu.volkov.restmanager.web;
 
 import edu.volkov.restmanager.util.ValidationUtil;
 import edu.volkov.restmanager.util.exception.*;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -23,6 +24,7 @@ import java.util.Map;
 import static edu.volkov.restmanager.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
+@RequiredArgsConstructor
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
@@ -37,10 +39,6 @@ public class ExceptionInfoHandler {
     }
 
     private final MessageSourceAccessor messageSourceAccessor;
-
-    public ExceptionInfoHandler(MessageSourceAccessor messageSourceAccessor) {
-        this.messageSourceAccessor = messageSourceAccessor;
-    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorInfo> handleError(HttpServletRequest req, NotFoundException e) {

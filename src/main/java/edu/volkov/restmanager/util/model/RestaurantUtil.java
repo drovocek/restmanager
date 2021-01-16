@@ -45,7 +45,7 @@ public class RestaurantUtil {
         String nameFilter = Optional.ofNullable(name).orElse("");
         String addressFilter = Optional.ofNullable(address).orElse("");
 
-        return restaurant -> restaurant.getName().contains(nameFilter) &
+        return restaurant -> restaurant.getName().contains(nameFilter) &&
                 restaurant.getAddress().contains(addressFilter);
     }
 
