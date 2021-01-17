@@ -69,12 +69,12 @@ public class AdminRestaurantController {
 
     @GetMapping
     public List<Restaurant> getAllWithDayEnabledMenu() {
-        return restService.getAllWithDayEnabledMenu();
+        return restService.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("","",null);
     }
 
     @GetMapping("/filter")
     public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
-        return restService.getFilteredWithDayEnabledMenu(name, address, enabled);
+        return restService.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu(name, address, enabled);
     }
 
     @PatchMapping("/{id}")

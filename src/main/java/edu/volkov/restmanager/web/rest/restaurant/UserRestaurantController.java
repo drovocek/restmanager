@@ -32,6 +32,6 @@ public class UserRestaurantController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String address
     ) {
-        return service.getFilteredWithDayEnabledMenu(name, address, true);
+        return service.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu(name, address, true);
     }
 }

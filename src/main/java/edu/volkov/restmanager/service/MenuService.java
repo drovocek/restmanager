@@ -18,7 +18,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static edu.volkov.restmanager.util.DateTimeUtil.maxIfNull;
@@ -59,11 +58,12 @@ public class MenuService {
     @CacheEvict(value = "menus", allEntries = true)
     public void updateWithMenuItems(int restId, int id, MenuTo menuTo) {
         log.info("update menu: {} from to: {} for rest: {}", id, menuTo, restId);
-
         Menu updated = getWithMenuItems(restId, id);
+
         if (!updated.getMenuItems().isEmpty()) {
             checkNotFoundWithId(menuItemRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
         }
+
         MenuUtil.updateFromTo(updated, menuTo);
     }
 
@@ -96,9 +96,7 @@ public class MenuService {
                 "getFilteredForRestWithMenuItems menus for rest: {} ,startDate: {},endDate: {},enabled: {}",
                 restId, startDate, endDate, enabled
         );
-        List<Menu> menus = menuRepo.getBetweenForRest(restId, minIfNull(startDate), maxIfNull(endDate));
-        Predicate<Menu> filter = menu -> enabled == null || menu.isEnabled() == enabled;
-        return menus.stream().filter(filter).collect(Collectors.toList());
+        return menuRepo.getBetweenForRestFilteredByEnabled(restId, minIfNull(startDate), maxIfNull(endDate), enabled);
     }
 
     @Transactional
