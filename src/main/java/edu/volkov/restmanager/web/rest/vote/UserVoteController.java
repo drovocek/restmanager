@@ -2,8 +2,10 @@ package edu.volkov.restmanager.web.rest.vote;
 
 import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.service.VoteService;
+import edu.volkov.restmanager.to.VoteTo;
 import edu.volkov.restmanager.web.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = UserVoteController.REST_URL)
+@Slf4j
 public class UserVoteController {
 
     static final String REST_URL = "/rest/profile/votes";
@@ -23,15 +26,21 @@ public class UserVoteController {
     private final VoteService service;
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> create(@RequestParam int restId) {
+    public ResponseEntity<VoteTo> create(@RequestParam int restId, @RequestParam Vote emptyVote) {
         int userId = SecurityUtil.authUserId();
+        log.info("create vote for rest:{}, by user:{}", restId, userId);
+
         Vote created = service.vote(userId, restId);
+        VoteTo createdTo = new VoteTo(created.getId(),
+                created.getUser().getId(),
+                created.getRestaurant().getId(),
+                created.getVoteDate());
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
-                .buildAndExpand(restId, created.getId()).toUri();
+                .buildAndExpand(restId, createdTo.getId()).toUri();
 
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return ResponseEntity.created(uriOfNewResource).body(createdTo);
     }
 
     @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +57,12 @@ public class UserVoteController {
     }
 
     @GetMapping("/{id}")
-    public Vote get(@PathVariable int id) {
-        return service.get(id);
+    public VoteTo get(@PathVariable int id) {
+        Vote voteFromDb = service.get(id);
+
+        return new VoteTo(voteFromDb.getId(),
+                voteFromDb.getUser().getId(),
+                voteFromDb.getRestaurant().getId(),
+                voteFromDb.getVoteDate());
     }
 }
