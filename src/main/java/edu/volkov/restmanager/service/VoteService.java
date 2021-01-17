@@ -4,10 +4,9 @@ import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.repository.CrudVoteRepository;
+import edu.volkov.restmanager.util.exception.NotInTimeLimitException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +39,7 @@ public class VoteService {
         log.info("vote user:{} by restaurant:{}", userId, restId);
         LocalDate voteDate = LocalDate.now();
         boolean inLimit = LocalTime.now().isBefore(voteTimeLimit);
+
         Vote lastVote = get(userId, voteDate);
 
         if (lastVote == null) {
@@ -48,6 +48,8 @@ public class VoteService {
             updateRestId(lastVote, restId);
         } else if (inLimit) {
             delete(lastVote.getId());
+        } else {
+            throw new NotInTimeLimitException("error.timeLimit");
         }
     }
 
