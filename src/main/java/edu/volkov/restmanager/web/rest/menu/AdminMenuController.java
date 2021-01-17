@@ -38,14 +38,14 @@ public class AdminMenuController {
     @Qualifier("defaultValidator")
     private Validator validator;
 
-    @GetMapping("/{restId}")
-    public List<Menu> getAllForRestWithMenuItems(@PathVariable int restId) {
+    @GetMapping("/")
+    public List<Menu> getAllForRestWithMenuItems(@RequestParam int restId) {
         return service.getAllForRestWithMenuItems(restId);
     }
 
-    @GetMapping("/filter/{restId}")
+    @GetMapping("/filter")
     public List<Menu> getFilteredForRestWithMenuItems(
-            @PathVariable int restId,
+            @RequestParam int restId,
             @Nullable LocalDate startDate,
             @Nullable LocalDate endDate,
             @Nullable Boolean enabled
@@ -53,23 +53,23 @@ public class AdminMenuController {
         return service.getFilteredForRestWithMenuItems(restId, startDate, endDate, enabled);
     }
 
-    @GetMapping("/{restId}/{id}")
-    public Menu getWithMenuItems(@PathVariable int restId, @PathVariable int id) {
+    @GetMapping("/{id}")
+    public Menu getWithMenuItems(@RequestParam int restId, @PathVariable int id) {
         return service.getWithMenuItems(restId, id);
     }
 
-    @PatchMapping("/{restId}/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enable(
-            @PathVariable int restId,
+            @RequestParam int restId,
             @PathVariable int id,
             @RequestParam boolean enabled
     ) {
         service.enable(restId, id, enabled);
     }
 
-    @PostMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithMenuItems(@PathVariable int restId, @Validated(View.Web.class) @RequestBody Menu menu) {
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Menu> createWithMenuItems(@RequestParam int restId, @Validated(View.Web.class) @RequestBody Menu menu) {
         checkNew(menu);
         Menu created = service.createWithMenuItems(restId, menu);
 
@@ -80,10 +80,10 @@ public class AdminMenuController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{restId}/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateWithMenuItems(
-            @PathVariable int restId,
+            @RequestParam int restId,
             @PathVariable int id,
             @RequestBody MenuTo menuTo
     ) throws BindException {
@@ -92,9 +92,9 @@ public class AdminMenuController {
         service.updateWithMenuItems(restId, id, menuTo);
     }
 
-    @DeleteMapping("/{restId}/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int restId, @PathVariable int id) {
+    public void delete(@RequestParam int restId, @PathVariable int id) {
         service.delete(restId, id);
     }
 

@@ -48,16 +48,16 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
         Menu newMenu = getNewWithMenuItems();
         System.out.println(newMenu);
 
-        ResultActions action = perform(post(REST_URL + "{restId}", REST1_ID)
+        ResultActions action = perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
+                .param("restId", String.valueOf(REST1_ID))
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(newMenu)))
                 .andExpect(status().isCreated())
                 .andDo(document("{class-name}/{method-name}",
-                        pathParameters(
+                        requestParameters(
                                 parameterWithName("restId").description("Restaurant id"))
-                        )
-                )
+                ))
                 .andDo(print())
                 .andDo(getRequestParamDocForOneMenu())
                 .andDo(getResponseParamDocForOneMenu());
@@ -76,16 +76,20 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
     public void updateWithMenuItems() throws Exception {
         MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
 
-        perform(put(REST_URL + "{restId}/{id}", REST1_ID, MENU1_ID)
+        perform(put(REST_URL + "{id}", MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
+                .param("restId", String.valueOf(REST1_ID))
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updatedMenuTo)))
                 .andExpect(status().isNoContent())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id")
                         )
+                ))
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
                 ))
                 .andDo(getRequestParamDocForOneMenuTo());
 
@@ -99,15 +103,19 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
         MenuTo updatedMenuTo = asTo(getUpdatedWithMenuItems());
         updatedMenuTo.setMenuItemTos(Collections.emptyList());
 
-        perform(put(REST_URL + "{restId}/{id}", REST1_ID, MENU1_ID)
+        perform(put(REST_URL + "{id}", MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
+                .param("restId", String.valueOf(REST1_ID))
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(updatedMenuTo)))
                 .andExpect(status().isNoContent())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id"))
+                ))
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
                 ));
 
         Menu updatedMenu = getUpdatedWithMenuItems();
@@ -118,30 +126,38 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     @Test
     public void deleteGood() throws Exception {
-        perform(delete(REST_URL + "{restId}/{id}", REST1_ID, MENU1_ID)
-                .with(userHttpBasic(admin)))
+        perform(delete(REST_URL + "{id}", MENU1_ID)
+                .with(userHttpBasic(admin))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id")
-                        )));
+                        )))
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                ));
 
         assertThrows(NotFoundException.class, () -> service.getWithMenuItems(REST1_ID, MENU1_ID));
     }
 
     @Test
     public void deleteNotFound() throws Exception {
-        perform(delete(REST_URL + "{restId}/{id}", REST1_ID, MENU_NOT_FOUND_ID)
-                .with(userHttpBasic(admin)))
+        perform(delete(REST_URL + "{id}", MENU_NOT_FOUND_ID)
+                .with(userHttpBasic(admin))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id")
                         )
+                ))
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
                 ))
                 .andDo(getErrorResponseParamDoc());
     }
@@ -164,138 +180,128 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     @Test
     public void getWithMenuItems() throws Exception {
-        perform(get(REST_URL + "{restId}/{id}", REST1_ID, MENU1_ID)
-                .with(userHttpBasic(admin)))
+        perform(get(REST_URL + "{id}", MENU1_ID)
+                .with(userHttpBasic(admin))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(menu1WithItems))
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id"))
                         )
                 )
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                ))
                 .andDo(getResponseParamDocForOneMenu());
     }
 
     @Test
     public void getWithMenuItemsNotFound() throws Exception {
-        perform(get(REST_URL + "{restId}/{id}", REST1_ID, MENU_NOT_FOUND_ID)
-                .with(userHttpBasic(admin)))
+        perform(get(REST_URL + "{id}", MENU_NOT_FOUND_ID)
+                .with(userHttpBasic(admin))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id"))
                         )
                 )
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                ))
                 .andDo(getErrorResponseParamDoc());
     }
 
     @Test
     public void getAllForRestWithMenuItems() throws Exception {
-        perform(get(REST_URL + "{restId}", REST1_ID)
-                .with(userHttpBasic(admin)))
+        perform(get(REST_URL)
+                .with(userHttpBasic(admin))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(rest1AllMenusWithItems))
                 .andDo(document("{class-name}/{method-name}",
-                        pathParameters(
+                        requestParameters(
                                 parameterWithName("restId").description("Restaurant id"))
-                        )
-                )
+                ))
                 .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
     public void getFilteredForRest1AllWithMenuItems() throws Exception {
-        perform(get(REST_URL + "filter/{restId}", REST1_ID)
+        perform(get(REST_URL + "filter")
                 .with(userHttpBasic(admin))
                 .param("startDate", "")
                 .param("endDate", "")
-                .param("enabled", ""))
+                .param("enabled", "")
+                .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(rest1AllMenusWithItems))
-                .andDo(document("{class-name}/{method-name}",
-                        pathParameters(
-                                parameterWithName("restId").description("Restaurant id"))
-                        )
-                )
-                .andDo(document("{class-name}/{method-name}",
-                        requestParameters(
-                                parameterWithName("startDate").description("Start date"),
-                                parameterWithName("endDate").description("End date"),
-                                parameterWithName("enabled").description("Menu activity marker")
-                        )
-                        )
-                )
                 .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
     public void getFilteredForRest1EnabledWithMenuItems() throws Exception {
-        perform(get(REST_URL + "filter/{restId}", REST1_ID)
+        perform(get(REST_URL + "filter")
                 .with(userHttpBasic(admin))
                 .param("startDate", "")
                 .param("endDate", "")
-                .param("enabled", "true"))
+                .param("enabled", "true")
+                .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
                         Arrays.asList(menu3WithItems, menu1WithItems)
                 ))
-                .andDo(document("{class-name}/{method-name}",
-                        pathParameters(
-                                parameterWithName("restId").description("Restaurant id"))
-                        )
-                )
                 .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
     public void getFilteredForRest1TodayWithMenuItems() throws Exception {
-        perform(get(REST_URL + "filter/{restId}", REST1_ID)
+        perform(get(REST_URL + "filter")
                 .with(userHttpBasic(admin))
                 .param("startDate", TODAY.toString())
                 .param("endDate", TODAY.toString())
-                .param("enabled", ""))
+                .param("enabled", "")
+                .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(
                         Collections.singletonList(menu1WithItems)
                 ))
-                .andDo(document("{class-name}/{method-name}",
-                        pathParameters(
-                                parameterWithName("restId").description("Restaurant id"))
-                        )
-                )
                 .andDo(getResponseParamDocForManyMenu());
     }
 
     @Test
     public void enable() throws Exception {
-        perform(patch(REST_URL + "{restId}/{id}", REST1_ID, MENU1_ID)
+        perform(patch(REST_URL + "{id}", MENU1_ID)
                 .param("enabled", "false")
+                .param("restId", String.valueOf(REST1_ID))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id"))
                         )
                 )
                 .andDo(document("{class-name}/{method-name}",
                         requestParameters(
-                                parameterWithName("enabled").description("Menu activity marker"))
+                                parameterWithName("enabled").description("Menu activity marker"),
+                                parameterWithName("restId").description("Restaurant id")
+                                )
                 ));
 
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());
@@ -303,21 +309,23 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
 
     @Test
     public void enableNotFound() throws Exception {
-        perform(patch(REST_URL + "{restId}/{id}", REST1_ID, MENU_NOT_FOUND_ID)
+        perform(patch(REST_URL + "{id}", MENU_NOT_FOUND_ID)
                 .param("enabled", "false")
+                .param("restId", String.valueOf(REST1_ID))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(document("{class-name}/{method-name}",
                         pathParameters(
-                                parameterWithName("restId").description("Restaurant id"),
                                 parameterWithName("id").description("Menu id")
                         )
                 ))
                 .andDo(getErrorResponseParamDoc()).andDo(document("{class-name}/{method-name}",
                 requestParameters(
-                        parameterWithName("enabled").description("Menu activity marker"))
+                        parameterWithName("enabled").description("Menu activity marker"),
+                        parameterWithName("restId").description("Restaurant id")
+                )
         ));
     }
 

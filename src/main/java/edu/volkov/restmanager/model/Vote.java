@@ -48,8 +48,6 @@ public class Vote extends AbstractBaseEntity {
     public String toString() {
         return "Vote{" +
                 " id=" + id +
-                ", userId=" + user.getId() +
-                ", restaurantId=" + restaurant.getId() +
                 ", voteDate=" + voteDate +
                 '}';
     }
