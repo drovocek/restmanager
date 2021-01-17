@@ -264,8 +264,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .content(jsonWithPassword(updated, "password")))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
-                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
     }
 
     @Test
@@ -279,8 +278,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .content(jsonWithPassword(expected, "newPass")))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
-                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
     }
 
     private RestDocumentationResultHandler getResponseParamDocForOneUser() {

@@ -3,9 +3,7 @@ package edu.volkov.restmanager.web;
 import edu.volkov.restmanager.util.ValidationUtil;
 import edu.volkov.restmanager.util.exception.*;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.support.MessageSourceAccessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,20 +23,28 @@ import static edu.volkov.restmanager.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
 @RequiredArgsConstructor
+@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
-    private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
-    public static final String EXCEPTION_DUPLICATE_DATETIME = "exception.meal.duplicateDateTime";
 
     private static final Map<String, String> CONSTRAINS_I18N_MAP = new HashMap<>();
+    private static final Map<String, String> EXCEPTION_MESS_MAP = new HashMap<>();
 
     static {
         CONSTRAINS_I18N_MAP.put("users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL);
+        EXCEPTION_MESS_MAP.put("exception.user.duplicateEmail", "User with this email already exists");
+        EXCEPTION_MESS_MAP.put("exception.user.updateRestriction", "Admin/User update is forbidden");
+        EXCEPTION_MESS_MAP.put("exception.user.duplicateName", "Restaurant with this name already exists");
+        EXCEPTION_MESS_MAP.put("exception.user.duplicateMenuInOneDate", "Menu for this day does exist");
+        EXCEPTION_MESS_MAP.put("error.appError", "Application error");
+        EXCEPTION_MESS_MAP.put("error.dataNotFound", "Data not found");
+        EXCEPTION_MESS_MAP.put("error.dataError", "Data error");
+        EXCEPTION_MESS_MAP.put("error.validationError", "Validation error");
+        EXCEPTION_MESS_MAP.put("error.wrongRequest", "Wrong request");
+        EXCEPTION_MESS_MAP.put("error.timeLimit", "Voice cannot be changed after 11:00");
     }
-
-    private final MessageSourceAccessor messageSourceAccessor;
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorInfo> handleError(HttpServletRequest req, NotFoundException e) {
@@ -47,7 +53,7 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorInfo> updateRestrictionError(HttpServletRequest req, ApplicationException appEx) {
-        return logAndGetErrorInfo(req, appEx, false, appEx.getType(), messageSourceAccessor.getMessage(appEx.getMsgCode()));
+        return logAndGetErrorInfo(req, appEx, false, appEx.getType(), EXCEPTION_MESS_MAP.get(appEx.getMsgCode()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -57,7 +63,7 @@ public class ExceptionInfoHandler {
             String lowerCaseMsg = rootMsg.toLowerCase();
             for (Map.Entry<String, String> entry : CONSTRAINS_I18N_MAP.entrySet()) {
                 if (lowerCaseMsg.contains(entry.getKey())) {
-                    return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, messageSourceAccessor.getMessage(entry.getValue()));
+                    return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, EXCEPTION_MESS_MAP.get(entry.getValue()));
                 }
             }
         }
@@ -67,7 +73,7 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ErrorInfo> bindValidationError(HttpServletRequest req, BindException e) {
         String[] details = e.getBindingResult().getFieldErrors().stream()
-                .map(messageSourceAccessor::getMessage)
+                .map(er -> EXCEPTION_MESS_MAP.get(er.getCode()))
                 .toArray(String[]::new);
 
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
@@ -89,7 +95,7 @@ public class ExceptionInfoHandler {
 
         return ResponseEntity.status(errorType.getStatus())
                 .body(new ErrorInfo(req.getRequestURL(), errorType,
-                        messageSourceAccessor.getMessage(errorType.getErrorCode()),
+                        EXCEPTION_MESS_MAP.get(errorType.getErrorCode()),
                         details.length != 0 ? details : new String[]{ValidationUtil.getMessage(rootCause)})
                 );
     }

@@ -130,8 +130,7 @@ public class ProfileControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
-                .andExpect(detailMessage(ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
     }
 
     private RestDocumentationResultHandler getResponseParamDocForOneUser() {
