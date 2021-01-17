@@ -4,6 +4,7 @@ package edu.volkov.restmanager.testdata;
 import edu.volkov.restmanager.TestMatcher;
 import edu.volkov.restmanager.model.MenuItem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,4 +50,11 @@ public class MenuItemTestData {
     public static final List<MenuItem> menu5MenuItems = Arrays.asList(menuItem13, menuItem14, menuItem15);
     public static final List<MenuItem> menu6MenuItems = Arrays.asList(menuItem16, menuItem17, menuItem18);
     public static final List<MenuItem> updatedMenuItems = Arrays.asList(updatedMenuItem1, updatedMenuItem2, updatedMenuItem3);
+
+    public static List<MenuItem> getNews() {
+        List<MenuItem> news = new ArrayList<>();
+        news.add(new MenuItem(null, "newMenu1", 123));
+        news.add(new MenuItem(null, "newMenu2", 456));
+        return news;
+    }
 }

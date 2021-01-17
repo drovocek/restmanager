@@ -43,7 +43,7 @@ public class Menu extends AbstractNamedEntity {
     private Restaurant restaurant;
 
     @NotNull
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu",cascade = CascadeType.ALL)
     private List<MenuItem> menuItems;
 
     public Menu(Menu menu) {

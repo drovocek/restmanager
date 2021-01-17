@@ -25,8 +25,12 @@ public class MenuServiceTest extends AbstractTest {
     public void createWithMenuItems() {
         Menu createdMenu = service.createWithMenuItems(REST1_ID, getNewWithMenuItems());
         int newId = createdMenu.id();
+
         Menu newMenu = getNewWithMenuItems();
         newMenu.setId(newId);
+        newMenu.getMenuItems().get(0).setId(createdMenu.getMenuItems().get(0).getId());
+        newMenu.getMenuItems().get(1).setId(createdMenu.getMenuItems().get(1).getId());
+
         MENU_WITH_ITEMS_MATCHER.assertMatch(createdMenu, newMenu);
         MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, newId), newMenu);
     }

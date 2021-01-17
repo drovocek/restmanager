@@ -68,14 +68,13 @@ public class MenuTestData {
     public static final List<Menu> rest2EnabledMenus = orderByDateDesc(Arrays.asList(menu4, menu6));
 
 
-
     public static Menu getNew() {
         return new Menu(null, "newMenu", DAY_ABOUT.plus(1, ChronoUnit.DAYS), false);
     }
 
     public static Menu getNewWithMenuItems() {
         Menu newMenu = getNew();
-        newMenu.setMenuItems(menu1MenuItems);
+        newMenu.setMenuItems(MenuItemTestData.getNews());
         return newMenu;
     }
 

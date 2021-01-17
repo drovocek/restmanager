@@ -1,7 +1,6 @@
 package edu.volkov.restmanager.service;
 
 import com.sun.istack.Nullable;
-import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.model.MenuItem;
 import edu.volkov.restmanager.repository.CrudMenuItemRepository;
@@ -10,14 +9,12 @@ import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.model.MenuUtil;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,13 +24,11 @@ import java.util.stream.Collectors;
 import static edu.volkov.restmanager.util.DateTimeUtil.maxIfNull;
 import static edu.volkov.restmanager.util.DateTimeUtil.minIfNull;
 import static edu.volkov.restmanager.util.ValidationUtil.*;
-import static edu.volkov.restmanager.util.model.MenuItemUtil.createNewsFromTos;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class MenuService {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final CrudRestaurantRepository restRepo;
     private final CrudMenuRepository menuRepo;
@@ -42,25 +37,22 @@ public class MenuService {
     @Transactional
     @CacheEvict(value = "menus", allEntries = true)
     public Menu createWithMenuItems(int restId, Menu menu) {
-        log.info("create menu {} for restaurant: {}", menu, restId);
         Assert.notNull(menu, "menu must not be null");
+        log.info("create menu {} for restaurant: {}", menu, restId);
 
         if (!menu.isNew() && getWithMenuItems(menu.getId(), restId) == null) {
             return null;
         }
         menu.setRestaurant(restRepo.getOne(restId));
         validate(menu);
-        Menu createdMenu = menuRepo.save(menu);
 
-        if (menu.getMenuItems() != null && !menu.getMenuItems().isEmpty()) {
-            List<MenuItem> mis = menu.getMenuItems().stream()
-                    .peek(mi -> mi.setMenu(createdMenu))
-                    .collect(Collectors.toList());
+        List<MenuItem> mis = menu.getMenuItems().stream()
+                .peek(mi -> mi.setMenu(menu))
+                .collect(Collectors.toList());
 
-            menuItemRepo.saveAll(mis);
-        }
+        menu.setMenuItems(mis);
 
-        return createdMenu;
+        return menuRepo.save(menu);
     }
 
     @Transactional
@@ -73,8 +65,6 @@ public class MenuService {
             checkNotFoundWithId(menuItemRepo.deleteAllByMenuId(menuTo.getId()) != 0, (int) menuTo.getId());
         }
         MenuUtil.updateFromTo(updated, menuTo);
-
-        menuItemRepo.saveAll(createNewsFromTos(updated, menuTo.getMenuItemTos()));
     }
 
     @CacheEvict(value = "menus", allEntries = true)
