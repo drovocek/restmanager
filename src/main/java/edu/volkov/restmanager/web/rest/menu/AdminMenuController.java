@@ -74,8 +74,8 @@ public class AdminMenuController {
         Menu created = service.createWithMenuItems(restId, menu);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
+                .path(REST_URL + "/{restId}/{id}")
+                .buildAndExpand(restId, created.getId()).toUri();
 
         return ResponseEntity.created(uriOfNewResource).body(created);
     }

@@ -87,8 +87,8 @@ public class UserRestaurantControllerTest extends AbstractControllerTest {
                 ))
                 .andDo(document("{class-name}/{method-name}",
                         requestParameters(
-                                parameterWithName("name").description("Restaurant name"),
-                                parameterWithName("address").description("Restaurant address")
+                                parameterWithName("name").description("Restaurant name").optional(),
+                                parameterWithName("address").description("Restaurant address").optional()
                         )
                         )
                 )

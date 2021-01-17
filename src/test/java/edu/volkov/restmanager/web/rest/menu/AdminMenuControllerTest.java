@@ -158,7 +158,8 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
         perform(get(REST_URL)
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isForbidden())
-                .andDo(document("{class-name}/{method-name}"));
+                .andDo(document("{class-name}/{method-name}"))
+                .andDo(print());
     }
 
     @Test
