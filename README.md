@@ -15,7 +15,7 @@ REST API
 - Maven
 
 ## Documentation
-[html](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.adoc)
+[html](https://htmlpreview.github.io/?https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.html)
 
 [pdf](https://github.com/drovocek/restmanager/blob/Cleaned/src/main/asciidoc/final_doc.pdf)
 
