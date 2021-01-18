@@ -1,4 +1,4 @@
-.{cl-get} [big]*`/rest/any/restaurants*` Get all enabled with day enabled menu
+.{cl-get} [big]*`/rest/any/restaurants/*` Get all enabled with day enabled menu
 [%collapsible]
 ====
 include::methods/get_all_rest.adoc[]

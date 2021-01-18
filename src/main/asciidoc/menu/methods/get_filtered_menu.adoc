@@ -1,6 +1,4 @@
 
-include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/path-parameters.adoc[]
-
 .Request parameters
 include::{snippets}/admin-menu-controller-test/get-filtered-for-rest1-all-with-menu-items/request-parameters.adoc[]
 

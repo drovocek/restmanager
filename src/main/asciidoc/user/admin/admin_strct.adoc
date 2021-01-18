@@ -1,4 +1,4 @@
-.{cl-get} [big]*`/rest/admin/users*` Get all
+.{cl-get} [big]*`/rest/admin/users/*` Get all
 [%collapsible]
 ====
 include::methods/get_all_users.adoc[]
@@ -13,12 +13,12 @@ include::methods/get_user.adoc[]
 ====
 include::methods/get_by_email_user.adoc[]
 ====
-.{cl-post} [big]*`/rest/admin/users*` Create
+.{cl-post} [big]*`/rest/admin/users/*` Create
 [%collapsible]
 ====
 include::methods/create_user.adoc[]
 ====
-.{cl-put} [big]*`/rest/admin/users*` Update
+.{cl-put} [big]*`/rest/admin/users/{id}*` Update
 [%collapsible]
 ====
 include::methods/update_user.adoc[]

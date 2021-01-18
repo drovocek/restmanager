@@ -1,4 +1,4 @@
-.{cl-get} [big]*`/rest/admin/restaurants*` Get all with day enabled menu
+.{cl-get} [big]*`/rest/admin/restaurants/*` Get all with day enabled menu
 [%collapsible]
 ====
 include::methods/get_all_rest.adoc[]
@@ -19,7 +19,7 @@ Keep in mind:
 =====
 include::methods/get_filtered_rest.adoc[]
 ====
-.{cl-post} [big]*`/rest/admin/restaurants*` Create
+.{cl-post} [big]*`/rest/admin/restaurants/*` Create
 [%collapsible]
 ====
 include::methods/create_rest.adoc[]

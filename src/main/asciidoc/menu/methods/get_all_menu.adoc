@@ -1,5 +1,6 @@
 
-include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/path-parameters.adoc[]
+.Request parameters
+include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/request-parameters.adoc[]
 
 .Response fields
 include::{snippets}/admin-menu-controller-test/get-all-for-rest-with-menu-items/response-fields.adoc[]

@@ -244,6 +244,13 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                 .param("restId", String.valueOf(REST1_ID)))
                 .andExpect(status().isOk())
                 .andDo(print())
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("startDate").description("Start filter date").optional(),
+                                parameterWithName("endDate").description("End Filter date").optional(),
+                                parameterWithName("enabled").description("Menu activity marker").optional(),
+                                parameterWithName("restId").description("Restaurant id"))
+                ))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_WITH_ITEMS_MATCHER.contentJson(rest1AllMenusWithItems))
                 .andDo(getResponseParamDocForManyMenu());
@@ -301,7 +308,7 @@ public class AdminMenuControllerTest extends AbstractControllerTest {
                         requestParameters(
                                 parameterWithName("enabled").description("Menu activity marker"),
                                 parameterWithName("restId").description("Restaurant id")
-                                )
+                        )
                 ));
 
         assertFalse(service.getWithMenuItems(REST1_ID, MENU1_ID).isEnabled());

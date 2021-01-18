@@ -1,4 +1,5 @@
-.{cl-get} [big]*`/rest/profile/votes/{restId}*` Vote for restaurant
+
+.{cl-patch} [big]*`/rest/profile/votes/*` Vote for restaurant
 [%collapsible]
 ====
 [NOTE]

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
 @RequiredArgsConstructor
@@ -33,36 +34,36 @@ public class VoteService {
                 .orElse(null);
     }
 
-    public Vote get(int id) {
-        return checkNotFoundWithId(voteRepo.findById(id).orElse(null), id);
-    }
-
-    public void delete(int id) {
-        log.info("delete vote {}", id);
-        if (inTimeLimit()) {
-            checkNotFoundWithId(voteRepo.delete(id) != 0, id);
-        }
-    }
-
     @Transactional
-    public Vote vote(int userId, int restId) {
+    public void vote(int userId, int restId) {
         log.info("vote user:{} by restaurant:{}", userId, restId);
         LocalDate voteDate = LocalDate.now();
         boolean inLimit = LocalTime.now().isBefore(voteTimeLimit);
-
         Vote lastVote = get(userId, voteDate);
 
         if (lastVote == null) {
-            return save(construct(userId, restId, voteDate));
+            create(construct(userId, restId, voteDate));
         } else if (lastVote.getRestaurant().getId() != restId && inLimit) {
             updateRestId(lastVote, restId);
-        } else if (inTimeLimit()) {
+        } else if (inLimit) {
             delete(lastVote.getId());
         } else {
             throw new NotInTimeLimitException("error.timeLimit");
         }
+    }
 
-        return null;
+    public void delete(int id) {
+        log.info("delete vote {}", id);
+        checkNotFoundWithId(voteRepo.delete(id) != 0, id);
+    }
+
+    public static void setVoteTimeLimit(LocalTime time) {
+        voteTimeLimit = time;
+    }
+
+    private void create(Vote created) {
+        log.info("create vote");
+        checkNotFound(save(created), "vote don't save");
     }
 
     private void updateRestId(Vote updated, int restId) {
@@ -80,13 +81,5 @@ public class VoteService {
 
     private Vote construct(Integer userId, Integer restaurantId, LocalDate voteDate) {
         return new Vote(null, userRepo.getOne(userId), restRepo.getOne(restaurantId), voteDate);
-    }
-
-    public static void setVoteTimeLimit(LocalTime time) {
-        voteTimeLimit = time;
-    }
-
-    private boolean inTimeLimit() {
-        return LocalTime.now().isBefore(voteTimeLimit);
     }
 }

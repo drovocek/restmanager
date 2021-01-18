@@ -1,5 +1,6 @@
 package edu.volkov.restmanager.web.rest.restaurant;
 
+import com.sun.istack.Nullable;
 import edu.volkov.restmanager.HasId;
 import edu.volkov.restmanager.View;
 import edu.volkov.restmanager.model.Restaurant;
@@ -69,11 +70,13 @@ public class AdminRestaurantController {
 
     @GetMapping
     public List<Restaurant> getAllWithDayEnabledMenu() {
-        return restService.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("","",null);
+        return restService.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("", "", null);
     }
 
     @GetMapping("/filter")
-    public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
+    public List<Restaurant> getFilteredWithDayEnabledMenu(@Nullable String name,
+                                                          @Nullable String address,
+                                                          @Nullable Boolean enabled) {
         return restService.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu(name, address, enabled);
     }
 

@@ -1,5 +1,6 @@
 
-include::{snippets}/user-vote-controller-test/vote/path-parameters.adoc[]
+.Request param
+include::{snippets}/user-vote-controller-test/vote/request-parameters.adoc[]
 
 .{cl-examples}
 [%collapsible]
