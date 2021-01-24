@@ -1,0 +1,28 @@
+
+= Attributes with styles
+// Include contents of docinfo.html
+// in HTML head with CSS style
+// definitions for .label.added,
+// .label.changed and .label.updated
+// used in the document attributes
+// cl-added, cl-changed and cl-updated.
+:docinfo1:
+
+// Document attribues with styling,
+// using the passthrough macro
+// and quotes subsitution.
+// We can use quotes or the short-hand q.
+:cl-get: pass:quotes[[.label.get]#GET:#]
+:cl-put: pass:q[[.label.put]#PUT:#]
+:cl-post: pass:q[[.label.post]#POST:#]
+:cl-patch: pass:q[[.label.patch]#PATCH:#]
+:cl-delete: pass:q[[.label.delete]#DELETE:#]
+
+
+== Sample section
+
+* {cl-get} GET
+* {cl-put} PUT
+* {cl-post} POST
+* {cl-patch} PATCH
+* {cl-delete} DELETE

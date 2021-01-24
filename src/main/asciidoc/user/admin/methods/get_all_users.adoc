@@ -1,0 +1,17 @@
+
+.Response fields
+include::{snippets}/admin-controller-test/get-all/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-controller-test/get-all/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-controller-test/get-all/http-request.adoc[]
+
+.HTTP Response
+include::{snippets}/admin-controller-test/get-all/http-response.adoc[]
+=====
+

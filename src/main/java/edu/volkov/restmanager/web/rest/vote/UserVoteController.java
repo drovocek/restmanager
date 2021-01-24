@@ -2,10 +2,12 @@ package edu.volkov.restmanager.web.rest.vote;
 
 import edu.volkov.restmanager.service.VoteService;
 import edu.volkov.restmanager.web.SecurityUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = UserVoteController.REST_URL)
 public class UserVoteController {
 
@@ -13,14 +15,10 @@ public class UserVoteController {
 
     private final VoteService voteService;
 
-    public UserVoteController(VoteService voteService) {
-        this.voteService = voteService;
-    }
-
-    @PatchMapping("/{id}")
+    @PatchMapping("/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void vote(@PathVariable int id) {
+    public void vote(@RequestParam int restId) {
         int userId = SecurityUtil.authUserId();
-        voteService.vote(userId, id);
+        voteService.vote(userId, restId);
     }
 }

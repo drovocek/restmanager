@@ -14,7 +14,7 @@ public class UserTestData {
 
     public static final int USER1_ID = 0;
     public static final int ADMIN_ID = 2;
-    public static final int NOT_FOUND = 10;
+    public static final int USER_NOT_FOUND = 10;
 
     public static final User user1 = new User(USER1_ID, "User1", "user1@yandex.ru", "password1", Role.USER);
     public static final User user2 = new User(USER1_ID + 1, "User2", "user2@yandex.ru", "password2", Role.USER);

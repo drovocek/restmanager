@@ -1,0 +1,23 @@
+
+include::{snippets}/admin-controller-test/enable/path-parameters.adoc[]
+
+.Request parameters
+include::{snippets}/admin-controller-test/enable/request-parameters.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-controller-test/enable/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-controller-test/enable/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/admin-controller-test/enable/http-response.adoc[]
+
+Error HTTP Responses
+
+.Enable not found
+include::{snippets}/admin-controller-test/enable-not-found/http-response.adoc[]
+=====
+

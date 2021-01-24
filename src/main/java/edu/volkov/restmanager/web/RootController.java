@@ -9,17 +9,23 @@ public class RootController {
 
     @GetMapping("/")
     public String root() {
-        return "forward:/rest/any/restaurants";
+        return "redirect:/restaurants";
     }
 
+    //    @Secured("ROLE_ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
     public String getUsers() {
-        return "forward:/rest/admin/users";
+        return "users";
     }
 
-    @GetMapping(value = "/login")
+    @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/restaurants")
+    public String getRestaurants() {
+        return "restaurants";
     }
 }

@@ -1,0 +1,23 @@
+
+include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/path-parameters.adoc[]
+
+.Response fields
+include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/user-restaurant-controller-test/get-with-enabled-menu/http-response.adoc[]
+Error HTTP Responses
+
+.Get not found
+include::{snippets}/user-restaurant-controller-test/get-not-found/http-response.adoc[]
+=====
+
+

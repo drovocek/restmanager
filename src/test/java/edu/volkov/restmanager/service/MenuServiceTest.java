@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Menu;
 import edu.volkov.restmanager.to.MenuTo;
 import edu.volkov.restmanager.util.exception.NotFoundException;
@@ -26,8 +25,12 @@ public class MenuServiceTest extends AbstractTest {
     public void createWithMenuItems() {
         Menu createdMenu = service.createWithMenuItems(REST1_ID, getNewWithMenuItems());
         int newId = createdMenu.id();
+
         Menu newMenu = getNewWithMenuItems();
         newMenu.setId(newId);
+        newMenu.getMenuItems().get(0).setId(createdMenu.getMenuItems().get(0).getId());
+        newMenu.getMenuItems().get(1).setId(createdMenu.getMenuItems().get(1).getId());
+
         MENU_WITH_ITEMS_MATCHER.assertMatch(createdMenu, newMenu);
         MENU_WITH_ITEMS_MATCHER.assertMatch(service.getWithMenuItems(REST1_ID, newId), newMenu);
     }
@@ -89,13 +92,13 @@ public class MenuServiceTest extends AbstractTest {
     @Test
     public void getFilteredByDateForRestWithMenuItems() {
         List<Menu> menus = service.getFilteredForRestWithMenuItems(REST1_ID, TODAY, TODAY, null);
-        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu1WithItems, menu2WithItems);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu1WithItems);
     }
 
     @Test
     public void getFilteredByEnabledForRestWithMenuItems() {
         List<Menu> menus = service.getFilteredForRestWithMenuItems(REST1_ID, null, null, true);
-        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu3WithItems, menu2WithItems);
+        MENU_WITH_ITEMS_MATCHER.assertMatch(menus, menu3WithItems, menu1WithItems);
     }
 
     @Test

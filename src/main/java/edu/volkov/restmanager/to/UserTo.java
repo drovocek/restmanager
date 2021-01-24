@@ -1,28 +1,34 @@
 package edu.volkov.restmanager.to;
 
+import edu.volkov.restmanager.HasIdAndEmail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserTo extends BaseTo implements Serializable {
+public class UserTo extends BaseTo implements Serializable, HasIdAndEmail {
 
     private static final long serialVersionUID = 1L;
 
     @NotBlank
     @Size(min = 2, max = 100)
+    @SafeHtml(whitelistType = NONE)
     private String name;
 
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml(whitelistType = NONE)
     private String email;
 
     @NotBlank

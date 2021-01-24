@@ -1,0 +1,19 @@
+
+.Request fields
+include::{snippets}/admin-restaurant-controller-test/create/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/admin-restaurant-controller-test/create/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-restaurant-controller-test/create/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-restaurant-controller-test/create/http-request.adoc[]
+.HTTP Response
+include::{snippets}/admin-restaurant-controller-test/create/http-response.adoc[]
+=====
+

@@ -5,9 +5,10 @@ import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.repository.CrudMenuRepository;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.to.RestaurantTo;
-import edu.volkov.restmanager.util.model.RestaurantUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,80 +16,68 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
 
-import static edu.volkov.restmanager.util.ValidationUtil.*;
-import static edu.volkov.restmanager.util.model.MenuUtil.filtrate;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
+import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 import static edu.volkov.restmanager.util.model.RestaurantUtil.addMenus;
-import static edu.volkov.restmanager.util.model.RestaurantUtil.getFilterByNameAndAddress;
+import static edu.volkov.restmanager.util.model.RestaurantUtil.updateFromTo;
 
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class RestaurantService {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final Sort sortByName = Sort.by(Sort.Direction.ASC, "name");
     private LocalDate testDate;
 
     private final CrudRestaurantRepository restRepo;
     private final CrudMenuRepository menuRepo;
 
-    public RestaurantService(CrudRestaurantRepository restRepo, CrudMenuRepository menuRepo) {
-        this.restRepo = restRepo;
-        this.menuRepo = menuRepo;
-    }
-
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
-        log.info("\n create restaurant");
-        checkNew(restaurant);
+        log.info("create restaurant");
         Assert.notNull(restaurant, "restaurant must not be null");
         return restRepo.save(restaurant);
     }
 
     @Transactional
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(RestaurantTo restTo, int id) {
-        assureIdConsistent(restTo, id);
-        log.info("\n update restaurant: {}", restTo.id());
+        log.info("update restaurant: {}", restTo.id());
         Assert.notNull(restTo, "restTo must not be null");
-        Restaurant updated = getWithoutMenu(id);
-        RestaurantUtil.updateFromTo(updated, restTo);
+        updateFromTo(getWithoutMenu(id), restTo);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
-        log.info("\n delete restaurant: {}", id);
+        log.info("delete restaurant: {}", id);
         checkNotFoundWithId(restRepo.delete(id) != 0, id);
     }
 
     public Restaurant getWithoutMenu(int id) {
-        log.info("\n getWithoutMenu restaurant: {}", id);
+        log.info("getWithoutMenu restaurant: {}", id);
         return checkNotFound(restRepo.findById(id).orElse(null), "restaurant by id: " + id + "dos not exist");
     }
 
     @Transactional
     public Restaurant getWithEnabledMenu(int id) {
-        log.info("\n getWithEnabledMenu restaurant: {}", id);
+        log.info("getWithEnabledMenu restaurant: {}", id);
         LocalDate toDay = (testDate == null) ? LocalDate.now() : testDate;
         Restaurant rest = getWithoutMenu(id);
-
-        List<Menu> dayEnabledMenu = filtrate(
-                menuRepo.getBetweenForRest(id, toDay, toDay),
-                Menu::isEnabled);
-
+        List<Menu> dayEnabledMenu = menuRepo.getBetweenForRestFilteredByEnabled(id, toDay, toDay, true);
         rest.setMenus(dayEnabledMenu);
-
         return rest;
     }
 
+    @Cacheable("restaurants")
     @Transactional
-    public List<Restaurant> getAllWithDayEnabledMenu() {
-        log.info("\n getAllWithDayEnabledMenu restaurants");
+    public List<Restaurant> getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu(String name, String address, Boolean enabled) {
+        log.info("getAllWithDayEnabledMenu restaurants");
         LocalDate toDay = (testDate == null) ? LocalDate.now() : testDate;
-        List<Restaurant> allRests = restRepo.findAll(sortByName);
+        List<Restaurant> allRests = restRepo.getFilteredByNameAndAddressAndEnabled(name, address, enabled, sortByName);
 
         if (!allRests.isEmpty()) {
-            List<Menu> filteredMenus = filtrate(
-                    menuRepo.getAllBetween(toDay, toDay),
-                    Menu::isEnabled
-            );
+            List<Menu> filteredMenus = menuRepo.getAllBetweenFilteredByEnabled(toDay, toDay, true);
             addMenus(allRests, filteredMenus);
         }
 
@@ -96,20 +85,20 @@ public class RestaurantService {
     }
 
     @Transactional
+    @Cacheable("restaurantsEnabled")
     public List<Restaurant> getAllEnabledWithDayEnabledMenu() {
-        log.info("\n getAllEnabledWithDayEnabledMenu restaurants");
-        return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), Restaurant::isEnabled);
+        log.info("getAllEnabledWithDayEnabledMenu restaurants");
+        return getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("", "", true);
     }
 
     @Transactional
-    public List<Restaurant> getFilteredWithDayEnabledMenu(String name, String address, Boolean enabled) {
-        log.info("\n getFilteredEnabledWithDayEnabledMenu restaurants by name {} and address {}", name, address);
-        Predicate<Restaurant> filter = getFilterByNameAndAddress(name, address)
-                .and(restaurant -> enabled == null || enabled == restaurant.isEnabled());
-        return RestaurantUtil.filtrate(getAllWithDayEnabledMenu(), filter);
+    public List<Restaurant> getAllWithDayEnabledMenu() {
+        log.info("getAllWithDayEnabledMenu");
+        return getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("", "", null);
     }
 
     @Transactional
+    @Cacheable("restaurants")
     public void enable(int id, boolean enabled) {
         Restaurant rest = getWithoutMenu(id);
         rest.setEnabled(enabled);

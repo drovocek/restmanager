@@ -1,6 +1,5 @@
 package edu.volkov.restmanager.service;
 
-import edu.volkov.restmanager.AbstractTest;
 import edu.volkov.restmanager.model.Restaurant;
 import edu.volkov.restmanager.testdata.MenuTestData;
 import edu.volkov.restmanager.to.RestaurantTo;
@@ -83,21 +82,21 @@ public class RestaurantServiceTest extends AbstractTest {
     @Test
     public void getAllFilteredWithDayEnabledMenu() {
         service.setTestDate(MenuTestData.TODAY);
-        List<Restaurant> rests = service.getFilteredWithDayEnabledMenu("", "", null);
+        List<Restaurant> rests = service.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("", "", null);
         REST_WITH_MENU_MATCHER.assertMatch(rests, rest1WithDayEnabledMenusAndItems, rest2WithDayEnabledMenusAndItems);
     }
 
     @Test
     public void getFilteredByNameAndAddressWithDayEnabledMenu() {
         service.setTestDate(MenuTestData.TODAY);
-        List<Restaurant> rests = service.getFilteredWithDayEnabledMenu("rest1", "address1", null);
+        List<Restaurant> rests = service.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("rest1", "address1", null);
         REST_WITH_MENU_MATCHER.assertMatch(rests, rest1WithDayEnabledMenusAndItems);
     }
 
     @Test
     public void getAllEnabledFilteredWithDayEnabledMenu() {
         service.setTestDate(MenuTestData.TODAY);
-        List<Restaurant> rests = service.getFilteredWithDayEnabledMenu("", "", true);
+        List<Restaurant> rests = service.getFilteredByNameAndAddressAndEnabledWithDayEnabledMenu("", "", true);
         REST_WITH_MENU_MATCHER.assertMatch(rests, rest1WithDayEnabledMenusAndItems);
     }
 

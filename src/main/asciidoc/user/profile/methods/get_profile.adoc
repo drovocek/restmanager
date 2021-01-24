@@ -1,0 +1,20 @@
+
+.Response fields
+include::{snippets}/profile-controller-test/get-good/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/profile-controller-test/get-good/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/profile-controller-test/get-good/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/profile-controller-test/get-good/http-response.adoc[]
+Error HTTP Responses
+
+.Get by unauthorized user
+include::{snippets}/admin-menu-controller-test/get-un-auth/http-response.adoc[]
+=====
+

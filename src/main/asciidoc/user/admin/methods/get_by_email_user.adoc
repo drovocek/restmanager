@@ -1,0 +1,18 @@
+
+.Request parameters
+include::{snippets}/admin-controller-test/get-by-email/request-parameters.adoc[]
+
+.Response fields
+include::{snippets}/admin-controller-test/get-by-email/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-controller-test/get-by-email/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-controller-test/get-by-email/http-request.adoc[]
+.HTTP Response
+include::{snippets}/admin-controller-test/get-by-email/http-response.adoc[]
+=====

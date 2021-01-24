@@ -19,6 +19,7 @@ public class Vote extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @NotNull
     private User user;
 
@@ -47,8 +48,6 @@ public class Vote extends AbstractBaseEntity {
     public String toString() {
         return "Vote{" +
                 " id=" + id +
-                ", userId=" + user.getId() +
-                ", restaurantId=" + restaurant.getId() +
                 ", voteDate=" + voteDate +
                 '}';
     }

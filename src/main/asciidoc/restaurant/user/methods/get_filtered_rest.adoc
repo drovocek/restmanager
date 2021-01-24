@@ -1,0 +1,19 @@
+
+.Request parameters
+include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/request-parameters.adoc[]
+
+.Response fields
+include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/http-request.adoc[]
+.HTTP Response
+include::{snippets}/user-restaurant-controller-test/get-filtered-rest1-enabled-with-day-enabled-menu/http-response.adoc[]
+=====
+

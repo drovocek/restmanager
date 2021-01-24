@@ -1,0 +1,6 @@
+---
+exclude_paths:
+  - 'src/main/webapp/**'
+  - 'src/main/asciidoc/**'
+  - '**.md'
+  - '**.sql'

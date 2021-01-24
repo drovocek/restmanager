@@ -1,0 +1,20 @@
+
+.Request param
+include::{snippets}/user-vote-controller-test/vote/request-parameters.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/user-vote-controller-test/vote/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/user-vote-controller-test/vote/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/user-vote-controller-test/vote/http-response.adoc[]
+Error HTTP Responses
+
+.Vote unauthorized
+include::{snippets}/user-vote-controller-test/vote-un-auth/http-response.adoc[]
+
+

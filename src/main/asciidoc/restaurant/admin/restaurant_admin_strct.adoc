@@ -1,0 +1,41 @@
+.{cl-get} [big]*`/rest/admin/restaurants/*` Get all with day enabled menu
+[%collapsible]
+====
+include::methods/get_all_rest.adoc[]
+====
+.{cl-get} [big]*`/rest/admin/restaurants/{id}*` Get one without menu
+[%collapsible]
+====
+include::methods/get_rest.adoc[]
+====
+.{cl-get} [big]*`/rest/admin/restaurants/filter*` Get filtered with day enabled menu
+[%collapsible]
+====
+[NOTE]
+=====
+Keep in mind:
+
+* Empty request parameters = getAll.
+=====
+include::methods/get_filtered_rest.adoc[]
+====
+.{cl-post} [big]*`/rest/admin/restaurants/*` Create
+[%collapsible]
+====
+include::methods/create_rest.adoc[]
+====
+.{cl-put} [big]*`/rest/admin/restaurants/{id}*` Update
+[%collapsible]
+====
+include::methods/update_rest.adoc[]
+====
+.{cl-patch} [big]*`/rest/admin/restaurants/{id}*` Set enable
+[%collapsible]
+====
+include::methods/enable_rest.adoc[]
+====
+.{cl-delete} [big]*`/rest/admin/restaurants/{id}*` Delete
+[%collapsible]
+====
+include::methods/delete_rest.adoc[]
+====

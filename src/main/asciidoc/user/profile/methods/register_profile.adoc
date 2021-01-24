@@ -1,0 +1,19 @@
+
+.Request fields
+include::{snippets}/profile-controller-test/register/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/profile-controller-test/register/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/profile-controller-test/register/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/profile-controller-test/register/http-request.adoc[]
+.Success HTTP Response
+include::{snippets}/profile-controller-test/register/http-response.adoc[]
+=====
+

@@ -16,11 +16,13 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{HH:mm:ss.SSS} %-5level %class{50}.%M:%L - %msg%n</pattern>
+            <pattern> %d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%class{50}.%M:%L) - %green(%msg%n)</pattern>
         </encoder>
     </appender>
 
     <logger name="edu.volkov.restaurantmanager" level="debug"/>
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="debug"/>
+    <logger name="org.springframework.security.web.csrf.CsrfFilter" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>

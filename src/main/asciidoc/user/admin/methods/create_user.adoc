@@ -1,0 +1,20 @@
+
+.Request fields
+include::{snippets}/admin-controller-test/create-with-location/request-fields.adoc[]
+
+.Response fields
+include::{snippets}/admin-controller-test/create-with-location/response-fields.adoc[]
+
+.{cl-examples}
+[%collapsible]
+=====
+.Curl
+include::{snippets}/admin-controller-test/create-with-location/curl-request.adoc[]
+
+.HTTP Request
+include::{snippets}/admin-controller-test/create-with-location/http-request.adoc[]
+
+.HTTP Response
+include::{snippets}/admin-controller-test/create-with-location/http-response.adoc[]
+=====
+

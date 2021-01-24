@@ -5,14 +5,17 @@ import edu.volkov.restmanager.web.AbstractControllerTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
 import static edu.volkov.restmanager.TestUtil.userHttpBasic;
 import static edu.volkov.restmanager.testdata.RestaurantTestData.REST1_ID;
-import static edu.volkov.restmanager.testdata.UserTestData.*;
+import static edu.volkov.restmanager.testdata.UserTestData.USER1_ID;
+import static edu.volkov.restmanager.testdata.UserTestData.user1;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,17 +28,25 @@ public class UserVoteControllerTest extends AbstractControllerTest {
 
     @Test
     public void vote() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + REST1_ID)
-                .with(userHttpBasic(user1)))
+        perform(patch(REST_URL)
+                .with(userHttpBasic(user1))
+                .param("restId", String.valueOf(REST1_ID)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("{class-name}/{method-name}",
+                        requestParameters(
+                                parameterWithName("restId").description("Restaurant id"))
+                ))
+                .andDo(document("{class-name}/{method-name}"));
 
         Assert.assertNotNull(voteService.get(USER1_ID, LocalDate.now()));
     }
 
     @Test
     public void voteUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID))
-                .andExpect(status().isUnauthorized());
+        perform(patch(REST_URL)
+                .param("restId", String.valueOf(REST1_ID)))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("{class-name}/{method-name}"));
     }
 }

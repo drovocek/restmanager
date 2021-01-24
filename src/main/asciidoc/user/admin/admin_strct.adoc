@@ -1,0 +1,35 @@
+.{cl-get} [big]*`/rest/admin/users/*` Get all
+[%collapsible]
+====
+include::methods/get_all_users.adoc[]
+====
+.{cl-get} [big]*`/rest/admin/users/{id}*` Get one
+[%collapsible]
+====
+include::methods/get_user.adoc[]
+====
+.{cl-get} [big]*`/rest/admin/users/by*` Get by email
+[%collapsible]
+====
+include::methods/get_by_email_user.adoc[]
+====
+.{cl-post} [big]*`/rest/admin/users/*` Create
+[%collapsible]
+====
+include::methods/create_user.adoc[]
+====
+.{cl-put} [big]*`/rest/admin/users/{id}*` Update
+[%collapsible]
+====
+include::methods/update_user.adoc[]
+====
+.{cl-patch} [big]*`/rest/admin/users/{id}*` Set enable
+[%collapsible]
+====
+include::methods/enable_user.adoc[]
+====
+.{cl-delete} [big]*`/rest/admin/users/{id}*` Delete
+[%collapsible]
+====
+include::methods/delete_user.adoc[]
+====

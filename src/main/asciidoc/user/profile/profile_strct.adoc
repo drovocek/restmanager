@@ -1,0 +1,21 @@
+.{cl-get} [big]*`/rest/profile*` Get
+[%collapsible]
+====
+include::methods/get_profile.adoc[]
+====
+.{cl-post} [big]*`/rest/profile/register*` Register
+[%collapsible]
+====
+include::methods/register_profile.adoc[]
+====
+.{cl-put} [big]*`/rest/profile*` Update
+[%collapsible]
+====
+include::methods/update_profile.adoc[]
+====
+.{cl-delete} [big]*`/rest/profile*` Delete
+[%collapsible]
+====
+include::methods/delete_profile.adoc[]
+====
+

@@ -4,8 +4,9 @@ import edu.volkov.restmanager.model.Vote;
 import edu.volkov.restmanager.repository.CrudRestaurantRepository;
 import edu.volkov.restmanager.repository.CrudUserRepository;
 import edu.volkov.restmanager.repository.CrudVoteRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import edu.volkov.restmanager.util.exception.NotInTimeLimitException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,21 +17,16 @@ import java.time.temporal.ChronoUnit;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFound;
 import static edu.volkov.restmanager.util.ValidationUtil.checkNotFoundWithId;
 
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class VoteService {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private static LocalTime voteTimeLimit = LocalTime.NOON.minus(1, ChronoUnit.HOURS);
 
     private final CrudVoteRepository voteRepo;
     private final CrudUserRepository userRepo;
     private final CrudRestaurantRepository restRepo;
-
-    public VoteService(CrudVoteRepository voteRepo, CrudUserRepository userRepo, CrudRestaurantRepository restRepo) {
-        this.voteRepo = voteRepo;
-        this.userRepo = userRepo;
-        this.restRepo = restRepo;
-    }
 
     public Vote get(int userId, LocalDate voteDate) {
         return voteRepo.findByUserIdAndVoteDate(userId, voteDate)
@@ -40,7 +36,7 @@ public class VoteService {
 
     @Transactional
     public void vote(int userId, int restId) {
-        log.info("\n vote user:{} by restaurant:{}", userId, restId);
+        log.info("vote user:{} by restaurant:{}", userId, restId);
         LocalDate voteDate = LocalDate.now();
         boolean inLimit = LocalTime.now().isBefore(voteTimeLimit);
         Vote lastVote = get(userId, voteDate);
@@ -51,11 +47,13 @@ public class VoteService {
             updateRestId(lastVote, restId);
         } else if (inLimit) {
             delete(lastVote.getId());
+        } else {
+            throw new NotInTimeLimitException("error.timeLimit");
         }
     }
 
     public void delete(int id) {
-        log.info("\n delete vote {}", id);
+        log.info("delete vote {}", id);
         checkNotFoundWithId(voteRepo.delete(id) != 0, id);
     }
 
@@ -64,12 +62,12 @@ public class VoteService {
     }
 
     private void create(Vote created) {
-        log.info("\n create vote");
+        log.info("create vote");
         checkNotFound(save(created), "vote don't save");
     }
 
     private void updateRestId(Vote updated, int restId) {
-        log.info("\n updateRestId vote {}", updated.getId());
+        log.info("updateRestId vote {}", updated.getId());
         updated.setRestaurant(restRepo.getOne(restId));
     }
 

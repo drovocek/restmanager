@@ -1,0 +1,75 @@
+
+:docinfo1:
+:cl-get: pass:quotes[[.label.get]#GET#]
+:cl-put: pass:q[[.label.put]#PUT#]
+:cl-post: pass:q[[.label.post]#POST#]
+:cl-patch: pass:q[[.label.patch]#PATCH#]
+:cl-delete: pass:q[[.label.delete]#DELETE#]
+:cl-examples: pass:q[[.label.examples]#examples#]
+
+:icons: font
+
+= Restaurant Manager API documentation
+Volkov Andrey(c) 2020
+Version 1.0, 25.12.2020
+:revnumber: v1.0
+:author: Volkov Andrey
+:email: progervolkov@gmail.com
+:sectnums:
+:sectnumlevels: 5
+:toc: left
+:toclevels: 4
+:page-layout: docs
+:toc-title: Content
+:description: Restaurant Manager API documentation
+:stylesheet: gazette.css
+
+== Endpoints
+'''
+=== Any User
+'''
+==== Restaurant
+include::restaurant/user/restaurant_user_strct.adoc[]
+'''
+=== Authenticated User
+'''
+==== Profile
+include::user/profile/profile_strct.adoc[]
+==== Vote
+include::vote/vote_strct.adoc[]
+'''
+=== Admin
+'''
+==== Profile
+include::user/admin/admin_strct.adoc[]
+==== Restaurant
+include::restaurant/admin/restaurant_admin_strct.adoc[]
+==== Menu
+include::menu/menu_strct.adoc[]
+
+== Convention
+include::util/rest_conv.adoc[]
+
+== Error processing
+'''
+.Error response body parameters
+include::{snippets}/admin-menu-controller-test/delete-not-found/response-fields.adoc[]
+
+== Technology stack
+'''
+* Java 8
+* Spring(Security, MVC, Data, REST doc)
+* Hibernate
+* HSQLDB
+* slf4j, junit4, Assertj, Hamcrest
+* Jackson, Lombok
+* Maven
+
+== Other
+
+=== Application provides
+* data caching
+* protection from cross-site scripting (XSS) attacks
+* validation for all incoming data fields
+* coding passwords
+* confidence in the future (deprecated)
