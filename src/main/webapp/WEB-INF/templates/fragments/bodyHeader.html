@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <title>NavBar</title>
+</head>
+<body>
+<nav th:fragment="nav">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TheBestRest</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item active">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit"><i class="fa fa-fw fa-search"></i></button>
+            </form>
+            <a href="login"><i class="fa fa-fw fa-user"></i> Login</a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>
