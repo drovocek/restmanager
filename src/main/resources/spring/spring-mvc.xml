@@ -46,10 +46,6 @@
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jsp/"
-          p:suffix=".jsp"/>
-
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
           p:cacheSeconds="5"
           p:defaultEncoding="UTF-8">
@@ -72,4 +68,25 @@
 
     <!--    https://stackoverflow.com/a/23615478/548473-->
     <bean id="defaultValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"-->
+    <!--          p:prefix="/WEB-INF/templates/"-->
+    <!--          p:suffix=".html"/>-->
+
+    <bean id="templateResolver"
+          class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+        <constructor-arg ref="servletContext"/>
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <property name="suffix" value=".html"/>
+        <property name="templateMode" value="HTML5"/>
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine"/>
+    </bean>
 </beans>

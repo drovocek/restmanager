@@ -56,6 +56,7 @@
         <!--SpringRestDoc-->
         <restdocs.version>2.0.5.RELEASE</restdocs.version>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
+
     </properties>
 
     <build>
@@ -297,6 +298,18 @@
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <version>${restdocs.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>3.0.12.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring5</artifactId>
+            <version>3.0.11.RELEASE</version>
         </dependency>
     </dependencies>
 

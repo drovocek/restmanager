@@ -24,7 +24,7 @@
         <intercept-url pattern="/profile/register" access="isAnonymous()"/>
 
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
+<!--        <intercept-url pattern="/**" access="isAuthenticated()"/>-->
 
         <form-login login-page="/login" default-target-url="/"
                     authentication-failure-url="/login?error=true"
